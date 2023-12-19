@@ -1,0 +1,58 @@
+server:
+  port: 9002
+
+spring:
+  application:
+    name: API-SERVICE
+
+  # 요청 설정
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+  # 데이터베이스 설정
+  datasource:
+    url: jdbc:mysql://localhost:3300/spring_dungi
+    username: root
+    password:
+    driver-class-name: com.mysql.jdbc.Driver
+
+  # jpa 설정
+  jpa:
+    hibernate:
+      ddl-auto: create
+    generate-ddl: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+# redis 설정
+redis:
+  port: 6300
+  host: localhost
+  lettuce:
+    pool:
+      max-idle: 8
+      min-idle: 2
+      max-active: 8
+
+# file 설정
+file:
+  upload:
+    path: /src/main/resources/static/
+  down:
+    path: http://localhost:9002/static/
+
+# sms 설정
+twilio:
+  accountId: ENC(yW9b+A+kn+BQHtVXRG0q7lzng6qPq9guNHT4DOeWsLm17puvxk9mKju4gEAgS21U)
+  authToken: ENC(Vovdm6F1avEu1DFizGCOsJ6j0Yj2az1MvCReCRd6NeVW6VLnT41AAuw6cDjCAxzw)
+  adminPhoneNumber: ENC(n1tKtJcuUwnu1O1H/7+T8nFV4+SR8l4L)
+
+# oath 설정
+kakao:
+  accountId: ENC(nyck3QLAqgjDva4oOgwCCiIXpUCUS/ZnkoqF2dbvL7Ls+SwozN8GHf3SJGj1pT42)
+  secret: ENC(AwQfMomhV/BvXhlwA2E6hDxsdn43wAjhCKjRPEEDlJkwsa2392ucl78xTtokwI9M)
+  callbackUri: http://localhost:9002/kakao/callback
