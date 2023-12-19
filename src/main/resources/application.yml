@@ -47,12 +47,12 @@ file:
 
 # sms 설정
 twilio:
-  accountId: ENC(yW9b+A+kn+BQHtVXRG0q7lzng6qPq9guNHT4DOeWsLm17puvxk9mKju4gEAgS21U)
-  authToken: ENC(Vovdm6F1avEu1DFizGCOsJ6j0Yj2az1MvCReCRd6NeVW6VLnT41AAuw6cDjCAxzw)
-  adminPhoneNumber: ENC(n1tKtJcuUwnu1O1H/7+T8nFV4+SR8l4L)
+  accountId: ENC(Y3q7tT614nNGApuPvbMpIQMTOpbskijqQSVo89CH19pTtFX/QpVGvv9m2TJ/jgo7)
+  authToken: ENC(I8O0mza78RoM2qbxAmHRbDZieQQjB0H7Ip36YaHUVLJtf9OoTkkh0I4/rRyOGyZz)
+  adminPhoneNumber: ENC(q8ll5buHV3yydpgQiOG9qvM3YxZ2za7Nf1Xm7KoZ34Y=)
 
 # oath 설정
 kakao:
-  accountId: ENC(nyck3QLAqgjDva4oOgwCCiIXpUCUS/ZnkoqF2dbvL7Ls+SwozN8GHf3SJGj1pT42)
-  secret: ENC(AwQfMomhV/BvXhlwA2E6hDxsdn43wAjhCKjRPEEDlJkwsa2392ucl78xTtokwI9M)
+  accountId: ENC(BeNx5c5Bd+57nwZO3jJnfPI3050oKt5F/FnExhEt80f78Xl5UhPeI3hWwrCRgqqJ)
+  secret: ENC(HngW3k7Tiw3qjl8uD2bg+mB9wEd/T1gqx8dneRXO/ModywRTWiFPX38xEANE9Jj2)
   callbackUri: http://localhost:9002/kakao/callback

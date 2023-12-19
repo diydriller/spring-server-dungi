@@ -33,8 +33,9 @@ dependencies {
     // retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
-    // jwt
+    // security
     implementation group: 'com.auth0', name: 'java-jwt', version: '3.18.0'
+    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3'
     // scheduling
     implementation 'org.springframework.boot:spring-boot-starter-quartz'
     // batch
