@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  # mysql
+  mysql_master:
+    container_name: "mysql_master"
+    image: mysql:8.0.35
+    ports:
+      - "3300:3306"
+    volumes:
+      - ./docker/docker_data/mysql_master:/var/lib/mysql
+      - ./docker/docker_init/mysql_master:/docker-entrypoint-initdb.d
+      - ./docker/docker_conf/mysql_master:/etc/mysql/conf.d
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - TZ=Asia/Seoul
+    restart: always
+
+  # redis
+  redis_master:
+    container_name: redis_master
+    image: redis:6.2.5
+    ports:
+      - "6300:6379"
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./docker/docker_data/redis_master:/data
+      - ./docker/docker_conf/redis_master/redis_master.conf:/usr/local/etc/redis/redis.conf
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    restart: always
