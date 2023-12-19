@@ -1,0 +1,14 @@
+### IDE
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+gradle/
+build/
+.gradle/
+gradlew
+
+### 설정파일
+docker_data/
+.env
