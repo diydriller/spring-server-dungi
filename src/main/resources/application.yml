@@ -21,7 +21,7 @@ spring:
   # jpa 설정
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     generate-ddl: true
     show-sql: true
     properties:
