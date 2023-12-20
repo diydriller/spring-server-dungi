@@ -60,7 +60,10 @@ public class User extends BaseEntity implements Serializable {
     ) {
         if(StringUtils.isEmpty(nickname)) throw new BaseException(INVALID_VALUE);
         if(StringUtils.isEmpty(email)) throw new BaseException(INVALID_VALUE);
-        if(StringUtils.isEmpty(profileImg)) throw new BaseException(INVALID_VALUE);
+        if(StringUtils.isEmpty(password)) throw new BaseException(INVALID_VALUE);
+        if(StringUtils.isEmpty(provider)) throw new BaseException(INVALID_VALUE);
+        if(StringUtils.isEmpty(phoneNumber)) throw new BaseException(INVALID_VALUE);
+        if(StringUtils.isEmpty(name)) throw new BaseException(INVALID_VALUE);
 
         this.name = name;
         this.nickname = nickname;
