@@ -46,13 +46,17 @@ public class UserStoreImpl implements UserStore {
     @Override
     public void checkEmailPresent(String email) {
         userRepository.findByEmail(email)
-                .ifPresent(m->{throw new BaseException(ALREADY_EXISTS_EMAIL);});
+                .ifPresent(m -> {
+                    throw new BaseException(ALREADY_EXISTS_EMAIL);
+                });
     }
 
     @Override
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(()->{throw new BaseException(NOT_EXISTS_EMAIL);});
+                .orElseThrow(()->{
+                    throw new BaseException(NOT_EXISTS_EMAIL);
+                });
     }
 
     @Override
@@ -63,6 +67,6 @@ public class UserStoreImpl implements UserStore {
     @Override
     public String getCode(String number) {
         return redisRepository.getString(number)
-                .orElseThrow(()->new BaseException(CODE_NOT_EXIST));
+                .orElseThrow(() -> new BaseException(CODE_NOT_EXIST));
     }
 }
