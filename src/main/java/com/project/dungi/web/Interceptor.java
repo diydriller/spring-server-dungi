@@ -2,7 +2,7 @@ package com.project.dungi.web;
 
 
 import com.project.dungi.common.exception.AuthenticationException;
-import com.project.dungi.common.util.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -14,8 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import static com.project.dungi.common.response.BaseResponseStatus.AUTHENTICATION_ERROR;
 import static com.project.dungi.common.util.StringUtil.ACCESS_TOKEN;
 
+@RequiredArgsConstructor
 @Component
 public class Interceptor implements HandlerInterceptor {
+
+    private final TokenProvider tokenProvider;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -24,7 +27,7 @@ public class Interceptor implements HandlerInterceptor {
             throw new AuthenticationException(AUTHENTICATION_ERROR);
         }
         try{
-            JwtUtil.verifyToken(token);
+            tokenProvider.verifyToken(token);
         }
         catch (Exception e){
             e.printStackTrace();

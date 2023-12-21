@@ -56,3 +56,7 @@ kakao:
   accountId: ENC(BeNx5c5Bd+57nwZO3jJnfPI3050oKt5F/FnExhEt80f78Xl5UhPeI3hWwrCRgqqJ)
   secret: ENC(HngW3k7Tiw3qjl8uD2bg+mB9wEd/T1gqx8dneRXO/ModywRTWiFPX38xEANE9Jj2)
   callbackUri: http://localhost:9002/kakao/callback
+
+# jwt 설정
+jwt:
+  secret: ENC(68/G125o5LYOM3ww0CE2wliGbK7I4OhN)

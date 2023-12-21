@@ -4,12 +4,14 @@ import com.google.gson.Gson;
 import com.project.dungi.application.user.controller.UserController;
 import com.project.dungi.application.user.dto.JoinRequestDto;
 import com.project.dungi.application.user.dto.LoginRequestDto;
+import com.project.dungi.web.TokenProvider;
 import com.project.dungi.domain.user.model.User;
 import com.project.dungi.domain.user.service.UserService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
@@ -17,7 +19,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.mockito.Mockito.when;
+import java.lang.reflect.Field;
+
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,6 +34,9 @@ public class UserControllerTest {
 
     @Mock
     private UserService userService;
+
+    @Mock
+    private TokenProvider tokenProvider;
 
     private MockMvc mockMvc;
 
@@ -78,8 +85,14 @@ public class UserControllerTest {
                 .profileImg("http://localhost:9002/static/aaa.jpg")
                 .password("encrypted")
                 .build();
-        when(userService.login(requestDto.getEmail(), requestDto.getPassword()))
-                .thenReturn(user);
+        Field field  = User.class.getDeclaredField("id");
+        field.setAccessible(true);
+        field.set(user, 1L);
+
+        given(userService.login(requestDto.getEmail(), requestDto.getPassword()))
+                .willReturn(user);
+        given(tokenProvider.createToken(user.getId(), user.getEmail()))
+                .willReturn("token");
 
         final var resultActions = mockMvc.perform(
                 MockMvcRequestBuilders.post("/login")

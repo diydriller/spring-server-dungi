@@ -2,7 +2,7 @@ package com.project.dungi.application.user.controller;
 
 import com.project.dungi.application.user.dto.*;
 import com.project.dungi.common.response.BaseResponse;
-import com.project.dungi.common.util.JwtUtil;
+import com.project.dungi.web.TokenProvider;
 import com.project.dungi.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +21,7 @@ import static com.project.dungi.common.util.StringUtil.LOGIN_USER;
 public class UserController {
 
     private final UserService userService;
+    private final TokenProvider tokenProvider;
 
     @PostMapping(value = "/user")
     public BaseResponse<?> join(
@@ -88,7 +89,8 @@ public class UserController {
     ) throws Exception {
         var user = userService.login(requestDto.getEmail(), requestDto.getPassword());
         session.setAttribute(LOGIN_USER, user);
-        return new BaseResponse<>(JwtUtil.getToken(user));
+        String token = tokenProvider.createToken(user.getId(), user.getEmail());
+        return new BaseResponse<>(token);
     }
 
     @PostMapping("/kakao/login")
@@ -98,7 +100,8 @@ public class UserController {
     ) throws Exception {
         var user = userService.snsLogin(requestDto.getEmail(), requestDto.getAccess_token());
         session.setAttribute(LOGIN_USER, user);
-        return new BaseResponse<>(JwtUtil.getToken(user));
+        String token = tokenProvider.createToken(user.getId(), user.getEmail());
+        return new BaseResponse<>(token);
     }
 }
 
