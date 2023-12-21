@@ -22,7 +22,8 @@ public class WebConfig implements WebMvcConfigurer {
             "/login",
             "/kakao/user",
             "/kakao/callback",
-            "/kakao/login"
+            "/kakao/login",
+            "/static/**"
     };
 
     @Override

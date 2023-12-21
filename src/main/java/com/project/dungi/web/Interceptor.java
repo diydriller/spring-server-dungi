@@ -23,6 +23,7 @@ public class Interceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String token = request.getHeader(ACCESS_TOKEN);
+
         if(StringUtils.isEmpty(token)){
             throw new AuthenticationException(AUTHENTICATION_ERROR);
         }
