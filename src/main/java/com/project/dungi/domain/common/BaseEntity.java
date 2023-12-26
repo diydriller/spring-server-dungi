@@ -1,6 +1,5 @@
 package com.project.dungi.domain.common;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -16,12 +15,10 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
 
-    @JsonIgnore
     @CreatedDate
     @Column(name="created_time")
     private LocalDateTime createdTime;
 
-    @JsonIgnore
     @LastModifiedDate
     @Column(name="modified_time")
     private LocalDateTime modifiedTime;

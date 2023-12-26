@@ -46,8 +46,8 @@ public class MemoServiceImpl implements MemoService {
     // 메모 조회 기능
     // 유저가 방에 입장해있는지 검증 - 메모 조회
     // 캐시 사용해서 조회
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
-    @Cacheable(key = "#roomId",value="getMemo")
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ)
+    @Cacheable(key = "#roomId", value="getMemo")
     public List<GetMemoDto> getMemo(Long roomId, Long userId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
         return memoStore.findAllMemo(userId, roomId);

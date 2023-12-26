@@ -1,19 +1,20 @@
 package com.project.dungi.domain.memo.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Setter
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class GetMemoDto {
     private Long id;
     private String profileImg;
     private String memoItem;
     private String memoColor;
     private LocalDateTime createdTime;
-    private double xPosition;
-    private double yPosition;
+    private Double xPosition;
+    private Double yPosition;
     private Long userId;
 }

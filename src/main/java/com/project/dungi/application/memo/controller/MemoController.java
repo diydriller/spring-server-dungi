@@ -63,6 +63,8 @@ public class MemoController {
                         .createdAt(TimeUtil.localDateTimeToTimeStr(m.getCreatedTime()))
                         .isOwner(m.getUserId().equals(user.getId()))
                         .memo(m.getMemoItem())
+                        .x(m.getXPosition())
+                        .y(m.getYPosition())
                         .build()
                 );
         return new BaseResponse<>(memoList);
