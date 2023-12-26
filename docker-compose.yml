@@ -25,7 +25,7 @@ services:
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes:
       - ./docker/docker_data/redis_master:/data
-      - ./docker/docker_conf/redis_master/redis_master.conf:/usr/local/etc/redis/redis.conf
+      - ./docker/docker_conf/redis_master:/usr/local/etc/redis/redis.conf
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
     restart: always

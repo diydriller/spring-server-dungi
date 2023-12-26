@@ -21,6 +21,8 @@ public class UserRepositoryTest {
     @Test
     @DisplayName("유저 저장 성공 테스트")
     void saveUserSuccessTest() {
+
+        // given
         var user = User.builder()
                 .email("aaa@naver.com")
                 .name("park")
@@ -30,10 +32,12 @@ public class UserRepositoryTest {
                 .profileImg("http://localhost:9002/static/aaa.jpg")
                 .password("encrypted")
                 .build();
-        userRepository.save(user);
 
+        // when
+        userRepository.save(user);
         var savedUser = userRepository.findByEmail(user.getEmail()).get();
 
+        // then
         assertEquals(user.getId(), savedUser.getId());
     }
 }

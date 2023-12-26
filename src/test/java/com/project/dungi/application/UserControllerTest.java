@@ -4,9 +4,10 @@ import com.google.gson.Gson;
 import com.project.dungi.application.user.controller.UserController;
 import com.project.dungi.application.user.dto.JoinRequestDto;
 import com.project.dungi.application.user.dto.LoginRequestDto;
+import com.project.dungi.domain.user.service.UserServiceImpl;
 import com.project.dungi.web.TokenProvider;
 import com.project.dungi.domain.user.model.User;
-import com.project.dungi.domain.user.service.UserService;
+
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,6 +15,7 @@ import org.mockito.Mock;
 
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -21,9 +23,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.lang.reflect.Field;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,7 +35,7 @@ public class UserControllerTest {
     private UserController userController;
 
     @Mock
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Mock
     private TokenProvider tokenProvider;
@@ -49,6 +51,7 @@ public class UserControllerTest {
     @DisplayName("회원가입 컨트롤러 성공 테스트")
     void signUpSuccessTest() throws Exception {
 
+        // given
         final var requestDto = new JoinRequestDto(
                 "aaa@naver.com",
                 "aaa",
@@ -60,7 +63,8 @@ public class UserControllerTest {
                 )
         );
 
-        mockMvc.perform(multipart("/user")
+        // when
+        var result = mockMvc.perform(multipart("/user")
                 .file((MockMultipartFile) requestDto.getImg())
                 .param("email", requestDto.getEmail())
                 .param("password", requestDto.getPassword())
@@ -68,13 +72,17 @@ public class UserControllerTest {
                 .param("name", requestDto.getName())
                 .param("phoneNumber", requestDto.getPhoneNumber())
                 .contentType(MediaType.MULTIPART_FORM_DATA)
-        ).andExpect(status().isOk());
+        );
+
+        // then
+        result.andExpect(status().isOk());
     }
 
     @Test
     @DisplayName("로그인 컨트롤러 성공 테스트")
     void loginSuccessTest() throws Exception {
 
+        // given
         final var requestDto = new LoginRequestDto("aaa@naver.com","aaa");
         var user = User.builder()
                 .email("aaa@naver.com")
@@ -94,13 +102,18 @@ public class UserControllerTest {
         given(tokenProvider.createToken(user.getId(), user.getEmail()))
                 .willReturn("token");
 
-        final var resultActions = mockMvc.perform(
+        // when
+        var token = userController.login(requestDto, new MockHttpSession()).getData();
+
+        var result = mockMvc.perform(
                 MockMvcRequestBuilders.post("/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new Gson().toJson(requestDto))
         );
 
-        resultActions.andExpect(status().isOk())
-                .andExpect(jsonPath("data").isString());
+        // then
+        result.andExpect(status().isOk());
+
+        assertThat(token).isEqualTo("token");
     }
 }

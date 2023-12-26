@@ -75,8 +75,4 @@ public class User extends BaseEntity implements Serializable {
         this.deleteStatus = DeleteStatus.NOT_DELETED;
         this.bestMateCount = 0;
     }
-
-    public User(Long id){
-        this.id = id;
-    }
 }
