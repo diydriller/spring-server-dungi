@@ -13,7 +13,7 @@ public class TimeUtil {
                 String.valueOf(time.getMonthValue()),
                 String.valueOf(time.getDayOfMonth()),
                 String.valueOf(time.getHour()),
-                String.valueOf(time.getSecond())
+                String.valueOf(time.getMinute())
         );
     }
 

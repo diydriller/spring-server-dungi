@@ -76,7 +76,7 @@ public class TodoController {
                         .todo(t.getTodoItem())
                         .todoId(t.getId())
                         .isOwner(t.getUserId().equals(user.getId()))
-                        .deadline(TimeUtil.localDateTimeToTimeStr(t.getCreatedTime()))
+                        .deadline(TimeUtil.localDateTimeToTimeStr(t.getDeadline()))
                         .build())
                 .collect(Collectors.toList());
             return new BaseResponse<>(todayTodo);

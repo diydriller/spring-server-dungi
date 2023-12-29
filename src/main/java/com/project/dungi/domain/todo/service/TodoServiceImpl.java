@@ -40,7 +40,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     // 반복 할일 생성 기능
-    // 유저가 방에 입장해있는지 검증 - 오늘 할일 생성
+    // 유저가 방에 입장해있는지 검증 - 반복 할일 생성
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void createRepeatTodo(String todoItem, String time, String days, Long userId, Long roomId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
