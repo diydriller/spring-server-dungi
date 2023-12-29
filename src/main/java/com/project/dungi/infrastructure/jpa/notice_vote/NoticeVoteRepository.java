@@ -13,16 +13,27 @@ import java.util.List;
 public interface NoticeVoteRepository extends CrudRepository<Notice, Long> {
     @Query(value = "select nv.type, nv.id, u.profile_img as profileImg, nv.content, u.users_id as userId, nv.created_time as createdAt " +
             " from (" +
-            " (select vote_id as id, users_id, title as content, created_time, 'V' as type " +
+            " (select vote_id as id, user_id as users_id, title as content, created_time, 'V' as type " +
             " from Vote v " +
-            " where v.roomId=:roomId) ans v.delete_status=:#{#status?.name()} " +
+            " where v.room_id=:roomId and v.delete_status=:#{#status?.name()}) " +
             " union " +
-            " (select notice_id as id, users_id, noticeItem as content, created_time, 'N' as type " +
-            " from Notice n" +
-            " where n.roomId=:roomId and n.delete_status=:#{#status?.name()} )) nv" +
-            " inner join Users u on u.users_id = nv.users_id ",
+            " (select notice_id as id, users_id, notice_item as content, created_time, 'N' as type " +
+            " from Notice n " +
+            " where n.room_id=:roomId and n.delete_status=:#{#status?.name()} )) nv " +
+            " inner join Users u on u.users_id = nv.users_id " +
+            " order by nv.created_time desc ",
             nativeQuery = true,
-            countQuery = "")
+            countQuery = "select nv.type, nv.id, u.profile_img as profileImg, nv.content, u.users_id as userId, nv.created_time as createdAt " +
+                    " from ( " +
+                    " (select vote_id as id, user_id as users_id, title as content, created_time, 'V' as type " +
+                    " from Vote v " +
+                    " where v.room_id=:roomId and v.delete_status=:#{#status?.name()}) " +
+                    " union " +
+                    " (select notice_id as id, users_id, notice_item as content, created_time, 'N' as type " +
+                    " from Notice n " +
+                    " where n.room_id=:roomId and n.delete_status=:#{#status?.name()} )) nv " +
+                    " inner join Users u on u.users_id = nv.users_id " +
+                    " order by nv.created_time desc ")
     List<GetNoticeVoteDto> findAllNoticeVote(
             @Param("roomId") Long roomId,
             @Param("status") DeleteStatus status,

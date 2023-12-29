@@ -6,7 +6,6 @@ import com.project.dungi.domain.notice_vote.dto.GetNoticeVoteDto;
 import com.project.dungi.infrastructure.jpa.notice_vote.NoticeVoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class NoticeVoteStoreImpl implements NoticeVoteStore {
     @Override
     public List<GetNoticeVoteDto> getNoticeVote(Long roomId, Long userId, int page, int size) {
 
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "created_time");
+        PageRequest pageRequest = PageRequest.of(page, size);
         return noticeVoteRepository.findAllNoticeVote(
                 roomId,
                 DeleteStatus.NOT_DELETED,
