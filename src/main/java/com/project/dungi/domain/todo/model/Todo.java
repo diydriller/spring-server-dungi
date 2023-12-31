@@ -29,7 +29,7 @@ public class Todo extends BaseEntity {
     @Column(name = "room_id")
     private Long roomId;
 
-    @Column(name = "user_id")
+    @Column(name = "users_id")
     private Long userId;
 
     @Enumerated(EnumType.STRING)

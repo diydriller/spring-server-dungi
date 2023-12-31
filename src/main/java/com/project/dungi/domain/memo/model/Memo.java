@@ -36,10 +36,10 @@ public class Memo extends BaseEntity {
     @Column(name = "delete_status")
     private DeleteStatus deleteStatus;
 
-    @JoinColumn(name="user_id")
+    @Column(name="users_id")
     private Long userId;
 
-    @JoinColumn(name="room_id")
+    @Column(name="room_id")
     private Long roomId;
 
     @Builder

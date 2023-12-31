@@ -38,7 +38,7 @@ public class Vote extends BaseEntity {
     @Column(name = "delete_status")
     private DeleteStatus deleteStatus;
 
-    @Column(name="user_id")
+    @Column(name="users_id")
     private Long userId;
 
     @Column(name="room_id")

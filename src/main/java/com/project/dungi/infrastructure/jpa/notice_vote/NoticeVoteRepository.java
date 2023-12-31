@@ -13,7 +13,7 @@ import java.util.List;
 public interface NoticeVoteRepository extends CrudRepository<Notice, Long> {
     @Query(value = "select nv.type, nv.id, u.profile_img as profileImg, nv.content, u.users_id as userId, nv.created_time as createdAt " +
             " from (" +
-            " (select vote_id as id, user_id as users_id, title as content, created_time, 'V' as type " +
+            " (select vote_id as id, users_id, title as content, created_time, 'V' as type " +
             " from Vote v " +
             " where v.room_id=:roomId and v.delete_status=:#{#status?.name()}) " +
             " union " +
@@ -25,7 +25,7 @@ public interface NoticeVoteRepository extends CrudRepository<Notice, Long> {
             nativeQuery = true,
             countQuery = "select nv.type, nv.id, u.profile_img as profileImg, nv.content, u.users_id as userId, nv.created_time as createdAt " +
                     " from ( " +
-                    " (select vote_id as id, user_id as users_id, title as content, created_time, 'V' as type " +
+                    " (select vote_id as id, users_id, title as content, created_time, 'V' as type " +
                     " from Vote v " +
                     " where v.room_id=:roomId and v.delete_status=:#{#status?.name()}) " +
                     " union " +
