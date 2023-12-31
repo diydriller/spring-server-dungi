@@ -1,13 +1,20 @@
 spring:
   # 데이터베이스 설정
   datasource:
-    url: jdbc:mysql://localhost:3300/spring_dungi
-    username: root
-    password:
-    driver-class-name: com.mysql.jdbc.Driver
+    source:
+      jdbc-url: jdbc:mysql://localhost:3300/spring_dungi
+      username: root
+      password: ENC(MKcemwLpfYeOL+VwyFG48HMhSOUdhSn9)
+      driver-class-name: com.mysql.jdbc.Driver
+    replica:
+      jdbc-url: jdbc:mysql://localhost:3301/spring_dungi
+      username: root
+      password: ENC(uYPzCJbPjhvNmUQE5WODAm9YULJkkKPs)
+      driver-class-name: com.mysql.jdbc.Driver
 
   # jpa 설정
   jpa:
+    database: mysql
     hibernate:
       ddl-auto: validate
     generate-ddl: false
@@ -20,6 +27,7 @@ spring:
 redis:
   port: 6300
   host: localhost
+  password: ENC(vtjQc5k6ostA1TjT2QzQBE4yHnwl6EsI)
   lettuce:
     pool:
       max-idle: 8

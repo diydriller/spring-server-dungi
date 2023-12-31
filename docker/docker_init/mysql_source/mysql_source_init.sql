@@ -1,7 +1,10 @@
-CREATE DATABASE IF NOT EXISTS spring_dungi;
-USE spring_dungi;
+# 데이터베이스 생성
+create database if not exists spring_dungi;
+use spring_dungi;
 
-CREATE TABLE IF NOT EXISTS memo (
+
+# 테이블 생성
+create table if not exists memo (
                       memo_id bigint not null auto_increment,
                       created_time datetime(6),
                       modified_time datetime(6),
@@ -9,13 +12,13 @@ CREATE TABLE IF NOT EXISTS memo (
                       memo_color varchar(255),
                       memo_item varchar(255),
                       room_id bigint,
-                      user_id bigint,
+                      users_id bigint,
                       x_position double precision,
                       y_position double precision,
                       primary key (memo_id)
 ) engine=InnoDB;
 
-CREATE TABLE IF NOT EXISTS notice (
+create table if not exists notice (
                         notice_id bigint not null auto_increment,
                         created_time datetime(6),
                         modified_time datetime(6),
@@ -26,14 +29,14 @@ CREATE TABLE IF NOT EXISTS notice (
                         primary key (notice_id)
 ) engine=InnoDB;
 
-CREATE TABLE IF NOT EXISTS repeat_day (
+create table if not exists repeat_day (
                             repeat_day_id bigint not null auto_increment,
                             day integer not null,
                             todo_id bigint,
                             primary key (repeat_day_id)
 ) engine=InnoDB;
 
-CREATE TABLE IF NOT EXISTS room (
+create table if not exists room (
                       room_id bigint not null auto_increment,
                       created_time datetime(6),
                       modified_time datetime(6),
@@ -43,7 +46,7 @@ CREATE TABLE IF NOT EXISTS room (
                       primary key (room_id)
 ) engine=InnoDB;
 
-CREATE TABLE IF NOT EXISTS todo (
+create table if not exists todo (
                       dtype varchar(31) not null,
                       todo_id bigint not null auto_increment,
                       created_time datetime(6),
@@ -52,12 +55,12 @@ CREATE TABLE IF NOT EXISTS todo (
                       delete_status varchar(255),
                       room_id bigint,
                       todo_item varchar(255),
-                      user_id bigint,
+                      users_id bigint,
                       todo_status varchar(255),
                       primary key (todo_id)
 ) engine=InnoDB;
 
-CREATE TABLE IF NOT EXISTS user_room (
+create table if not exists user_room (
                            users_room_id bigint not null auto_increment,
                            created_time datetime(6),
                            modified_time datetime(6),
@@ -67,7 +70,7 @@ CREATE TABLE IF NOT EXISTS user_room (
                            primary key (users_room_id)
 ) engine=InnoDB;
 
-CREATE TABLE IF NOT EXISTS users (
+create table if not exists users (
                        users_id bigint not null auto_increment,
                        created_time datetime(6),
                        modified_time datetime(6),
@@ -83,7 +86,7 @@ CREATE TABLE IF NOT EXISTS users (
                        primary key (users_id)
 ) engine=InnoDB;
 
-CREATE TABLE IF NOT EXISTS user_vote_item (
+create table if not exists user_vote_item (
                                 users_vote_item_id bigint not null auto_increment,
                                 created_time datetime(6),
                                 modified_time datetime(6),
@@ -93,7 +96,7 @@ CREATE TABLE IF NOT EXISTS user_vote_item (
                                 primary key (users_vote_item_id)
 ) engine=InnoDB;
 
-CREATE TABLE IF NOT EXISTS vote (
+create table if not exists vote (
                       vote_id bigint not null auto_increment,
                       created_time datetime(6),
                       modified_time datetime(6),
@@ -101,11 +104,11 @@ CREATE TABLE IF NOT EXISTS vote (
                       vote_status varchar(255),
                       room_id bigint,
                       title varchar(255),
-                      user_id bigint,
+                      users_id bigint,
                       primary key (vote_id)
 ) engine=InnoDB;
 
-CREATE TABLE IF NOT EXISTS vote_item (
+create table if not exists vote_item (
                            vote_item_id bigint not null auto_increment,
                            created_time datetime(6),
                            modified_time datetime(6),
@@ -114,6 +117,8 @@ CREATE TABLE IF NOT EXISTS vote_item (
                            primary key (vote_item_id)
 ) engine=InnoDB;
 
+
+# 테이블 제약사항
 alter table users
     add constraint user_idx unique (email);
 

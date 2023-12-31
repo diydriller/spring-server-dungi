@@ -1,0 +1,7 @@
+[mysqld]
+# 서버 식별자
+server-id=4
+# 로그 파일 이름
+log-bin=mysql-bin
+# 로그 파일 크기
+max_binlog_size = 100M
