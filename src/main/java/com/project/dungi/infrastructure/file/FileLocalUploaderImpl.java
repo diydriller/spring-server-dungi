@@ -14,7 +14,7 @@ import java.util.Date;
 
 import static com.project.dungi.common.response.BaseResponseStatus.FILE_NAME_NOT_ALLOWED;
 
-@Profile("dev")
+@Profile("local")
 @Component
 public class FileLocalUploaderImpl implements FileUploader {
 

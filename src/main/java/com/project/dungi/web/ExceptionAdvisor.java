@@ -3,6 +3,8 @@ package com.project.dungi.web;
 import com.project.dungi.common.exception.AuthenticationException;
 import com.project.dungi.common.exception.BaseException;
 import com.project.dungi.common.response.BaseResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -15,7 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.project.dungi.common.response.BaseResponseStatus.SERVER_ERROR;
+import static com.project.dungi.common.util.StringUtil.REQUEST_KEY;
 
+@Slf4j
 @RestControllerAdvice
 public class ExceptionAdvisor {
 
@@ -23,8 +27,10 @@ public class ExceptionAdvisor {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException.class)
     @ResponseBody
-    public BaseResponse<?> handleValidationException(BindException ex){
-        BindingResult result = ex.getBindingResult();
+    public BaseResponse<?> handleValidationException(BindException e){
+        String eventId = MDC.get(REQUEST_KEY);
+        log.info("eventId = {} ", eventId, e);
+        BindingResult result = e.getBindingResult();
         List<String> errorList = new ArrayList<>();
         result.getFieldErrors().forEach((fieldError) ->
             errorList.add(
@@ -47,23 +53,29 @@ public class ExceptionAdvisor {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(AuthenticationException.class)
     @ResponseBody
-    public BaseResponse<?> handleAuthenticationException(AuthenticationException ex){
-        return new BaseResponse<>(ex.getStatus());
+    public BaseResponse<?> handleAuthenticationException(AuthenticationException e){
+        String eventId = MDC.get(REQUEST_KEY);
+        log.info("eventId = {} ", eventId, e);
+        return new BaseResponse<>(e.getStatus());
     }
 
     // 비즈니스 로직 에러 핸들러
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(BaseException.class)
     @ResponseBody
-    public BaseResponse<?> handleBaseException(BaseException ex){
-        return new BaseResponse<>(ex.getStatus());
+    public BaseResponse<?> handleBaseException(BaseException e){
+        String eventId = MDC.get(REQUEST_KEY);
+        log.info("eventId = {} ", eventId, e);
+        return new BaseResponse<>(e.getStatus());
     }
 
     // 서버 에러 핸들러
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public BaseResponse<?> handleException(Exception ex){
+    public BaseResponse<?> handleException(Exception e){
+        String eventId = MDC.get(REQUEST_KEY);
+        log.error("eventId = {} ", eventId, e);
         return new BaseResponse<>(SERVER_ERROR);
     }
 }
