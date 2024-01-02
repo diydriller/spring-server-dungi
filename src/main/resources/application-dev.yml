@@ -37,7 +37,7 @@ redis:
 # file 설정
 file:
   upload:
-    path: /src/main/resources/static/
+    path: src/main/resources/static/
   down:
     path: http://localhost:9002/static/
 

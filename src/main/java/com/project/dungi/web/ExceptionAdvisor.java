@@ -3,7 +3,6 @@ package com.project.dungi.web;
 import com.project.dungi.common.exception.AuthenticationException;
 import com.project.dungi.common.exception.BaseException;
 import com.project.dungi.common.response.BaseResponse;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -21,7 +20,6 @@ import static com.project.dungi.common.response.BaseResponseStatus.SERVER_ERROR;
 public class ExceptionAdvisor {
 
     // 입력값 검증 에러 핸들러
-    @Order(value=2)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException.class)
     @ResponseBody
@@ -46,7 +44,6 @@ public class ExceptionAdvisor {
     }
 
     // 헤더에서 토큰이 없거나 토큰 검증 실패시 에러 핸들러
-    @Order(value=1)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(AuthenticationException.class)
     @ResponseBody
@@ -55,7 +52,6 @@ public class ExceptionAdvisor {
     }
 
     // 비즈니스 로직 에러 핸들러
-    @Order(value=3)
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(BaseException.class)
     @ResponseBody
@@ -64,11 +60,10 @@ public class ExceptionAdvisor {
     }
 
     // 서버 에러 핸들러
-    @Order(value=4)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public BaseResponse<?> handleException(BaseException ex){
+    public BaseResponse<?> handleException(Exception ex){
         return new BaseResponse<>(SERVER_ERROR);
     }
 }

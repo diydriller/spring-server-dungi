@@ -21,7 +21,7 @@ import static com.project.dungi.common.response.BaseResponseStatus.*;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final PasswordEncoder hashCipher;
+    private final PasswordEncoder passwordEncoder;
     private final FileUploader fileUploader;
     private final UserStore userStore;
     private final SnsHttpService snsHttpService;
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     ) throws Exception {
         checkEmailPresent(email);
         String imageDownUrl = fileUploader.imageUpload(img);
-        String hashedPassword = hashCipher.encode(password);
+        String hashedPassword = passwordEncoder.encode(password);
         var user = User.builder()
                 .email(email)
                 .password(hashedPassword)
@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public User login(String email, String password){
         User user = userStore.findUserByEmail(email);
-        if(!hashCipher.matches(password, user.getPassword())){
+        if(!passwordEncoder.matches(password, user.getPassword())){
             throw new BaseException(PASSWORD_NOT_EQUAL);
         }
         return user;

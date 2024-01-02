@@ -34,7 +34,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder hashCipher(){
+    public PasswordEncoder passwordCipher(){
         return new BCryptPasswordEncoder();
     }
 }
