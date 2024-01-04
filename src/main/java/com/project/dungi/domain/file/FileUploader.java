@@ -1,4 +1,4 @@
-package com.project.dungi.domain.common;
+package com.project.dungi.domain.file;
 
 import org.springframework.web.multipart.MultipartFile;
 

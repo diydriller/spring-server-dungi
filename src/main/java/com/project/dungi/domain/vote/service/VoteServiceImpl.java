@@ -8,7 +8,6 @@ import com.project.dungi.domain.vote.model.VoteItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -24,7 +23,7 @@ public class VoteServiceImpl implements VoteService{
     // 투표 생성 기능
     // 방에 유저 있는지 조회 - 투표 생성
     @Override
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     @CacheEvict(value="getNotiveVote", allEntries = true)
     public void createVote(String title, List<String> choiceArr, Long userId, Long roomId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
@@ -43,7 +42,7 @@ public class VoteServiceImpl implements VoteService{
     // 투표 조회 기능
     // 방에 유저 있는지 조회 - 투표 조회 - 투표 선택지와 투표한 사람들 조회 - 투표 안한 수 조회
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE, readOnly = true)
+    @Transactional(readOnly = true)
     public GetVoteItemDto getVote(Long roomId, Long userId, Long voteId) {
 
         roomStore.getRoomEnteredByUser(userId, roomId);
@@ -79,7 +78,7 @@ public class VoteServiceImpl implements VoteService{
 
     // 투표 하기 기능
     // 투표 선택지 조회 - 투표하기
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     public void createVoteChoice(Long roomId, Long userId, Long voteId, Long choiceId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
         var voteItem = voteStore.getVoteItem(choiceId);

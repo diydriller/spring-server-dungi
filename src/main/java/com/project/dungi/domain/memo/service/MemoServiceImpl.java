@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class MemoServiceImpl implements MemoService {
     // 메모 생성 기능
     // 유저가 방에 입장해있는지 확인 - 메모 생성
     // 메모 생성시 캐시 삭제
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     @CacheEvict(key = "#roomId",value="getMemo")
     public void createMemo(String memoItem,
                            String memoColor,
@@ -46,7 +45,7 @@ public class MemoServiceImpl implements MemoService {
     // 메모 조회 기능
     // 유저가 방에 입장해있는지 검증 - 메모 조회
     // 캐시 사용해서 조회
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ)
+    @Transactional(readOnly = true)
     @Cacheable(key = "#roomId", value="getMemo")
     public List<GetMemoDto> getMemo(Long roomId, Long userId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
@@ -56,7 +55,7 @@ public class MemoServiceImpl implements MemoService {
     // 메모 수정 기능
     // 유저가 방에 입장해있는지 검증 - 메모 수정
     // 메모 수정시 캐시 삭제
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     @CacheEvict(key = "#roomId",value="getMemo")
     public void updateMemo(String memoItem, String memoColor, Long userId, Long roomId, Long memoId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
@@ -66,7 +65,7 @@ public class MemoServiceImpl implements MemoService {
     // 메모 이동 기능
     // 유저가 방에 입장해있는지 검증 - 메모 이동
     // 메모 이동시 캐시 삭제
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     @CacheEvict(key = "#roomId",value="getMemo")
     public void moveMemo(Double xPosition, Double yPosition, Long userId, Long roomId, Long memoId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
@@ -76,7 +75,7 @@ public class MemoServiceImpl implements MemoService {
     // 메모 삭제 기능
     // 유저가 방에 입장해있는지 검증 - 메모 삭제
     // 메모 삭제시 캐시 삭제
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     @CacheEvict(key = "#roomId",value="getMemo")
     public void deleteMemo(Long userId, Long roomId, Long memoId) {
         roomStore.getRoomEnteredByUser(userId, roomId);

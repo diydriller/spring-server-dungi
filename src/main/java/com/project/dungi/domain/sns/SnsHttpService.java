@@ -1,4 +1,4 @@
-package com.project.dungi.domain.user.service;
+package com.project.dungi.domain.sns;
 
 import com.project.dungi.application.user.dto.SnsTokenDto;
 

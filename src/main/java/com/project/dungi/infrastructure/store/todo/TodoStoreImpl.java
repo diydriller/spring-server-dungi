@@ -6,7 +6,7 @@ import com.project.dungi.domain.common.FinishStatus;
 import com.project.dungi.domain.todo.model.RepeatTodo;
 import com.project.dungi.domain.todo.model.TodayTodo;
 import com.project.dungi.domain.todo.service.TodoStore;
-import com.project.dungi.infrastructure.jpa.todo.TodoRepository;
+import com.project.dungi.infrastructure.jpa.todo.TodoJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -19,16 +19,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TodoStoreImpl implements TodoStore {
 
-    private final TodoRepository todoRepository;
+    private final TodoJpaRepository todoJpaRepository;
 
     @Override
     public void saveTodayTodo(TodayTodo todayTodo) {
-        todoRepository.save(todayTodo);
+        todoJpaRepository.save(todayTodo);
     }
 
     @Override
     public void saveRepeatTodo(RepeatTodo repeatTodo) {
-        todoRepository.save(repeatTodo);
+        todoJpaRepository.save(repeatTodo);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class TodoStoreImpl implements TodoStore {
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "createdTime");
         LocalDateTime currentTime = LocalDateTime.now();
-        return todoRepository.findAllPossibleTodayTodo(
+        return todoJpaRepository.findAllPossibleTodayTodo(
                 roomId,
                 DeleteStatus.NOT_DELETED,
                 FinishStatus.UNFINISHED,
@@ -49,7 +49,7 @@ public class TodoStoreImpl implements TodoStore {
     public List<RepeatTodo> findRepeatTodo(Long roomId, Long userId, int page, int size) {
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "createdTime");
-        return todoRepository.findAllPossibleRepeatTodo(
+        return todoJpaRepository.findAllPossibleRepeatTodo(
                 roomId,
                 DeleteStatus.NOT_DELETED,
                 pageRequest

@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserVoteItemRepository extends CrudRepository<UserVoteItem,Long> {
+public interface UserVoteItemJpaRepository extends CrudRepository<UserVoteItem,Long> {
 
     @Query("SELECT new com.project.dungi.domain.vote.dto.VoteUserDto(" +
             " u.profileImg," +

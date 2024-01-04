@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TodoRepository extends CrudRepository<Todo,Long> {
+public interface TodoJpaRepository extends CrudRepository<Todo,Long> {
 
     Optional<Todo> findById(Long id);
 

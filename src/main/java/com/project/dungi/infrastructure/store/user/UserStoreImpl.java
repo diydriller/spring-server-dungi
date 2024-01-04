@@ -4,7 +4,7 @@ import com.project.dungi.common.exception.BaseException;
 import com.project.dungi.domain.user.model.User;
 import com.project.dungi.domain.user.service.UserStore;
 import com.project.dungi.infrastructure.redis.RedisRepository;
-import com.project.dungi.infrastructure.jpa.user.UserRepository;
+import com.project.dungi.infrastructure.jpa.user.UserJpaRepository;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
@@ -25,7 +25,7 @@ public class UserStoreImpl implements UserStore {
     @Value("${twilio.adminPhoneNumber}")
     private String adminPhoneNumber;
 
-    private final UserRepository userRepository;
+    private final UserJpaRepository userJpaRepository;
     private final RedisRepository redisRepository;
 
     @Override
@@ -40,12 +40,12 @@ public class UserStoreImpl implements UserStore {
 
     @Override
     public void saveUser(User user) {
-        userRepository.save(user);
+        userJpaRepository.save(user);
     }
 
     @Override
     public void checkEmailPresent(String email) {
-        userRepository.findByEmail(email)
+        userJpaRepository.findByEmail(email)
                 .ifPresent(m -> {
                     throw new BaseException(ALREADY_EXISTS_EMAIL);
                 });
@@ -53,7 +53,7 @@ public class UserStoreImpl implements UserStore {
 
     @Override
     public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email)
+        return userJpaRepository.findByEmail(email)
                 .orElseThrow(()->{
                     throw new BaseException(NOT_EXISTS_EMAIL);
                 });

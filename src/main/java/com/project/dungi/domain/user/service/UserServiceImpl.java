@@ -4,10 +4,10 @@ package com.project.dungi.domain.user.service;
 import com.project.dungi.application.user.dto.*;
 import com.project.dungi.common.exception.BaseException;
 import com.project.dungi.common.util.StringUtil;
-import com.project.dungi.domain.common.FileUploader;
+import com.project.dungi.domain.file.FileUploader;
+import com.project.dungi.domain.sns.SnsHttpService;
 import com.project.dungi.domain.user.model.User;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import static com.project.dungi.common.response.BaseResponseStatus.*;
 
-
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {

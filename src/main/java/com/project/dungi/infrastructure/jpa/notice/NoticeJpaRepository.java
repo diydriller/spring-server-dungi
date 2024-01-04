@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface NoticeRepository extends CrudRepository<Notice, Long> {
+public interface NoticeJpaRepository extends CrudRepository<Notice, Long> {
 
 }

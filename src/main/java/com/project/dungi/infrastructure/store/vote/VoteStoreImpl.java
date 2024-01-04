@@ -7,9 +7,9 @@ import com.project.dungi.domain.vote.model.UserVoteItem;
 import com.project.dungi.domain.vote.model.Vote;
 import com.project.dungi.domain.vote.model.VoteItem;
 import com.project.dungi.domain.vote.service.VoteStore;
-import com.project.dungi.infrastructure.jpa.vote.UserVoteItemRepository;
-import com.project.dungi.infrastructure.jpa.vote.VoteItemRepository;
-import com.project.dungi.infrastructure.jpa.vote.VoteRepository;
+import com.project.dungi.infrastructure.jpa.vote.UserVoteItemJpaRepository;
+import com.project.dungi.infrastructure.jpa.vote.VoteItemJpaRepository;
+import com.project.dungi.infrastructure.jpa.vote.VoteJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -22,18 +22,18 @@ import static com.project.dungi.common.response.BaseResponseStatus.NOT_EXIST_VOT
 @Component
 public class VoteStoreImpl implements VoteStore {
 
-    private final VoteRepository voteRepository;
-    private final VoteItemRepository voteItemRepository;
-    private final UserVoteItemRepository userVoteItemRepository;
+    private final VoteJpaRepository voteJpaRepository;
+    private final VoteItemJpaRepository voteItemJpaRepository;
+    private final UserVoteItemJpaRepository userVoteItemJpaRepository;
 
     @Override
     public void saveVote(Vote vote) {
-        voteRepository.save(vote);
+        voteJpaRepository.save(vote);
     }
 
     @Override
     public Vote getVote(Long voteId) {
-        return voteRepository.findByIdAndDeleteStatus(voteId, DeleteStatus.NOT_DELETED)
+        return voteJpaRepository.findByIdAndDeleteStatus(voteId, DeleteStatus.NOT_DELETED)
                 .orElseThrow(() -> {
                     throw new BaseException(NOT_EXIST_VOTE);
                 });
@@ -41,7 +41,7 @@ public class VoteStoreImpl implements VoteStore {
 
     @Override
     public VoteItem getVoteItem(Long choiceId) {
-        return voteItemRepository.findById(choiceId)
+        return voteItemJpaRepository.findById(choiceId)
                 .orElseThrow(() -> {
                     throw new BaseException(NOT_EXIST_VOTEITEM);
                 });
@@ -49,24 +49,24 @@ public class VoteStoreImpl implements VoteStore {
 
     @Override
     public List<VoteItem> getVoteItemList(Vote vote) {
-        return voteItemRepository.getVoteItemList(vote);
+        return voteItemJpaRepository.getVoteItemList(vote);
     }
 
     @Override
     public List<VoteUserDto> getVoteUser(Long voteItemId) {
-        return userVoteItemRepository.getVoteUser(voteItemId, DeleteStatus.NOT_DELETED);
+        return userVoteItemJpaRepository.getVoteUser(voteItemId, DeleteStatus.NOT_DELETED);
     }
 
     @Override
     public void createVoteChoice(Long userId, VoteItem voteItem) {
-        userVoteItemRepository.findByUserAndVoteItem(userId, voteItem)
+        userVoteItemJpaRepository.findByUserAndVoteItem(userId, voteItem)
                 .ifPresentOrElse(
                         (uvi)->{
                             uvi.changeChoice();
-                            userVoteItemRepository.save(uvi);
+                            userVoteItemJpaRepository.save(uvi);
                         },()->{
                             UserVoteItem userVoteItem = new UserVoteItem(userId, voteItem);
-                            userVoteItemRepository.save(userVoteItem);
+                            userVoteItemJpaRepository.save(userVoteItem);
                         }
                 );
     }

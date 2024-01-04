@@ -5,7 +5,7 @@ import com.project.dungi.domain.common.DeleteStatus;
 import com.project.dungi.domain.memo.model.Memo;
 import com.project.dungi.domain.memo.service.MemoStore;
 import com.project.dungi.domain.memo.dto.GetMemoDto;
-import com.project.dungi.infrastructure.jpa.memo.MemoRepository;
+import com.project.dungi.infrastructure.jpa.memo.MemoJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,21 +19,21 @@ import static com.project.dungi.common.response.BaseResponseStatus.NOT_EXIST_MEM
 @RequiredArgsConstructor
 public class MemoStoreImpl implements MemoStore {
 
-    private final MemoRepository memoRepository;
+    private final MemoJpaRepository memoJpaRepository;
 
     @Override
     public void saveMemo(Memo memo) {
-        memoRepository.save(memo);
+        memoJpaRepository.save(memo);
     }
 
     @Override
     public List<GetMemoDto> findAllMemo(Long userId, Long roomId) {
-        return memoRepository.findAllMemoInRoom(roomId, DeleteStatus.NOT_DELETED);
+        return memoJpaRepository.findAllMemoInRoom(roomId, DeleteStatus.NOT_DELETED);
     }
 
     @Override
     public void updateMemo(Long userId, Long memoId, String memoItem, String memoColor) {
-        memoRepository.findMemoById(memoId, DeleteStatus.NOT_DELETED)
+        memoJpaRepository.findMemoById(memoId, DeleteStatus.NOT_DELETED)
                 .ifPresentOrElse(
                         (m)->{
                             if(!m.getUserId().equals(userId)){
@@ -41,7 +41,7 @@ public class MemoStoreImpl implements MemoStore {
                             }
                             m.changeColor(memoColor);
                             m.changeItem(memoItem);
-                            memoRepository.save(m);
+                            memoJpaRepository.save(m);
                         },
                         ()->{
                             throw new BaseException(NOT_EXIST_MEMO);
@@ -51,11 +51,11 @@ public class MemoStoreImpl implements MemoStore {
 
     @Override
     public void moveMemo(Long userId, Long memoId, Double xPosition, Double yPosition) {
-        memoRepository.findMemoById(memoId,DeleteStatus.NOT_DELETED)
+        memoJpaRepository.findMemoById(memoId,DeleteStatus.NOT_DELETED)
                 .ifPresentOrElse(
                         (m)->{
                             m.move(xPosition, yPosition);
-                            memoRepository.save(m);
+                            memoJpaRepository.save(m);
                         },
                         ()->{
                             throw new BaseException(NOT_EXIST_MEMO);
@@ -65,11 +65,11 @@ public class MemoStoreImpl implements MemoStore {
 
     @Override
     public void deleteMemo(Long userId, Long memoId) {
-        memoRepository.findMemoById(memoId,DeleteStatus.NOT_DELETED)
+        memoJpaRepository.findMemoById(memoId,DeleteStatus.NOT_DELETED)
                 .ifPresentOrElse(
                         (m)->{
                             m.deactivate();
-                            memoRepository.save(m);
+                            memoJpaRepository.save(m);
                         },
                         ()->{
                             throw new BaseException(NOT_EXIST_MEMO);

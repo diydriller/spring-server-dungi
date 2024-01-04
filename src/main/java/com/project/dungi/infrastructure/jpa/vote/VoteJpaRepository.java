@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface VoteRepository extends CrudRepository<Vote,Long> {
+public interface VoteJpaRepository extends CrudRepository<Vote,Long> {
 
     @Query("SELECT v " +
             " FROM Vote v" +

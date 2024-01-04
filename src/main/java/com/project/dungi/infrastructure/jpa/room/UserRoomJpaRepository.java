@@ -13,7 +13,7 @@ import java.util.Optional;
 
 
 @Repository
-public interface UserRoomRepository extends CrudRepository<UserRoom,Long> {
+public interface UserRoomJpaRepository extends CrudRepository<UserRoom,Long> {
 
     @Query("SELECT ur " +
             " FROM UserRoom ur" +

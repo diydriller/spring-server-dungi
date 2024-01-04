@@ -5,7 +5,6 @@ import com.project.dungi.common.response.BaseResponse;
 import com.project.dungi.web.TokenProvider;
 import com.project.dungi.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -15,7 +14,6 @@ import static com.project.dungi.common.response.BaseResponseStatus.SUCCESS;
 import static com.project.dungi.common.util.StringUtil.LOGIN_USER;
 
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class UserController {

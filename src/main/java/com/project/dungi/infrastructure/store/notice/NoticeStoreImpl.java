@@ -2,7 +2,7 @@ package com.project.dungi.infrastructure.store.notice;
 
 import com.project.dungi.domain.notice.model.Notice;
 import com.project.dungi.domain.notice.service.NoticeStore;
-import com.project.dungi.infrastructure.jpa.notice.NoticeRepository;
+import com.project.dungi.infrastructure.jpa.notice.NoticeJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class NoticeStoreImpl implements NoticeStore {
 
-    private final NoticeRepository noticeRepository;
+    private final NoticeJpaRepository noticeJpaRepository;
 
     @Override
     public void saveNotice(Notice notice) {
-        noticeRepository.save(notice);
+        noticeJpaRepository.save(notice);
     }
 }

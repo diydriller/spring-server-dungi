@@ -1,6 +1,6 @@
 package com.project.dungi.infrastructure.sns.kakao;
 
-import com.project.dungi.domain.user.service.SnsHttpService;
+import com.project.dungi.domain.sns.SnsHttpService;
 import com.project.dungi.application.user.dto.SnsTokenDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

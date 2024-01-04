@@ -7,7 +7,6 @@ import com.project.dungi.common.response.BaseResponse;
 import com.project.dungi.domain.room.service.RoomService;
 import com.project.dungi.domain.user.model.User;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -21,7 +20,6 @@ import static com.project.dungi.common.util.StringUtil.LOGIN_USER;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
 public class RoomController {
 
     private final RoomService roomService;

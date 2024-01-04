@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -37,6 +38,7 @@ public class JoinRequestDto {
     @Size(max = 10,message = "nickname's max length is 10")
     private String nickname;
 
+    @Null(message = "img is empty")
     private MultipartFile img;
 }
 

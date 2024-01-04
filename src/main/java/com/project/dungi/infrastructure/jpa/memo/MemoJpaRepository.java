@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface MemoRepository extends CrudRepository<Memo, Long>{
+public interface MemoJpaRepository extends CrudRepository<Memo, Long>{
 
     @Query("SELECT DISTINCT new com.project.dungi.domain.memo.dto.GetMemoDto(" +
             " m.id," +

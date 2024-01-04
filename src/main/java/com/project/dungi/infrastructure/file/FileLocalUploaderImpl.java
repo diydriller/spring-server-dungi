@@ -2,7 +2,7 @@ package com.project.dungi.infrastructure.file;
 
 import com.project.dungi.common.exception.BaseException;
 import com.project.dungi.common.response.BaseResponseStatus;
-import com.project.dungi.domain.common.FileUploader;
+import com.project.dungi.domain.file.FileUploader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;

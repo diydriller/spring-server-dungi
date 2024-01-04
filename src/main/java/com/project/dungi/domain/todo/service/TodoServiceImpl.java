@@ -7,17 +7,14 @@ import com.project.dungi.domain.todo.model.RepeatDay;
 import com.project.dungi.domain.todo.model.RepeatTodo;
 import com.project.dungi.domain.todo.model.TodayTodo;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 @AllArgsConstructor
 public class TodoServiceImpl implements TodoService {
@@ -27,7 +24,7 @@ public class TodoServiceImpl implements TodoService {
 
     // 오늘 할일 생성 기능
     // 유저가 방에 입장해있는지 확인 - 오늘 할일 생성
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     public void createTodayTodo(String todoItem, String time, Long userId, Long roomId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
         var todayTodo = TodayTodo.builder()
@@ -41,7 +38,7 @@ public class TodoServiceImpl implements TodoService {
 
     // 반복 할일 생성 기능
     // 유저가 방에 입장해있는지 검증 - 반복 할일 생성
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     public void createRepeatTodo(String todoItem, String time, String days, Long userId, Long roomId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
         var repeatTodo = RepeatTodo.builder()
@@ -55,7 +52,7 @@ public class TodoServiceImpl implements TodoService {
 
     // 오늘 할일 조회 기능
     // 유저가 방에 입 장해있는지 검증 - 오늘 할일 조회
-    @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true)
+    @Transactional(readOnly = true)
     public List<TodayTodo> getTodayTodo(Long userId, Long roomId, int page, int size) {
         roomStore.getRoomEnteredByUser(userId, roomId);
         return todoStore.findTodayTodo(roomId, userId, page, size);
@@ -63,7 +60,7 @@ public class TodoServiceImpl implements TodoService {
 
     // 반복 할일 조회 기능
     // 유저가 방에 입장해있는지 검증 - 반복 할일 조회
-    @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true)
+    @Transactional(readOnly = true)
     public List<GetRepeatTodoDto> getRepeatTodo(Long userId, Long roomId, int page, int size) {
         roomStore.getRoomEnteredByUser(userId, roomId);
         return todoStore.findRepeatTodo(roomId, userId, page, size).stream()

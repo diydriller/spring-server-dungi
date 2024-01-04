@@ -10,7 +10,6 @@ import com.project.dungi.common.util.TimeUtil;
 import com.project.dungi.domain.memo.service.MemoService;
 import com.project.dungi.domain.user.model.User;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -21,7 +20,6 @@ import static com.project.dungi.common.response.BaseResponseStatus.AUTHENTICATIO
 import static com.project.dungi.common.response.BaseResponseStatus.SUCCESS;
 import static com.project.dungi.common.util.StringUtil.LOGIN_USER;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class MemoController {

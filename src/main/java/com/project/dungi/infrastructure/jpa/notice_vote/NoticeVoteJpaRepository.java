@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface NoticeVoteRepository extends CrudRepository<Notice, Long> {
+public interface NoticeVoteJpaRepository extends CrudRepository<Notice, Long> {
     @Query(value = "select nv.type, nv.id, u.profile_img as profileImg, nv.content, u.users_id as userId, nv.created_time as createdAt " +
             " from (" +
             " (select vote_id as id, users_id, title as content, created_time, 'V' as type " +

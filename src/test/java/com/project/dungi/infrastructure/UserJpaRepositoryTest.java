@@ -1,7 +1,7 @@
 package com.project.dungi.infrastructure;
 
 import com.project.dungi.domain.user.model.User;
-import com.project.dungi.infrastructure.jpa.user.UserRepository;
+import com.project.dungi.infrastructure.jpa.user.UserJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +12,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ActiveProfiles("test")
 @DataJpaTest
-public class UserRepositoryTest {
+public class UserJpaRepositoryTest {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserJpaRepository userJpaRepository;
 
     @Test
     @DisplayName("유저 저장 성공 테스트")
@@ -33,8 +33,8 @@ public class UserRepositoryTest {
                 .build();
 
         // when
-        userRepository.save(user);
-        var savedUser = userRepository.findByEmail(user.getEmail()).get();
+        userJpaRepository.save(user);
+        var savedUser = userJpaRepository.findByEmail(user.getEmail()).get();
 
         // then
         assertEquals(user.getId(), savedUser.getId());

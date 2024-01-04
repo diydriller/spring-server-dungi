@@ -6,8 +6,8 @@ import com.project.dungi.domain.room.dto.GetRoomUserDto;
 import com.project.dungi.domain.room.model.Room;
 import com.project.dungi.domain.room.model.UserRoom;
 import com.project.dungi.domain.room.service.RoomStore;
-import com.project.dungi.infrastructure.jpa.room.RoomRepository;
-import com.project.dungi.infrastructure.jpa.room.UserRoomRepository;
+import com.project.dungi.infrastructure.jpa.room.RoomJpaRepository;
+import com.project.dungi.infrastructure.jpa.room.UserRoomJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -22,12 +22,12 @@ import static com.project.dungi.common.response.BaseResponseStatus.NOT_EXIST_USE
 @RequiredArgsConstructor
 public class RoomStoreImpl implements RoomStore {
 
-    private final UserRoomRepository userRoomRepository;
-    private final RoomRepository roomRepository;
+    private final UserRoomJpaRepository userRoomJpaRepository;
+    private final RoomJpaRepository roomJpaRepository;
 
     @Override
     public Room getRoomEnteredByUser(Long userId, Long roomId) {
-        return userRoomRepository.getRoomEnteredByUser(userId, roomId, DeleteStatus.NOT_DELETED)
+        return userRoomJpaRepository.getRoomEnteredByUser(userId, roomId, DeleteStatus.NOT_DELETED)
                 .orElseThrow(()->{
                     throw new BaseException(NOT_EXIST_USER_ROOM);
                 });
@@ -37,26 +37,26 @@ public class RoomStoreImpl implements RoomStore {
     public void saveRoom(Long userId, String roomName, String roomColor) {
         var room = new Room(roomName, roomColor);
         var userRoom = new UserRoom(userId, room);
-        userRoomRepository.save(userRoom);
-        roomRepository.save(room);
+        userRoomJpaRepository.save(userRoom);
+        roomJpaRepository.save(room);
     }
 
     // 이전에 퇴장한 유저라면 방에 유저를 다시 넣어준다.
     @Override
     public void enterRoom(Long userId, Room room) {
-        userRoomRepository.getUserRoom(userId, room, DeleteStatus.NOT_DELETED)
+        userRoomJpaRepository.getUserRoom(userId, room, DeleteStatus.NOT_DELETED)
                 .ifPresentOrElse(
                         ur -> ur.enter(),
                         ()->{
                             var userRoom = new UserRoom(userId, room);
-                            userRoomRepository.save(userRoom);
+                            userRoomJpaRepository.save(userRoom);
                         }
                 );
     }
 
     @Override
     public Room getRoom(Long roomId) {
-        return roomRepository.getRoom(roomId, DeleteStatus.NOT_DELETED)
+        return roomJpaRepository.getRoom(roomId, DeleteStatus.NOT_DELETED)
                 .orElseThrow(() -> {
                     throw new BaseException(NOT_EXIST_ROOM);
                 });
@@ -65,24 +65,24 @@ public class RoomStoreImpl implements RoomStore {
     // 방에 유저가 없으면 방을 삭제한다.
     @Override
     public void leaveRoom(Long userId, Room room) {
-        var userRoom = userRoomRepository.getUserRoom(userId, room, DeleteStatus.NOT_DELETED)
+        var userRoom = userRoomJpaRepository.getUserRoom(userId, room, DeleteStatus.NOT_DELETED)
                 .orElseThrow(()->{
                     throw new BaseException(NOT_EXIST_USER_ROOM);
                 });
         userRoom.leave();
-        userRoomRepository.save(userRoom);
+        userRoomJpaRepository.save(userRoom);
 
-        int num = userRoomRepository.countRoomMember(room, DeleteStatus.NOT_DELETED);
+        int num = userRoomJpaRepository.countRoomMember(room, DeleteStatus.NOT_DELETED);
         if(num <= 0){
             room.deactivate();
-            roomRepository.save(room);
+            roomJpaRepository.save(room);
         }
     }
 
     @Override
     public List<Room> getAllRoomEnteredByUser(Long userId, int page, int size) {
         var pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "createdTime");
-        return roomRepository.getAllRoomEnteredByUser(
+        return roomJpaRepository.getAllRoomEnteredByUser(
                 userId,
                 DeleteStatus.NOT_DELETED,
                 pageRequest
@@ -91,11 +91,11 @@ public class RoomStoreImpl implements RoomStore {
 
     @Override
     public int getRoomMemberCnt(Long roomId) {
-        return roomRepository.getRoomMemberCnt(roomId, DeleteStatus.NOT_DELETED);
+        return roomJpaRepository.getRoomMemberCnt(roomId, DeleteStatus.NOT_DELETED);
     }
 
     @Override
     public List<GetRoomUserDto> getAllMemberInfo(Room room) {
-        return roomRepository.getAllMemberInfo(room);
+        return roomJpaRepository.getAllMemberInfo(room);
     }
 }

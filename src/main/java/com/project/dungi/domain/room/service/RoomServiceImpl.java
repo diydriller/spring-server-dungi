@@ -4,7 +4,6 @@ import com.project.dungi.domain.room.dto.GetRoomDto;
 import com.project.dungi.domain.room.model.Room;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ public class RoomServiceImpl implements RoomService{
 
     // 방 퇴장 기능
     // 방에 유저 있는지 확인 - 방에서 유저 삭제
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     public void leaveRoom(Long userId, Long roomId)  {
         Room room = roomStore.getRoomEnteredByUser(userId, roomId);
         roomStore.leaveRoom(userId, room);
@@ -41,7 +40,7 @@ public class RoomServiceImpl implements RoomService{
 
     // 방 조회 기능
     // 방 조회 - 멤버 정보 조회
-    @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true)
+    @Transactional(readOnly = true)
     public GetRoomDto getAllRoomInfo(Long userId, int page, int size) {
         var roomList = roomStore.getAllRoomEnteredByUser(userId, page, size);
 

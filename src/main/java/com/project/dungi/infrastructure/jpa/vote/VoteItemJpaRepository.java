@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface VoteItemRepository extends CrudRepository<VoteItem,Long> {
+public interface VoteItemJpaRepository extends CrudRepository<VoteItem,Long> {
 
     @Query("SELECT vi" +
             " FROM VoteItem vi" +
