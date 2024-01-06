@@ -28,9 +28,7 @@ public class RoomStoreImpl implements RoomStore {
     @Override
     public Room getRoomEnteredByUser(Long userId, Long roomId) {
         return userRoomJpaRepository.getRoomEnteredByUser(userId, roomId, DeleteStatus.NOT_DELETED)
-                .orElseThrow(()->{
-                    throw new BaseException(NOT_EXIST_USER_ROOM);
-                });
+                .orElseThrow(() -> new BaseException(NOT_EXIST_USER_ROOM));
     }
 
     @Override
@@ -46,8 +44,8 @@ public class RoomStoreImpl implements RoomStore {
     public void enterRoom(Long userId, Room room) {
         userRoomJpaRepository.getUserRoom(userId, room, DeleteStatus.NOT_DELETED)
                 .ifPresentOrElse(
-                        ur -> ur.enter(),
-                        ()->{
+                        UserRoom::enter,
+                        () -> {
                             var userRoom = new UserRoom(userId, room);
                             userRoomJpaRepository.save(userRoom);
                         }
@@ -57,18 +55,14 @@ public class RoomStoreImpl implements RoomStore {
     @Override
     public Room getRoom(Long roomId) {
         return roomJpaRepository.getRoom(roomId, DeleteStatus.NOT_DELETED)
-                .orElseThrow(() -> {
-                    throw new BaseException(NOT_EXIST_ROOM);
-                });
+                .orElseThrow(() -> new BaseException(NOT_EXIST_ROOM));
     }
 
     // 방에 유저가 없으면 방을 삭제한다.
     @Override
     public void leaveRoom(Long userId, Room room) {
         var userRoom = userRoomJpaRepository.getUserRoom(userId, room, DeleteStatus.NOT_DELETED)
-                .orElseThrow(()->{
-                    throw new BaseException(NOT_EXIST_USER_ROOM);
-                });
+                .orElseThrow(() -> new BaseException(NOT_EXIST_USER_ROOM));
         userRoom.leave();
         userRoomJpaRepository.save(userRoom);
 

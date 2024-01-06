@@ -122,24 +122,63 @@ alter table users
     add constraint user_idx unique (email);
 
 alter table repeat_day
-    add constraint FKrcod6q6c0p4r4oqtkvmn65uf
+    add constraint repeat_day_fk_todo
         foreign key (todo_id)
             references todo (todo_id);
 
 alter table user_room
-    add constraint FKt69dqc3yclx55jpu6lal8xna8
+    add constraint user_room_fk_room
         foreign key (room_id)
             references room (room_id);
 
 alter table user_vote_item
-    add constraint FK8clpc87yw1kuqfhq5www7rf3q
+    add constraint user_vote_item_fk_vote_item
         foreign key (vote_item_id)
             references vote_item (vote_item_id);
 
 alter table vote_item
-    add constraint FKfhp4q4mn66vr6kk7gpe46qkfr
-        foreign key (notice_vote_id)
+    add constraint vote_item_fk_vote
+        foreign key (vote_id)
             references vote (vote_id);
+
+alter table memo
+    add constraint momo_fk_users
+        foreign key (users_id)
+            references users (users_id);
+
+alter table notice
+    add constraint notice_fk_users
+        foreign key (users_id)
+            references users (users_id);
+
+alter table todo
+    add constraint todo_fk_users
+        foreign key (users_id)
+            references users (users_id);
+
+alter table todo
+    add constraint todo_fk_room
+        foreign key (room_id)
+            references room (room_id);
+
+alter table user_room
+    add constraint user_room_fk_users
+        foreign key (users_id)
+            references users (users_id);
+
+alter table user_vote_item
+    add constraint user_vote_item_fk_users
+        foreign key (users_id)
+            references users (users_id);
+
+alter table vote
+    add constraint vote_fk_users
+        foreign key (users_id)
+            references users (users_id);
+
+alter table todo
+    add index todo_idx (created_time desc);
+
 
 change replication source to
    source_host='$SOURCE_IP',

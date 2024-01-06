@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -36,11 +37,13 @@ public class TodoStoreImpl implements TodoStore {
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "createdTime");
         LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime todayLastTime = LocalDate.now().plusDays(1).atStartOfDay();
         return todoJpaRepository.findAllPossibleTodayTodo(
                 roomId,
                 DeleteStatus.NOT_DELETED,
                 FinishStatus.UNFINISHED,
                 currentTime,
+                todayLastTime,
                 pageRequest
         );
     }

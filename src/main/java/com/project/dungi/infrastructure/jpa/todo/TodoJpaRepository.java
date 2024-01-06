@@ -25,13 +25,14 @@ public interface TodoJpaRepository extends CrudRepository<Todo,Long> {
             " WHERE tt.roomId=:roomId " +
             " AND tt.deleteStatus=:deleteStatus " +
             " AND tt.finishStatus=:finishStatus " +
-            " AND tt.deadline>=:currentTime",
+            " AND tt.deadline BETWEEN :currentTime AND :todayLastTime",
     countQuery = "SELECT COUNT(tt.id) FROM TodayTodo tt")
     List<TodayTodo> findAllPossibleTodayTodo(
             @Param("roomId") Long roomId,
             @Param("deleteStatus") DeleteStatus deleteStatus,
             @Param("finishStatus") FinishStatus finishStatus,
-            @Param("currentTime")LocalDateTime currentTime,
+            @Param("currentTime") LocalDateTime currentTime,
+            @Param("todayLastTime") LocalDateTime todayLastTime,
             Pageable pageable
     );
 

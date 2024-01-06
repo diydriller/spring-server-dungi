@@ -45,7 +45,7 @@ public class UserStoreImpl implements UserStore {
 
     @Override
     public void checkEmailPresent(String email) {
-        userJpaRepository.findByEmail(email)
+        userJpaRepository.checkUserByEmail(email)
                 .ifPresent(m -> {
                     throw new BaseException(ALREADY_EXISTS_EMAIL);
                 });
@@ -54,9 +54,7 @@ public class UserStoreImpl implements UserStore {
     @Override
     public User findUserByEmail(String email) {
         return userJpaRepository.findByEmail(email)
-                .orElseThrow(()->{
-                    throw new BaseException(NOT_EXISTS_EMAIL);
-                });
+                .orElseThrow(()-> new BaseException(NOT_EXISTS_EMAIL));
     }
 
     @Override

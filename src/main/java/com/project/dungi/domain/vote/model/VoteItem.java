@@ -22,7 +22,7 @@ public class VoteItem extends BaseEntity {
     private String choice;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="notice_vote_id")
+    @JoinColumn(name="vote_id")
     private Vote vote;
 
     @OneToMany(mappedBy = "voteItem")
