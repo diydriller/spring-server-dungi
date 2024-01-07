@@ -10,7 +10,7 @@ public interface VoteStore {
     void saveVote(Vote vote);
     Vote getVote(Long voteId);
     List<VoteItem> getVoteItemList(Vote vote);
-    List<VoteUserDto> getVoteUser(Long voteItemId);
+    List<VoteUserDto> getVoteUser(List<VoteItem> voteItemList);
     void createVoteChoice(Long userId, VoteItem voteItem);
     VoteItem getVoteItem(Long choiceId);
 }

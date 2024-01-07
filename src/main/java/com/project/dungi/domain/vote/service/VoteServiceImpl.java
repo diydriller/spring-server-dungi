@@ -3,10 +3,10 @@ package com.project.dungi.domain.vote.service;
 import com.project.dungi.domain.common.FinishStatus;
 import com.project.dungi.domain.room.service.RoomStore;
 import com.project.dungi.domain.vote.dto.GetVoteItemDto;
+import com.project.dungi.domain.vote.dto.VoteUserDto;
 import com.project.dungi.domain.vote.model.Vote;
 import com.project.dungi.domain.vote.model.VoteItem;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +24,6 @@ public class VoteServiceImpl implements VoteService{
     // 방에 유저 있는지 조회 - 투표 생성
     @Override
     @Transactional
-    @CacheEvict(value="getNotiveVote", allEntries = true)
     public void createVote(String title, List<String> choiceArr, Long userId, Long roomId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
         var voteItemList = choiceArr.stream()
@@ -50,29 +49,40 @@ public class VoteServiceImpl implements VoteService{
         var vote = voteStore.getVote(voteId);
 
         List<GetVoteItemDto.VoteChoiceDto> voteChoiceDtoList = new ArrayList<>();
-        List<Long> userChoiceList = new ArrayList<>();
-        Set<Long> voteUserSet = new HashSet<>();
+        List<Long> myChoiceList = new ArrayList<>();
+        Set<Long> voteUserIdSet = new HashSet<>();
+        Map<String, List<VoteUserDto>> voteUserForChoiceMap = new HashMap<>();
         var voteItemList = voteStore.getVoteItemList(vote);
-        for(var voteItem : voteItemList){
-            var voteUserList = voteStore.getVoteUser(voteItem.getId());
-            for(var voteUser : voteUserList){
-                voteUserSet.add(voteUser.getUserId());
-                if(voteUser.getUserId().equals(userId)){
-                    userChoiceList.add(voteItem.getId());
-                }
+
+        var voteUserList = voteStore.getVoteUser(voteItemList);
+        for(var voteUser : voteUserList){
+            voteUserIdSet.add(voteUser.getUserId());
+            if(voteUser.getUserId().equals(userId)){
+                myChoiceList.add(voteUser.getVoteItemId());
             }
-            voteChoiceDtoList.add(new GetVoteItemDto.VoteChoiceDto(voteItem.getChoice(), voteUserList));
+            voteUserForChoiceMap.putIfAbsent(voteUser.getChoice(), new ArrayList<>());
+            voteUserForChoiceMap.get(voteUser.getChoice()).add(voteUser);
+        }
+        for(var voteItem : voteItemList){
+            var choice = voteItem.getChoice();
+            List<VoteUserDto> voteUser = new ArrayList<>();
+            if(voteUserForChoiceMap.containsKey(choice)){
+                voteUser = voteUserForChoiceMap.get(choice);
+            }
+            voteChoiceDtoList.add(
+                    new GetVoteItemDto.VoteChoiceDto(choice, voteUser)
+            );
         }
 
         int memberCnt = roomStore.getRoomMemberCnt(roomId);
 
         return GetVoteItemDto.builder()
                 .title(vote.getTitle())
-                .choiceIdList(userChoiceList)
+                .choiceIdList(myChoiceList)
                 .isFinished(vote.getFinishStatus() == FinishStatus.FINISHED)
                 .choice(voteChoiceDtoList)
                 .isOwner(vote.getUserId().equals(userId))
-                .unVotedMemberCnt(memberCnt-voteUserSet.size())
+                .unVotedMemberCnt(memberCnt - voteUserIdSet.size())
                 .build();
     }
 

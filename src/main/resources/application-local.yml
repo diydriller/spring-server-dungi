@@ -5,12 +5,12 @@ spring:
       jdbc-url: jdbc:mysql://localhost:3300/spring_dungi
       username: root
       password: ENC(MKcemwLpfYeOL+VwyFG48HMhSOUdhSn9)
-      driver-class-name: com.mysql.jdbc.Driver
+      driver-class-name: com.mysql.cj.jdbc.Driver
     replica:
       jdbc-url: jdbc:mysql://localhost:3301/spring_dungi
       username: root
       password: ENC(uYPzCJbPjhvNmUQE5WODAm9YULJkkKPs)
-      driver-class-name: com.mysql.jdbc.Driver
+      driver-class-name: com.mysql.cj.jdbc.Driver
 
   # jpa 설정
   jpa:
@@ -22,6 +22,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        default_batch_fetch_size: 100
 
 # redis 설정
 redis:

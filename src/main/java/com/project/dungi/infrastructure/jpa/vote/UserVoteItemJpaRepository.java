@@ -16,12 +16,14 @@ public interface UserVoteItemJpaRepository extends CrudRepository<UserVoteItem,L
     @Query("SELECT new com.project.dungi.domain.vote.dto.VoteUserDto(" +
             " u.profileImg," +
             " u.nickname," +
-            " u.id" +
+            " u.id," +
+            " uvi.voteItem.choice," +
+            " uvi.voteItem.id" +
             " )" +
             " FROM UserVoteItem uvi INNER JOIN User u ON uvi.userId=u.id" +
-            " WHERE uvi.voteItem.id=:voteItemId AND uvi.deleteStatus=:status")
+            " WHERE uvi.deleteStatus=:status AND uvi.voteItem IN :voteItemList")
     List<VoteUserDto> getVoteUser(
-            @Param("voteItemId") Long voteItemId,
+            @Param("voteItemList") List<VoteItem> voteItemList,
             @Param("status") DeleteStatus status
     );
 

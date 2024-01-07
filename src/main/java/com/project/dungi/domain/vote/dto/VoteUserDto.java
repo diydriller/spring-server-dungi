@@ -9,4 +9,6 @@ public class VoteUserDto {
     private String profileImg;
     private String nickname;
     private Long userId;
+    private String choice;
+    private Long voteItemId;
 }

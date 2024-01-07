@@ -17,7 +17,6 @@ public class NoticeVoteServiceImpl implements NoticeVoteService{
     private final RoomStore roomStore;
     private final NoticeVoteStore noticeVoteStore;
 
-    @Cacheable(key = "{#roomId,#page}", value="getNotiveVote")
     @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true)
     public List<GetNoticeVoteDto> getNoticeVote(Long roomId, Long userId, int page, int size) {
         roomStore.getRoomEnteredByUser(userId, roomId);

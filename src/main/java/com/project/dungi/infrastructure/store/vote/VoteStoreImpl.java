@@ -34,17 +34,13 @@ public class VoteStoreImpl implements VoteStore {
     @Override
     public Vote getVote(Long voteId) {
         return voteJpaRepository.findByIdAndDeleteStatus(voteId, DeleteStatus.NOT_DELETED)
-                .orElseThrow(() -> {
-                    throw new BaseException(NOT_EXIST_VOTE);
-                });
+                .orElseThrow(() -> new BaseException(NOT_EXIST_VOTE));
     }
 
     @Override
     public VoteItem getVoteItem(Long choiceId) {
         return voteItemJpaRepository.findById(choiceId)
-                .orElseThrow(() -> {
-                    throw new BaseException(NOT_EXIST_VOTEITEM);
-                });
+                .orElseThrow(() -> new BaseException(NOT_EXIST_VOTEITEM));
     }
 
     @Override
@@ -53,8 +49,8 @@ public class VoteStoreImpl implements VoteStore {
     }
 
     @Override
-    public List<VoteUserDto> getVoteUser(Long voteItemId) {
-        return userVoteItemJpaRepository.getVoteUser(voteItemId, DeleteStatus.NOT_DELETED);
+    public List<VoteUserDto> getVoteUser(List<VoteItem> voteItemList) {
+        return userVoteItemJpaRepository.getVoteUser(voteItemList, DeleteStatus.NOT_DELETED);
     }
 
     @Override
