@@ -3,9 +3,11 @@ package com.project.dungi.infrastructure.store.todo;
 import com.project.dungi.domain.common.DeleteStatus;
 import com.project.dungi.domain.common.FinishStatus;
 
+import com.project.dungi.domain.todo.model.RepeatDay;
 import com.project.dungi.domain.todo.model.RepeatTodo;
 import com.project.dungi.domain.todo.model.TodayTodo;
 import com.project.dungi.domain.todo.service.TodoStore;
+import com.project.dungi.infrastructure.jpa.todo.RepeatDayJdbcRepository;
 import com.project.dungi.infrastructure.jpa.todo.TodoJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +23,7 @@ import java.util.List;
 public class TodoStoreImpl implements TodoStore {
 
     private final TodoJpaRepository todoJpaRepository;
+    private final RepeatDayJdbcRepository repeatDayJdbcRepository;
 
     @Override
     public void saveTodayTodo(TodayTodo todayTodo) {
@@ -28,8 +31,10 @@ public class TodoStoreImpl implements TodoStore {
     }
 
     @Override
-    public void saveRepeatTodo(RepeatTodo repeatTodo) {
-        todoJpaRepository.save(repeatTodo);
+    public void saveRepeatTodo(RepeatTodo repeatTodo, List<RepeatDay> repeatDayList) {
+        var savedRepeatTodo = todoJpaRepository.save(repeatTodo);
+        repeatDayList.forEach(rd -> rd.setRepeatTodo(savedRepeatTodo));
+        repeatDayJdbcRepository.saveAll(repeatDayList);
     }
 
     @Override

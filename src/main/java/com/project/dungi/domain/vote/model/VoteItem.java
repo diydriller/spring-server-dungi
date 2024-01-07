@@ -34,5 +34,6 @@ public class VoteItem extends BaseEntity {
 
     public void setVote(Vote vote){
         this.vote = vote;
+        vote.getVoteItemList().add(this);
     }
 }

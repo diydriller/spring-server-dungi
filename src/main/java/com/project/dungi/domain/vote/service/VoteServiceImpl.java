@@ -26,16 +26,15 @@ public class VoteServiceImpl implements VoteService{
     @Transactional
     public void createVote(String title, List<String> choiceArr, Long userId, Long roomId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
-        var voteItemList = choiceArr.stream()
-                .map(VoteItem::new)
-                .collect(Collectors.toList());
         var vote = Vote.builder()
                 .title(title)
                 .roomId(roomId)
                 .userId(userId)
-                .voteItems(voteItemList)
                 .build();
-        voteStore.saveVote(vote);
+        var voteItemList = choiceArr.stream()
+                .map(VoteItem::new)
+                .collect(Collectors.toList());
+        voteStore.saveVote(vote, voteItemList);
     }
 
     // 투표 조회 기능
@@ -91,7 +90,7 @@ public class VoteServiceImpl implements VoteService{
     @Transactional
     public void createVoteChoice(Long roomId, Long userId, Long voteId, Long choiceId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
-        var voteItem = voteStore.getVoteItem(choiceId);
+        var voteItem = voteStore.getVoteItem(choiceId, voteId);
         voteStore.createVoteChoice(userId, voteItem);
     }
 }

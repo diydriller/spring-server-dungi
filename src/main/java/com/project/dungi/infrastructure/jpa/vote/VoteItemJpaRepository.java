@@ -22,8 +22,9 @@ public interface VoteItemJpaRepository extends CrudRepository<VoteItem,Long> {
 
     @Query("SELECT vi " +
             " FROM VoteItem vi" +
-            " WHERE vi.id=:choiceId ")
-    Optional<VoteItem> findById(
-            @Param("choiceId") Long choiceId
+            " WHERE vi.id=:choiceId AND vi.vote.id=:voteId")
+    Optional<VoteItem> findVoteItem(
+            @Param("choiceId") Long choiceId,
+            @Param("voteId") Long voteId
     );
 }

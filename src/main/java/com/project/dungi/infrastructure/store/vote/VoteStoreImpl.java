@@ -8,6 +8,7 @@ import com.project.dungi.domain.vote.model.Vote;
 import com.project.dungi.domain.vote.model.VoteItem;
 import com.project.dungi.domain.vote.service.VoteStore;
 import com.project.dungi.infrastructure.jpa.vote.UserVoteItemJpaRepository;
+import com.project.dungi.infrastructure.jpa.vote.VoteItemJdbcRepository;
 import com.project.dungi.infrastructure.jpa.vote.VoteItemJpaRepository;
 import com.project.dungi.infrastructure.jpa.vote.VoteJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,10 +26,13 @@ public class VoteStoreImpl implements VoteStore {
     private final VoteJpaRepository voteJpaRepository;
     private final VoteItemJpaRepository voteItemJpaRepository;
     private final UserVoteItemJpaRepository userVoteItemJpaRepository;
+    private final VoteItemJdbcRepository voteItemJdbcRepository;
 
     @Override
-    public void saveVote(Vote vote) {
-        voteJpaRepository.save(vote);
+    public void saveVote(Vote vote, List<VoteItem> voteItemList) {
+        var savedVote = voteJpaRepository.save(vote);
+        voteItemList.forEach(vi -> vi.setVote(savedVote));
+        voteItemJdbcRepository.saveAll(voteItemList);
     }
 
     @Override
@@ -38,8 +42,8 @@ public class VoteStoreImpl implements VoteStore {
     }
 
     @Override
-    public VoteItem getVoteItem(Long choiceId) {
-        return voteItemJpaRepository.findById(choiceId)
+    public VoteItem getVoteItem(Long choiceId, Long voteId) {
+        return voteItemJpaRepository.findVoteItem(choiceId, voteId)
                 .orElseThrow(() -> new BaseException(NOT_EXIST_VOTEITEM));
     }
 

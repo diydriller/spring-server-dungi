@@ -31,7 +31,7 @@ public class Vote extends BaseEntity {
     @Column(name="vote_status")
     private FinishStatus finishStatus;
 
-    @OneToMany(mappedBy = "vote",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "vote")
     private List<VoteItem> voteItemList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
@@ -48,12 +48,10 @@ public class Vote extends BaseEntity {
     public Vote(
             Long roomId,
             Long userId,
-            String title,
-            List<VoteItem> voteItems
+            String title
     ){
         if(userId == null) throw new BaseException(INVALID_VALUE);
         if(roomId == null) throw new BaseException(INVALID_VALUE);
-        if(voteItems == null || voteItems.size()==0) throw new BaseException(INVALID_VALUE);
         if(StringUtils.isEmpty(title)) throw new BaseException(INVALID_VALUE);
 
         this.roomId = roomId;
@@ -61,13 +59,5 @@ public class Vote extends BaseEntity {
         this.deleteStatus = DeleteStatus.NOT_DELETED;
         this.finishStatus = FinishStatus.UNFINISHED;
         this.title = title;
-        for(VoteItem voteItem : voteItems){
-            addVoteItem(voteItem);
-        }
-    }
-
-    private void addVoteItem(VoteItem voteItem){
-        voteItemList.add(voteItem);
-        voteItem.setVote(this);
     }
 }

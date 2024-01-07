@@ -42,12 +42,12 @@ public class TodoServiceImpl implements TodoService {
     public void createRepeatTodo(String todoItem, String time, String days, Long userId, Long roomId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
         var repeatTodo = RepeatTodo.builder()
-                .repeatDays(dayStrToRepeatDay(days))
                 .deadline(TimeUtil.timeStrToTodayLocalDateTime(time))
+                .todoItem(todoItem)
                 .roomId(roomId)
                 .userId(userId)
                 .build();
-        todoStore.saveRepeatTodo(repeatTodo);
+        todoStore.saveRepeatTodo(repeatTodo, dayStrToRepeatDay(days));
     }
 
     // 오늘 할일 조회 기능

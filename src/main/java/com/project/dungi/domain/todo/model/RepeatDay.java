@@ -26,5 +26,6 @@ public class RepeatDay {
 
     public void setRepeatTodo(RepeatTodo repeatTodo){
         this.repeatTodo = repeatTodo;
+        repeatTodo.getRepeatDayList().add(this);
     }
 }

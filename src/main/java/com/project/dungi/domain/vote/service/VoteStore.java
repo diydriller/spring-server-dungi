@@ -7,10 +7,10 @@ import com.project.dungi.domain.vote.model.VoteItem;
 import java.util.List;
 
 public interface VoteStore {
-    void saveVote(Vote vote);
+    void saveVote(Vote vote, List<VoteItem> voteItemList);
     Vote getVote(Long voteId);
     List<VoteItem> getVoteItemList(Vote vote);
     List<VoteUserDto> getVoteUser(List<VoteItem> voteItemList);
     void createVoteChoice(Long userId, VoteItem voteItem);
-    VoteItem getVoteItem(Long choiceId);
+    VoteItem getVoteItem(Long choiceId, Long voteId);
 }
