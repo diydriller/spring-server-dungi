@@ -1,6 +1,8 @@
 package com.project.dungi.domain.vote.service;
 
 import com.project.dungi.domain.common.FinishStatus;
+import com.project.dungi.domain.notice_vote.model.NoticeVote;
+import com.project.dungi.domain.notice_vote.service.NoticeVoteStore;
 import com.project.dungi.domain.room.service.RoomStore;
 import com.project.dungi.domain.vote.dto.GetVoteItemDto;
 import com.project.dungi.domain.vote.dto.VoteUserDto;
@@ -19,6 +21,7 @@ public class VoteServiceImpl implements VoteService{
 
     private final VoteStore voteStore;
     private final RoomStore roomStore;
+    private final NoticeVoteStore noticeVoteStore;
 
     // 투표 생성 기능
     // 방에 유저 있는지 조회 - 투표 생성
@@ -34,7 +37,16 @@ public class VoteServiceImpl implements VoteService{
         var voteItemList = choiceArr.stream()
                 .map(VoteItem::new)
                 .collect(Collectors.toList());
-        voteStore.saveVote(vote, voteItemList);
+        var savedVote = voteStore.saveVote(vote, voteItemList);
+        var noticeVote = NoticeVote.builder()
+                .content(title)
+                .noticeVoteId(savedVote.getId())
+                .type("V")
+                .userId(userId)
+                .roomId(roomId)
+                .createdTime(savedVote.getCreatedTime())
+                .build();
+        noticeVoteStore.saveNoticeVote(noticeVote);
     }
 
     // 투표 조회 기능

@@ -13,7 +13,7 @@ public class NoticeStoreImpl implements NoticeStore {
     private final NoticeJpaRepository noticeJpaRepository;
 
     @Override
-    public void saveNotice(Notice notice) {
-        noticeJpaRepository.save(notice);
+    public Notice saveNotice(Notice notice) {
+        return noticeJpaRepository.save(notice);
     }
 }

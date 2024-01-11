@@ -29,10 +29,11 @@ public class VoteStoreImpl implements VoteStore {
     private final VoteItemJdbcRepository voteItemJdbcRepository;
 
     @Override
-    public void saveVote(Vote vote, List<VoteItem> voteItemList) {
+    public Vote saveVote(Vote vote, List<VoteItem> voteItemList) {
         var savedVote = voteJpaRepository.save(vote);
         voteItemList.forEach(vi -> vi.setVote(savedVote));
         voteItemJdbcRepository.saveAll(voteItemList);
+        return savedVote;
     }
 
     @Override

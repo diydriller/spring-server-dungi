@@ -1,9 +1,10 @@
 package com.project.dungi.domain.notice.service;
 
 import com.project.dungi.domain.notice.model.Notice;
+import com.project.dungi.domain.notice_vote.model.NoticeVote;
+import com.project.dungi.domain.notice_vote.service.NoticeVoteStore;
 import com.project.dungi.domain.room.service.RoomStore;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,9 +14,9 @@ public class NoticeServiceImpl implements NoticeService{
 
     private final RoomStore roomStore;
     private final NoticeStore noticeStore;
+    private final NoticeVoteStore noticeVoteStore;
 
     @Transactional
-    @CacheEvict(value="getNotiveVote",allEntries = true)
     public void createNotice(String noticeItem, Long userId, Long roomId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
         var notice = Notice.builder()
@@ -23,6 +24,15 @@ public class NoticeServiceImpl implements NoticeService{
                 .roomId(roomId)
                 .userId(userId)
                 .build();
-        noticeStore.saveNotice(notice);
+        var savedNotice = noticeStore.saveNotice(notice);
+        var noticeVote = NoticeVote.builder()
+                .content(noticeItem)
+                .createdTime(savedNotice.getCreatedTime())
+                .roomId(roomId)
+                .userId(userId)
+                .noticeVoteId(savedNotice.getId())
+                .type("N")
+                .build();
+        noticeVoteStore.saveNoticeVote(noticeVote);
     }
 }

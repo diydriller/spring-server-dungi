@@ -1,6 +1,7 @@
 package com.project.dungi.infrastructure.store.notice_vote;
 
 import com.project.dungi.domain.common.DeleteStatus;
+import com.project.dungi.domain.notice_vote.model.NoticeVote;
 import com.project.dungi.domain.notice_vote.service.NoticeVoteStore;
 import com.project.dungi.domain.notice_vote.dto.GetNoticeVoteDto;
 import com.project.dungi.infrastructure.jpa.notice_vote.NoticeVoteJpaRepository;
@@ -17,7 +18,6 @@ public class NoticeVoteStoreImpl implements NoticeVoteStore {
 
     private final NoticeVoteJpaRepository noticeVoteJpaRepository;
 
-    @Override
     public List<GetNoticeVoteDto> getNoticeVote(Long roomId, Long userId, int page, int size) {
 
         PageRequest pageRequest = PageRequest.of(page, size);
@@ -26,5 +26,9 @@ public class NoticeVoteStoreImpl implements NoticeVoteStore {
                 DeleteStatus.NOT_DELETED,
                 pageRequest
         );
+    }
+
+    public void saveNoticeVote(NoticeVote noticeVote){
+        noticeVoteJpaRepository.save(noticeVote);
     }
 }

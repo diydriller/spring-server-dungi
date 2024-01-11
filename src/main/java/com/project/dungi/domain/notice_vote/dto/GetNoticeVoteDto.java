@@ -1,13 +1,17 @@
 package com.project.dungi.domain.notice_vote.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 
-
-public interface GetNoticeVoteDto {
-    String getType();
-    Long getId();
-    String getProfileImg();
-    String getContent();
-    Long getUserId();
-    LocalDateTime getCreatedAt();
+@Getter
+@AllArgsConstructor
+public class GetNoticeVoteDto {
+    private String type;
+    private Long id;
+    private String profileImg;
+    private String content;
+    private Long userId;
+    private LocalDateTime createdAt;
 }

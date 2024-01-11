@@ -117,6 +117,19 @@ create table if not exists vote_item (
                            primary key (vote_item_id)
 ) engine=InnoDB;
 
+create table if not exists notice_vote (
+                             id bigint not null auto_increment,
+                             content varchar(255),
+                             created_time datetime(6),
+                             modified_time datetime(6),
+                             delete_status varchar(255),
+                             notice_vote_id bigint,
+                             room_id bigint,
+                             type varchar(255),
+                             users_id bigint,
+                             primary key (id)
+) engine=InnoDB;
+
 
 # 테이블 제약사항
 alter table users

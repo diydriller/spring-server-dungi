@@ -1,29 +1,29 @@
 package com.project.dungi.infrastructure.jpa.notice_vote;
 
 import com.project.dungi.domain.common.DeleteStatus;
-import com.project.dungi.domain.notice.model.Notice;
 import com.project.dungi.domain.notice_vote.dto.GetNoticeVoteDto;
+import com.project.dungi.domain.notice_vote.model.NoticeVote;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface NoticeVoteJpaRepository extends CrudRepository<Notice, Long> {
-    @Query(value = "select nv.type, nv.id, u.profile_img as profileImg, nv.content, u.users_id as userId, nv.created_time as createdAt " +
-            " from (" +
-            " (select vote_id as id, users_id, title as content, created_time, 'V' as type " +
-            " from Vote v " +
-            " where v.room_id=:roomId and v.delete_status=:#{#status?.name()}) " +
-            " union all" +
-            " (select notice_id as id, users_id, notice_item as content, created_time, 'N' as type " +
-            " from Notice n " +
-            " where n.room_id=:roomId and n.delete_status=:#{#status?.name()} )) nv " +
-            " inner join Users u on u.users_id = nv.users_id " +
-            " order by nv.created_time desc ",
-            nativeQuery = true,
-            countProjection = "id")
+@Repository
+public interface NoticeVoteJpaRepository extends CrudRepository<NoticeVote, Long> {
+    @Query(value = "SELECT new com.project.dungi.domain.notice_vote.dto.GetNoticeVoteDto(" +
+            " nv.type," +
+            " nv.noticeVoteId," +
+            " u.profileImg," +
+            " nv.content," +
+            " nv.userId," +
+            " nv.createdTime" +
+            " ) " +
+            " FROM NoticeVote nv" +
+            " INNER JOIN User u ON nv.userId=u.id" +
+            " WHERE nv.roomId=:roomId AND nv.deleteStatus=:status")
     List<GetNoticeVoteDto> findAllNoticeVote(
             @Param("roomId") Long roomId,
             @Param("status") DeleteStatus status,
