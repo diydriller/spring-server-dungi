@@ -27,7 +27,7 @@ public class FileLocalUploaderImpl implements FileUploader {
 
         String current_date = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
         File folder = new File(fileUploadPath);
-        folder.mkdir();
+        folder.mkdirs();
         String basePath = folder.getAbsolutePath();
 
         String fileName = file.getOriginalFilename();
