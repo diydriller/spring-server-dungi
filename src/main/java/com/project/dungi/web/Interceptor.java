@@ -31,7 +31,6 @@ public class Interceptor implements HandlerInterceptor {
             tokenProvider.verifyToken(token);
         }
         catch (Exception e){
-            e.printStackTrace();
             throw new AuthenticationException(AUTHENTICATION_ERROR);
         }
 

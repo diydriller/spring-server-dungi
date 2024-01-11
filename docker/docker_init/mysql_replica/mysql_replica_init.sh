@@ -113,7 +113,7 @@ create table if not exists vote_item (
                                          created_time datetime(6),
                                          modified_time datetime(6),
                                          choice varchar(255),
-                                         notice_vote_id bigint,
+                                         vote_id bigint,
                                          primary key (vote_item_id)
 ) engine=InnoDB;
 
@@ -181,12 +181,13 @@ alter table todo
 
 
 change replication source to
-   source_host='$SOURCE_IP',
+   source_host='host.docker.internal',
    source_port=3300,
    source_user='root',
    source_password='$SOURCE_ROOT_PASSWORD',
    source_log_file='mysql-bin.000003',
    source_log_pos=157,
    get_source_public_key=1;
+
 start replica;
 "

@@ -2,15 +2,19 @@ spring:
   # 데이터베이스 설정
   datasource:
     source:
-      jdbc-url: jdbc:mysql://localhost:3300/spring_dungi?rewriteBatchedStatements=true
+      url: jdbc:mysql://host.docker.internal:3300/spring_dungi?rewriteBatchedStatements=true
       username: root
       password: ENC(MKcemwLpfYeOL+VwyFG48HMhSOUdhSn9)
       driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari:
+        maximum-pool-size: 10
     replica:
-      jdbc-url: jdbc:mysql://localhost:3301/spring_dungi?rewriteBatchedStatements=true
+      url: jdbc:mysql://host.docker.internal:3301/spring_dungi?rewriteBatchedStatements=true
       username: root
       password: ENC(uYPzCJbPjhvNmUQE5WODAm9YULJkkKPs)
       driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari:
+        maximum-pool-size: 10
 
   # jpa 설정
   jpa:
@@ -26,7 +30,7 @@ spring:
 # redis 설정
 redis:
   port: 6300
-  host: localhost
+  host: host.docker.internal
   password: ENC(vtjQc5k6ostA1TjT2QzQBE4yHnwl6EsI)
   lettuce:
     pool:
@@ -41,3 +45,8 @@ file:
   down:
     path: http://localhost:9002/static/
 
+# tomcat 설정
+server:
+  tomcat:
+    threads:
+      max: 200

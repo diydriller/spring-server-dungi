@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,36 @@ import java.util.HashMap;
 @EnableJpaAuditing
 @Configuration
 public class DatabaseConfig {
+
+    @Bean
+    @Primary
+    @ConfigurationProperties("spring.datasource.source")
+    public DataSourceProperties sourceDataSourceProperties() {
+        return new DataSourceProperties();
+    }
+
+    @Bean
+    @ConfigurationProperties("spring.datasource.source.hikari")
+    public HikariDataSource sourceDataSource(
+            @Qualifier("sourceDataSourceProperties") DataSourceProperties properties
+    ) {
+        return properties.initializeDataSourceBuilder().type(HikariDataSource.class).build();
+    }
+
+    @Bean
+    @Primary
+    @ConfigurationProperties("spring.datasource.replica")
+    public DataSourceProperties replicaDataSourceProperties() {
+        return new DataSourceProperties();
+    }
+
+    @Bean
+    @ConfigurationProperties("spring.datasource.replica.hikari")
+    public HikariDataSource replicaDataSource(
+            @Qualifier("replicaDataSourceProperties") DataSourceProperties properties
+    ) {
+        return properties.initializeDataSourceBuilder().type(HikariDataSource.class).build();
+    }
 
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource.source")
