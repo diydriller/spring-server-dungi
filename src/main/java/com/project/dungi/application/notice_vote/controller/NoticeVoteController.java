@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 
 import static com.project.dungi.common.response.BaseResponseStatus.AUTHENTICATION_ERROR;
-import static com.project.dungi.common.util.StringUtil.LOGIN_USER;
+import static com.project.dungi.common.util.StringUtil.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,8 +41,8 @@ public class NoticeVoteController {
                         .isOwner(nv.getUserId().equals(user.getId()) ? "Y" : "N")
                         .createdAt(TimeUtil.localDateTimeToTimeStr(nv.getCreatedAt()))
                         .isNotice(nv.getType())
-                        .title(nv.getType().equals("V") ? nv.getContent() : null)
-                        .notice(nv.getType().equals("N") ? nv.getContent() : null)
+                        .title(nv.getType().equals(VOTE_TYPE) ? nv.getContent() : null)
+                        .notice(nv.getType().equals(NOTICE_TYPE) ? nv.getContent() : null)
                         .build()
                 ).collect(Collectors.toList());
         return new BaseResponse<>(noticeVoteList);

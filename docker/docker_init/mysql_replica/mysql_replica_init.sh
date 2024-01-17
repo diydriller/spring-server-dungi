@@ -192,6 +192,8 @@ alter table vote
 alter table todo
     add index todo_idx (created_time desc);
 
+alter table notice_vote
+    add index notice_vote_idx (created_time desc);
 
 change replication source to
    source_host='host.docker.internal',

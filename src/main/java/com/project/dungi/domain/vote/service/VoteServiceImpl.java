@@ -1,19 +1,21 @@
 package com.project.dungi.domain.vote.service;
 
 import com.project.dungi.domain.common.FinishStatus;
-import com.project.dungi.domain.notice_vote.model.NoticeVote;
-import com.project.dungi.domain.notice_vote.service.NoticeVoteStore;
+import com.project.dungi.domain.notice_vote.event.SaveNoticeVoteEvent;
 import com.project.dungi.domain.room.service.RoomStore;
 import com.project.dungi.domain.vote.dto.GetVoteItemDto;
 import com.project.dungi.domain.vote.dto.VoteUserDto;
 import com.project.dungi.domain.vote.model.Vote;
 import com.project.dungi.domain.vote.model.VoteItem;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.project.dungi.common.util.StringUtil.VOTE_TYPE;
 
 @RequiredArgsConstructor
 @Service
@@ -21,14 +23,15 @@ public class VoteServiceImpl implements VoteService{
 
     private final VoteStore voteStore;
     private final RoomStore roomStore;
-    private final NoticeVoteStore noticeVoteStore;
+    private final ApplicationEventPublisher publisher;
 
     // 투표 생성 기능
-    // 방에 유저 있는지 조회 - 투표 생성
+    // 방에 유저 있는지 조회 - 투표 생성 - 조회용 테이블 데이터 생성
     @Override
     @Transactional
     public void createVote(String title, List<String> choiceArr, Long userId, Long roomId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
+
         var vote = Vote.builder()
                 .title(title)
                 .roomId(roomId)
@@ -38,15 +41,17 @@ public class VoteServiceImpl implements VoteService{
                 .map(VoteItem::new)
                 .collect(Collectors.toList());
         var savedVote = voteStore.saveVote(vote, voteItemList);
-        var noticeVote = NoticeVote.builder()
-                .content(title)
-                .noticeVoteId(savedVote.getId())
-                .type("V")
-                .userId(userId)
-                .roomId(roomId)
-                .createdTime(savedVote.getCreatedTime())
-                .build();
-        noticeVoteStore.saveNoticeVote(noticeVote);
+
+        publisher.publishEvent(
+                SaveNoticeVoteEvent.builder()
+                        .content(title)
+                        .createdTime(savedVote.getCreatedTime())
+                        .userId(userId)
+                        .roomId(roomId)
+                        .type(VOTE_TYPE)
+                        .id(savedVote.getId())
+                        .build()
+        );
     }
 
     // 투표 조회 기능
