@@ -1,5 +1,6 @@
 package com.project.dungi.infrastructure;
 
+import com.project.dungi.common.exception.BaseException;
 import com.project.dungi.domain.user.model.User;
 import com.project.dungi.infrastructure.jpa.user.UserJpaRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import static com.project.dungi.common.response.BaseResponseStatus.NOT_EXIST_USER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ActiveProfiles("test")
@@ -34,9 +36,16 @@ public class UserJpaRepositoryTest {
 
         // when
         userJpaRepository.save(user);
-        var savedUser = userJpaRepository.findByEmail(user.getEmail()).get();
+        var savedUser = findUser(user.getEmail());
 
         // then
         assertEquals(user.getId(), savedUser.getId());
+    }
+
+    private User findUser(String email){
+        return userJpaRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    throw new BaseException(NOT_EXIST_USER);
+                });
     }
 }

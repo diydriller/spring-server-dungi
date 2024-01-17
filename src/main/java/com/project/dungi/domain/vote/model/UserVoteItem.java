@@ -13,7 +13,13 @@ import static com.project.dungi.common.response.BaseResponseStatus.INVALID_VALUE
 
 @Getter
 @Entity
-@Table(name = "user_vote_item")
+@Table(
+        name = "user_vote_item",
+        indexes = @Index(
+                name = "user_vote_item_idx",
+                columnList = "users_id, vote_item_id",
+                unique = true)
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserVoteItem extends BaseEntity {
 

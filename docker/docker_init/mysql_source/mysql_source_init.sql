@@ -196,4 +196,7 @@ alter table todo
 alter table notice_vote
     add index notice_vote_idx (created_time desc);
 
+alter table user_vote_item
+    add constraint user_vote_item_idx unique (users_id, vote_item_id);
+
 
