@@ -1,11 +1,15 @@
 package com.project.dungi.domain.todo.model;
 
+import com.project.dungi.common.exception.BaseException;
 import lombok.*;
 
 import javax.persistence.*;
 
+import static com.project.dungi.common.response.BaseResponseStatus.INVALID_VALUE;
+
 @Getter
 @Entity
+@Table(name = "repeat_day")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RepeatDay {
 
@@ -14,13 +18,15 @@ public class RepeatDay {
     @Column(name="repeat_day_id")
     private Long id;
 
-    private int day;
+    private Integer day;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="todo_id")
     private RepeatTodo repeatTodo;
 
-    public RepeatDay(int day){
+    public RepeatDay(Integer day){
+        if(day == null) throw new BaseException(INVALID_VALUE);
+
         this.day = day;
     }
 

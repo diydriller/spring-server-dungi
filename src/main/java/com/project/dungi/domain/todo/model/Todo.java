@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Setter(value = AccessLevel.PROTECTED)
 @Getter
 @Entity
+@Table(name = "todo")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DiscriminatorColumn
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

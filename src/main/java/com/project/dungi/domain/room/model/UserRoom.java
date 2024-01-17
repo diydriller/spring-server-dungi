@@ -11,7 +11,7 @@ import static com.project.dungi.common.response.BaseResponseStatus.INVALID_VALUE
 
 @Getter
 @Entity
-@Table(name = "UserRoom")
+@Table(name = "user_room")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserRoom extends BaseEntity {
 

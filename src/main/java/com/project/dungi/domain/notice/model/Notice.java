@@ -15,6 +15,7 @@ import static com.project.dungi.common.response.BaseResponseStatus.INVALID_VALUE
 
 @Getter
 @Entity
+@Table(name = "notice")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Notice extends BaseEntity {
 

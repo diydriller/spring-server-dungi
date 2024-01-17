@@ -14,7 +14,7 @@ import static com.project.dungi.common.response.BaseResponseStatus.INVALID_VALUE
 @ToString
 @Getter
 @Entity
-@Table(name = "Users", indexes = @Index(name = "user_idx", columnList = "email", unique = true))
+@Table(name = "users", indexes = @Index(name = "user_idx", columnList = "email", unique = true))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity implements Serializable {
 

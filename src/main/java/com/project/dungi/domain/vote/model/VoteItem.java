@@ -1,16 +1,21 @@
 package com.project.dungi.domain.vote.model;
 
+import com.project.dungi.common.exception.BaseException;
 import com.project.dungi.domain.common.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.project.dungi.common.response.BaseResponseStatus.INVALID_VALUE;
+
 @Getter
 @Entity
+@Table(name = "vote_item")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class VoteItem extends BaseEntity {
 
@@ -29,6 +34,8 @@ public class VoteItem extends BaseEntity {
     private List<UserVoteItem> userVoteItemList = new ArrayList<>();
 
     public VoteItem(String choice){
+        if(StringUtils.isEmpty(choice)) throw new BaseException(INVALID_VALUE);
+
         this.choice = choice;
     }
 

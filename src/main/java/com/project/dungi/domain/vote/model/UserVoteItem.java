@@ -1,5 +1,6 @@
 package com.project.dungi.domain.vote.model;
 
+import com.project.dungi.common.exception.BaseException;
 import com.project.dungi.domain.common.BaseEntity;
 import com.project.dungi.domain.common.DeleteStatus;
 import lombok.AccessLevel;
@@ -8,8 +9,11 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static com.project.dungi.common.response.BaseResponseStatus.INVALID_VALUE;
+
 @Getter
 @Entity
+@Table(name = "user_vote_item")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserVoteItem extends BaseEntity {
 
@@ -30,6 +34,9 @@ public class UserVoteItem extends BaseEntity {
     private DeleteStatus deleteStatus;
 
     public UserVoteItem(Long userId, VoteItem voteItem){
+        if(userId == null) throw new BaseException(INVALID_VALUE);
+        if(voteItem == null) throw new BaseException(INVALID_VALUE);
+
         this.userId = userId;
         setVoteItem(voteItem);
         this.deleteStatus = DeleteStatus.NOT_DELETED;

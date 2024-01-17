@@ -1,7 +1,9 @@
 package com.project.dungi.domain.todo.model;
 
+import com.project.dungi.common.exception.BaseException;
 import com.project.dungi.domain.common.DeleteStatus;
 import lombok.*;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -9,6 +11,8 @@ import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.project.dungi.common.response.BaseResponseStatus.INVALID_VALUE;
 
 @Getter
 @Entity
@@ -26,6 +30,11 @@ public class RepeatTodo extends Todo {
             LocalDateTime deadline,
             String todoItem
     ){
+        if(roomId == null) throw new BaseException(INVALID_VALUE);
+        if(userId == null) throw new BaseException(INVALID_VALUE);
+        if(deadline == null) throw new BaseException(INVALID_VALUE);
+        if(StringUtils.isEmpty(todoItem)) throw new BaseException(INVALID_VALUE);
+
         super.setRoomId(roomId);
         super.setUserId(userId);
         super.setDeadline(deadline);
