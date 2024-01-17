@@ -31,6 +31,8 @@ public enum BaseResponseStatus {
 
     NOT_EXIST_MEMO(false,2400,"존재하지않는 메모입니다."),
 
+    NOT_EXIST_BEST_MATE(false, 2500, "일을 가장 많이 한 멤버가 없습니다."),
+
     SERVER_ERROR(false,2015,"서버 에러입니다.");
 
     private final boolean isSuccess;

@@ -67,4 +67,10 @@ public class UserStoreImpl implements UserStore {
         return redisRepository.getString(number)
                 .orElseThrow(() -> new BaseException(CODE_NOT_EXIST));
     }
+
+    @Override
+    public User findUserById(Long id) {
+        return userJpaRepository.findById(id)
+                .orElseThrow(() -> new BaseException(NOT_EXIST_USER));
+    }
 }

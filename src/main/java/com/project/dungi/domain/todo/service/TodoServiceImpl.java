@@ -1,8 +1,10 @@
 package com.project.dungi.domain.todo.service;
 
 import com.project.dungi.common.util.TimeUtil;
+import com.project.dungi.domain.room.model.Room;
 import com.project.dungi.domain.room.service.RoomStore;
 import com.project.dungi.domain.todo.dto.GetRepeatTodoDto;
+import com.project.dungi.domain.todo.dto.GetTodoCountDto;
 import com.project.dungi.domain.todo.model.RepeatDay;
 import com.project.dungi.domain.todo.model.RepeatTodo;
 import com.project.dungi.domain.todo.model.TodayTodo;
@@ -11,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -72,6 +75,31 @@ public class TodoServiceImpl implements TodoService {
                         .userId(rt.getUserId())
                         .build()
                 ).collect(Collectors.toList());
+    }
+
+    // 일을 가장 많이 한 멤버 선정 기능
+    @Transactional(readOnly = true)
+    public List<Long> findBestMember(Long roomId) {
+        Room room = roomStore.getRoom(roomId);
+        var memberIdList = roomStore.findAllMemberId(room);
+
+        var memberTodoCountList = todoStore.findAllMemberTodoCount(
+                memberIdList,
+                TimeUtil.startOfWeek(),
+                TimeUtil.endOfWeek()
+        );
+
+        List<Long> bestMemberList = new ArrayList<>();
+        long maxCount = 0;
+        for(var memberTodoCount : memberTodoCountList){
+            maxCount = Math.max(maxCount, memberTodoCount.getTodoCount());
+        }
+        for(var memberTodoCount : memberTodoCountList){
+            if(memberTodoCount.getTodoCount() == maxCount){
+                bestMemberList.add(memberTodoCount.getUserId());
+            }
+        }
+        return bestMemberList;
     }
 
     private List<RepeatDay> dayStrToRepeatDay(String days){

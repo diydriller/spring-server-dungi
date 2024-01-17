@@ -14,4 +14,5 @@ public interface RoomStore {
     List<Room> getAllRoomEnteredByUser(Long userId, int page, int size);
     int getRoomMemberCnt(Long roomId);
     List<GetRoomUserDto> getAllMemberInfo(Room room);
+    List<Long> findAllMemberId(Room room);
 }

@@ -1,8 +1,10 @@
 package com.project.dungi.infrastructure.store.todo;
 
+import com.project.dungi.common.util.TimeUtil;
 import com.project.dungi.domain.common.DeleteStatus;
 import com.project.dungi.domain.common.FinishStatus;
 
+import com.project.dungi.domain.todo.dto.GetTodoCountDto;
 import com.project.dungi.domain.todo.model.RepeatDay;
 import com.project.dungi.domain.todo.model.RepeatTodo;
 import com.project.dungi.domain.todo.model.TodayTodo;
@@ -61,6 +63,21 @@ public class TodoStoreImpl implements TodoStore {
                 roomId,
                 DeleteStatus.NOT_DELETED,
                 pageRequest
+        );
+    }
+
+    @Override
+    public List<GetTodoCountDto> findAllMemberTodoCount(
+            List<Long> userIdList,
+            LocalDateTime startDate,
+            LocalDateTime endDate
+    ) {
+        return todoJpaRepository.finAllMemberTodoCount(
+                userIdList,
+                TimeUtil.startOfWeek(),
+                TimeUtil.endOfWeek(),
+                DeleteStatus.NOT_DELETED,
+                FinishStatus.FINISHED
         );
     }
 }

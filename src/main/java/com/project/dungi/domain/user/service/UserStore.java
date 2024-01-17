@@ -10,4 +10,5 @@ public interface UserStore {
     User findUserByEmail(String email);
     void saveCode(String number, String code);
     String getCode(String number);
+    User findUserById(Long id);
 }

@@ -1,6 +1,10 @@
 package com.project.dungi.common.util;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+import static java.time.temporal.ChronoField.DAY_OF_WEEK;
 
 public class TimeUtil {
 
@@ -38,5 +42,17 @@ public class TimeUtil {
                 hour,
                 minutes
         );
+    }
+
+    public static LocalDateTime startOfWeek(){
+        LocalDate today = LocalDate.now();
+        int day = today.get(DAY_OF_WEEK);
+        return today.minusDays(day - 1).atStartOfDay();
+    }
+
+    public static LocalDateTime endOfWeek(){
+        LocalDate today = LocalDate.now();
+        int day = today.get(DAY_OF_WEEK);
+        return today.plusDays(7 - day).atTime(LocalTime.MAX);
     }
 }

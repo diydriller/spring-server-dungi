@@ -11,4 +11,5 @@ public interface TodoService {
     void createRepeatTodo(String todoItem, String time, String days, Long userId, Long roomId);
     List<TodayTodo> getTodayTodo(Long userId, Long roomId, int page, int size);
     List<GetRepeatTodoDto> getRepeatTodo(Long userId, Long roomId, int page, int size);
+    List<Long> findBestMember(Long roomId);
 }

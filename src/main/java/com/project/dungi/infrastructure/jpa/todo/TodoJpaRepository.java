@@ -2,6 +2,7 @@ package com.project.dungi.infrastructure.jpa.todo;
 
 import com.project.dungi.domain.common.DeleteStatus;
 import com.project.dungi.domain.common.FinishStatus;
+import com.project.dungi.domain.todo.dto.GetTodoCountDto;
 import com.project.dungi.domain.todo.model.RepeatTodo;
 import com.project.dungi.domain.todo.model.TodayTodo;
 import com.project.dungi.domain.todo.model.Todo;
@@ -37,7 +38,7 @@ public interface TodoJpaRepository extends CrudRepository<Todo,Long> {
     );
 
 
-    @Query(value="SELECT rt " +
+    @Query(value = "SELECT rt " +
             " FROM RepeatTodo rt" +
             " WHERE rt.roomId=:roomId AND rt.deleteStatus=:status",
     countQuery = "SELECT COUNT(rt.id) FROM RepeatTodo rt")
@@ -45,5 +46,24 @@ public interface TodoJpaRepository extends CrudRepository<Todo,Long> {
             @Param("roomId") Long roomId,
             @Param("status") DeleteStatus status,
             Pageable pageable
+    );
+
+    @Query(value = "SELECT new com.project.dungi.domain.todo.dto.GetTodoCountDto(" +
+            " u.id," +
+            " COUNT(t.id)" +
+            " ) " +
+            " FROM TodayTodo t " +
+            " INNER JOIN User u ON t.userId=u.id" +
+            " WHERE t.finishStatus=:finishStatus " +
+            " AND t.deleteStatus=:deleteStatus " +
+            " AND t.deadline BETWEEN :startDate AND :endDate" +
+            " AND u.id IN :userIdList" +
+            " GROUP BY u.id" )
+    List<GetTodoCountDto> finAllMemberTodoCount(
+            @Param("userIdList") List<Long> userIdList,
+            @Param("startDate") LocalDateTime start_date,
+            @Param("endDate") LocalDateTime end_date,
+            @Param("deleteStatus") DeleteStatus deleteStatus,
+            @Param("finishStatus") FinishStatus finishStatus
     );
 }

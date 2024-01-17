@@ -92,4 +92,9 @@ public class RoomStoreImpl implements RoomStore {
     public List<GetRoomUserDto> getAllMemberInfo(Room room) {
         return roomJpaRepository.getAllMemberInfo(room);
     }
+
+    @Override
+    public List<Long> findAllMemberId(Room room) {
+        return userRoomJpaRepository.findAllMemberId(room, DeleteStatus.NOT_DELETED);
+    }
 }
