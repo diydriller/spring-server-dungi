@@ -9,7 +9,7 @@ group = 'com.project'
 version = '0.0.1-SNAPSHOT'
 
 java {
-    sourceCompatibility = 'VERSION_11'
+    sourceCompatibility = '11'
 }
 
 repositories {
