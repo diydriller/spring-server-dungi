@@ -1,0 +1,15 @@
+jar {
+    enabled = true
+}
+bootJar {
+    enabled = false
+}
+
+dependencies {
+    implementation project(':domain-core')
+    implementation project(':common')
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.session:spring-session-data-redis'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.4'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.11.4'
+}

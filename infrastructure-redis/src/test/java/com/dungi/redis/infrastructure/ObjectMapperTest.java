@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure;
+package com.dungi.redis.infrastructure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
