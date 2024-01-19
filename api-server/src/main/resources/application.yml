@@ -1,0 +1,33 @@
+# 서버 설정
+server:
+  port: 9002
+
+spring:
+  application:
+    name: API
+
+  # 프로필 설정
+  profiles:
+    active: local
+
+  # 요청 설정
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+# jwt 설정
+jwt:
+  secret: ENC(68/G125o5LYOM3ww0CE2wliGbK7I4OhN)
+
+# sms 설정
+twilio:
+  accountId: ENC(Y3q7tT614nNGApuPvbMpIQMTOpbskijqQSVo89CH19pTtFX/QpVGvv9m2TJ/jgo7)
+  authToken: ENC(I8O0mza78RoM2qbxAmHRbDZieQQjB0H7Ip36YaHUVLJtf9OoTkkh0I4/rRyOGyZz)
+  adminPhoneNumber: ENC(q8ll5buHV3yydpgQiOG9qvM3YxZ2za7Nf1Xm7KoZ34Y=)
+
+# oath 설정
+kakao:
+  accountId: ENC(BeNx5c5Bd+57nwZO3jJnfPI3050oKt5F/FnExhEt80f78Xl5UhPeI3hWwrCRgqqJ)
+  secret: ENC(HngW3k7Tiw3qjl8uD2bg+mB9wEd/T1gqx8dneRXO/ModywRTWiFPX38xEANE9Jj2)
+  callbackUri: http://localhost:9002/kakao/callback
