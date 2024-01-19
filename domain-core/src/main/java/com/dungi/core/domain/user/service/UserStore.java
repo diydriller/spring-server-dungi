@@ -1,4 +1,4 @@
-package com.dungi.core.domain.user;
+package com.dungi.core.domain.user.service;
 
 import com.dungi.core.domain.user.model.User;
 

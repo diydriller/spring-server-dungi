@@ -1,4 +1,4 @@
-package com.dungi.core.domain.user;
+package com.dungi.core.domain.user.service;
 
 public interface UserCacheStore {
     void saveCode(String number, String code);

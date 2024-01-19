@@ -1,9 +1,9 @@
 package com.dungi.core.domain.user.service;
 
-
 import com.dungi.common.exception.BaseException;
 import com.dungi.common.util.StringUtil;
 import com.dungi.core.domain.file.FileUploader;
+import com.dungi.core.domain.sms.SmsSender;
 import com.dungi.core.domain.sns.SnsHttpService;
 import com.dungi.core.domain.user.dto.SnsTokenDto;
 import com.dungi.core.domain.user.model.User;
@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.dungi.common.response.BaseResponseStatus.*;
 
-
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -23,6 +22,8 @@ public class UserServiceImpl implements UserService {
     private final FileUploader fileUploader;
     private final UserStore userStore;
     private final SnsHttpService snsHttpService;
+    private final UserCacheStore userCacheStore;
+    private final SmsSender smsSender;
 
     // 회원가입 기능
     // 이메일 중복 여부 - 이미지 업로드 - 비밀번호 암호화 - 유저 저장
@@ -56,8 +57,8 @@ public class UserServiceImpl implements UserService {
     public void sendSms(String phoneNumber) {
         String randomNumber = StringUtil.randomNumber();
         String trimmedPhoneNumber = StringUtil.trimPhoneNumber(phoneNumber);
-        userStore.saveCode(trimmedPhoneNumber, randomNumber);
-        userStore.sendSms(trimmedPhoneNumber,randomNumber);
+        userCacheStore.saveCode(trimmedPhoneNumber, randomNumber);
+        smsSender.sendSms(trimmedPhoneNumber,randomNumber);
     }
 
     // SMS 인증번호 검증 기능
@@ -65,7 +66,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public void compareCode(String code, String phoneNumber)  {
         String trimmedPhoneNumber = StringUtil.trimPhoneNumber(phoneNumber);
-        String savedCode = userStore.getCode(trimmedPhoneNumber);
+        String savedCode = userCacheStore.getCode(trimmedPhoneNumber);
         if (savedCode.equals(code)) {
             throw new BaseException(CODE_NOT_EQUAL);
         }
