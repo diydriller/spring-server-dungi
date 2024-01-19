@@ -9,6 +9,6 @@ build/
 gradlew
 
 docker_data/
-static/
+images/
 
 .env
