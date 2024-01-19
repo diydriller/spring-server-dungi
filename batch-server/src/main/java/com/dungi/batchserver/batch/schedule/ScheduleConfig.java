@@ -1,4 +1,4 @@
-package com.project.dungi.batch.schedule;
+package com.dungi.batchserver.batch.schedule;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;

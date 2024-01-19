@@ -1,11 +1,11 @@
-package com.project.dungi.batch.job;
+package com.dungi.batchserver.batch.job;
 
-import com.project.dungi.common.exception.BaseException;
-import com.project.dungi.domain.common.DeleteStatus;
-import com.project.dungi.domain.room.model.Room;
-import com.project.dungi.domain.todo.service.TodoService;
-import com.project.dungi.domain.user.model.User;
-import com.project.dungi.domain.user.service.UserStore;
+import com.dungi.common.exception.BaseException;
+import com.dungi.core.domain.common.DeleteStatus;
+import com.dungi.core.domain.room.model.Room;
+import com.dungi.core.domain.todo.service.TodoService;
+import com.dungi.core.domain.user.model.User;
+import com.dungi.core.domain.user.service.UserStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -15,7 +15,6 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,8 +22,7 @@ import javax.persistence.EntityManagerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.project.dungi.common.response.BaseResponseStatus.NOT_EXIST_BEST_MATE;
-
+import static com.dungi.common.response.BaseResponseStatus.NOT_EXIST_BEST_MATE;
 
 @Configuration
 @RequiredArgsConstructor
