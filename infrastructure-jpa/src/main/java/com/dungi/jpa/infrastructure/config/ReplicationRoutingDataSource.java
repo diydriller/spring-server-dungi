@@ -1,4 +1,4 @@
-package com.dungi.core.config;
+package com.dungi.jpa.infrastructure.config;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.transaction.support.TransactionSynchronizationManager;

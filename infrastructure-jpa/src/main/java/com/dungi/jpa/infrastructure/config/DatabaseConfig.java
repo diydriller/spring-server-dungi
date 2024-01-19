@@ -1,4 +1,4 @@
-package com.dungi.core.config;
+package com.dungi.jpa.infrastructure.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -37,53 +37,53 @@ public class DatabaseConfig {
     ) {
         return properties.initializeDataSourceBuilder().type(HikariDataSource.class).build();
     }
-//
-//    @Bean
-//    @Primary
-//    @ConfigurationProperties("spring.datasource.replica")
-//    public DataSourceProperties replicaDataSourceProperties() {
-//        return new DataSourceProperties();
-//    }
-//
-//    @Bean
-//    @ConfigurationProperties("spring.datasource.replica.hikari")
-//    public HikariDataSource replicaDataSource(
-//            @Qualifier("replicaDataSourceProperties") DataSourceProperties properties
-//    ) {
-//        return properties.initializeDataSourceBuilder().type(HikariDataSource.class).build();
-//    }
-//
-//    @Bean
-//    @ConfigurationProperties(prefix = "spring.datasource.source")
-//    public DataSource sourceDataSource() {
-//        return DataSourceBuilder.create().type(HikariDataSource.class).build();
-//    }
-//
-//    @Bean
-//    @ConfigurationProperties(prefix = "spring.datasource.replica")
-//    public DataSource replicaDataSource() {
-//        return DataSourceBuilder.create().type(HikariDataSource.class).build();
-//    }
-//
-//    @Bean
-//    public DataSource routingDataSource(
-//            @Qualifier("sourceDataSource") DataSource masterDataSource,
-//            @Qualifier("replicaDataSource") DataSource slaveDataSource) {
-//        var routingDataSource = new ReplicationRoutingDataSource();
-//
-//        var dataSourceMap = new HashMap<>();
-//        dataSourceMap.put("source", masterDataSource);
-//        dataSourceMap.put("replica", slaveDataSource);
-//        routingDataSource.setTargetDataSources(dataSourceMap);
-//        routingDataSource.setDefaultTargetDataSource(masterDataSource);
-//
-//        return routingDataSource;
-//    }
-//
-//    @Primary
-//    @Bean
-//    public DataSource dataSource(
-//            @Qualifier("routingDataSource") DataSource routingDataSource) {
-//        return new LazyConnectionDataSourceProxy(routingDataSource);
-//    }
+
+    @Bean
+    @Primary
+    @ConfigurationProperties("spring.datasource.replica")
+    public DataSourceProperties replicaDataSourceProperties() {
+        return new DataSourceProperties();
+    }
+
+    @Bean
+    @ConfigurationProperties("spring.datasource.replica.hikari")
+    public HikariDataSource replicaDataSource(
+            @Qualifier("replicaDataSourceProperties") DataSourceProperties properties
+    ) {
+        return properties.initializeDataSourceBuilder().type(HikariDataSource.class).build();
+    }
+
+    @Bean
+    @ConfigurationProperties(prefix = "spring.datasource.source")
+    public DataSource sourceDataSource() {
+        return DataSourceBuilder.create().type(HikariDataSource.class).build();
+    }
+
+    @Bean
+    @ConfigurationProperties(prefix = "spring.datasource.replica")
+    public DataSource replicaDataSource() {
+        return DataSourceBuilder.create().type(HikariDataSource.class).build();
+    }
+
+    @Bean
+    public DataSource routingDataSource(
+            @Qualifier("sourceDataSource") DataSource masterDataSource,
+            @Qualifier("replicaDataSource") DataSource slaveDataSource) {
+        var routingDataSource = new ReplicationRoutingDataSource();
+
+        var dataSourceMap = new HashMap<>();
+        dataSourceMap.put("source", masterDataSource);
+        dataSourceMap.put("replica", slaveDataSource);
+        routingDataSource.setTargetDataSources(dataSourceMap);
+        routingDataSource.setDefaultTargetDataSource(masterDataSource);
+
+        return routingDataSource;
+    }
+
+    @Primary
+    @Bean
+    public DataSource dataSource(
+            @Qualifier("routingDataSource") DataSource routingDataSource) {
+        return new LazyConnectionDataSourceProxy(routingDataSource);
+    }
 }

@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.jpa.memo;
+package com.dungi.jpa.infrastructure.repository.memo;
 
 import com.dungi.core.domain.common.DeleteStatus;
 import com.dungi.core.domain.memo.dto.GetMemoDto;

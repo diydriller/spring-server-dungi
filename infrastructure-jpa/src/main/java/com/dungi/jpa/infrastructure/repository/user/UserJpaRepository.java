@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.jpa.user;
+package com.dungi.jpa.infrastructure.repository.user;
 
 import com.dungi.core.domain.user.model.User;
 import org.springframework.data.jpa.repository.Query;

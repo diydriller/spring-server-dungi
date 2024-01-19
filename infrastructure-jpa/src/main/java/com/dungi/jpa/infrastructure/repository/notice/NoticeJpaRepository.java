@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.jpa.notice;
+package com.dungi.jpa.infrastructure.repository.notice;
 
 import com.dungi.core.domain.notice.model.Notice;
 import org.springframework.data.repository.CrudRepository;

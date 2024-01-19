@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.jpa.vote;
+package com.dungi.jpa.infrastructure.repository.vote;
 
 import com.dungi.core.domain.common.DeleteStatus;
 import com.dungi.core.domain.vote.model.Vote;

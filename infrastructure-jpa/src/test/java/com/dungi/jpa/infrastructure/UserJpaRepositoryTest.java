@@ -1,8 +1,8 @@
-package com.dungi.core.infrastructure;
+package com.dungi.jpa.infrastructure;
 
 import com.dungi.common.exception.BaseException;
 import com.dungi.core.domain.user.model.User;
-import com.dungi.core.infrastructure.jpa.user.UserJpaRepository;
+import com.dungi.jpa.infrastructure.repository.user.UserJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

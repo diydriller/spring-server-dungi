@@ -1,11 +1,11 @@
-package com.dungi.core.infrastructure.store.memo;
+package com.dungi.jpa.infrastructure.store.memo;
 
 import com.dungi.common.exception.BaseException;
 import com.dungi.core.domain.common.DeleteStatus;
 import com.dungi.core.domain.memo.dto.GetMemoDto;
 import com.dungi.core.domain.memo.model.Memo;
 import com.dungi.core.domain.memo.service.MemoStore;
-import com.dungi.core.infrastructure.jpa.memo.MemoJpaRepository;
+import com.dungi.jpa.infrastructure.repository.memo.MemoJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

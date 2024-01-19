@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.store.vote;
+package com.dungi.jpa.infrastructure.store.vote;
 
 import com.dungi.common.exception.BaseException;
 import com.dungi.core.domain.common.DeleteStatus;
@@ -7,10 +7,10 @@ import com.dungi.core.domain.vote.model.UserVoteItem;
 import com.dungi.core.domain.vote.model.Vote;
 import com.dungi.core.domain.vote.model.VoteItem;
 import com.dungi.core.domain.vote.service.VoteStore;
-import com.dungi.core.infrastructure.jpa.vote.UserVoteItemJpaRepository;
-import com.dungi.core.infrastructure.jpa.vote.VoteItemJdbcRepository;
-import com.dungi.core.infrastructure.jpa.vote.VoteItemJpaRepository;
-import com.dungi.core.infrastructure.jpa.vote.VoteJpaRepository;
+import com.dungi.jpa.infrastructure.repository.vote.UserVoteItemJpaRepository;
+import com.dungi.jpa.infrastructure.repository.vote.VoteItemJdbcRepository;
+import com.dungi.jpa.infrastructure.repository.vote.VoteItemJpaRepository;
+import com.dungi.jpa.infrastructure.repository.vote.VoteJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

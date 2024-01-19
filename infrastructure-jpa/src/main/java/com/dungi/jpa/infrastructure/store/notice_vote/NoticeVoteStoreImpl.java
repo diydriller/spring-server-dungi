@@ -1,10 +1,10 @@
-package com.dungi.core.infrastructure.store.notice_vote;
+package com.dungi.jpa.infrastructure.store.notice_vote;
 
 import com.dungi.core.domain.common.DeleteStatus;
 import com.dungi.core.domain.notice_vote.dto.GetNoticeVoteDto;
 import com.dungi.core.domain.notice_vote.model.NoticeVote;
 import com.dungi.core.domain.notice_vote.service.NoticeVoteStore;
-import com.dungi.core.infrastructure.jpa.notice_vote.NoticeVoteJpaRepository;
+import com.dungi.jpa.infrastructure.repository.notice_vote.NoticeVoteJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

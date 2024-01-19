@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.store.todo;
+package com.dungi.jpa.infrastructure.store.todo;
 
 import com.dungi.common.util.TimeUtil;
 import com.dungi.core.domain.common.DeleteStatus;
@@ -8,8 +8,8 @@ import com.dungi.core.domain.todo.model.RepeatDay;
 import com.dungi.core.domain.todo.model.RepeatTodo;
 import com.dungi.core.domain.todo.model.TodayTodo;
 import com.dungi.core.domain.todo.service.TodoStore;
-import com.dungi.core.infrastructure.jpa.todo.RepeatDayJdbcRepository;
-import com.dungi.core.infrastructure.jpa.todo.TodoJpaRepository;
+import com.dungi.jpa.infrastructure.repository.todo.RepeatDayJdbcRepository;
+import com.dungi.jpa.infrastructure.repository.todo.TodoJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

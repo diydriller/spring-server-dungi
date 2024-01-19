@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.store.room;
+package com.dungi.jpa.infrastructure.store.room;
 
 import com.dungi.common.exception.BaseException;
 import com.dungi.core.domain.common.DeleteStatus;
@@ -6,8 +6,8 @@ import com.dungi.core.domain.room.dto.GetRoomUserDto;
 import com.dungi.core.domain.room.model.Room;
 import com.dungi.core.domain.room.model.UserRoom;
 import com.dungi.core.domain.room.service.RoomStore;
-import com.dungi.core.infrastructure.jpa.room.RoomJpaRepository;
-import com.dungi.core.infrastructure.jpa.room.UserRoomJpaRepository;
+import com.dungi.jpa.infrastructure.repository.room.RoomJpaRepository;
+import com.dungi.jpa.infrastructure.repository.room.UserRoomJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

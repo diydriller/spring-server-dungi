@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.jpa.room;
+package com.dungi.jpa.infrastructure.repository.room;
 
 import com.dungi.core.domain.common.DeleteStatus;
 import com.dungi.core.domain.room.model.Room;

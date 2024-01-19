@@ -1,18 +1,17 @@
-package com.dungi.core.infrastructure;
+package com.dungi.jpa.infrastructure;
 
 import com.dungi.core.domain.vote.model.UserVoteItem;
 import com.dungi.core.domain.vote.model.Vote;
 import com.dungi.core.domain.vote.model.VoteItem;
-import com.dungi.core.infrastructure.jpa.vote.UserVoteItemJpaRepository;
-import com.dungi.core.infrastructure.jpa.vote.VoteItemJpaRepository;
-import com.dungi.core.infrastructure.jpa.vote.VoteJpaRepository;
+import com.dungi.jpa.infrastructure.repository.vote.UserVoteItemJpaRepository;
+import com.dungi.jpa.infrastructure.repository.vote.VoteItemJpaRepository;
+import com.dungi.jpa.infrastructure.repository.vote.VoteJpaRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -22,7 +21,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@ActiveProfiles("test")
 @DataJpaTest
 public class VoteJpaRepositoryTest {
 

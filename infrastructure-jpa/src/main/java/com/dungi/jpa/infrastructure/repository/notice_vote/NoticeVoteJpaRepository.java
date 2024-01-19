@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.jpa.notice_vote;
+package com.dungi.jpa.infrastructure.repository.notice_vote;
 
 import com.dungi.core.domain.common.DeleteStatus;
 import com.dungi.core.domain.notice_vote.dto.GetNoticeVoteDto;

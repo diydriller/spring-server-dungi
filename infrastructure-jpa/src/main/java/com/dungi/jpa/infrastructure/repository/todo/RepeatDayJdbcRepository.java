@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.jpa.todo;
+package com.dungi.jpa.infrastructure.repository.todo;
 
 import com.dungi.core.domain.todo.model.RepeatDay;
 import lombok.RequiredArgsConstructor;
