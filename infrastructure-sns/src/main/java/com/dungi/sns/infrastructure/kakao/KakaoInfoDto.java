@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.sns.kakao;
+package com.dungi.sns.infrastructure.kakao;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

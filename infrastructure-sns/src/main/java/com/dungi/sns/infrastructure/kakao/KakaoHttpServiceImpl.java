@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.sns.kakao;
+package com.dungi.sns.infrastructure.kakao;
 
 import com.dungi.core.domain.sns.SnsHttpService;
 import com.dungi.core.domain.user.dto.SnsTokenDto;
