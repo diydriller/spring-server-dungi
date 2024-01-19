@@ -1,6 +1,6 @@
-package com.project.dungi.common.exception;
+package com.dungi.common.exception;
 
-import com.project.dungi.common.response.BaseResponseStatus;
+import com.dungi.common.response.BaseResponseStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

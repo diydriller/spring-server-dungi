@@ -1,4 +1,4 @@
-package com.project.dungi.common.util;
+package com.dungi.common.util;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

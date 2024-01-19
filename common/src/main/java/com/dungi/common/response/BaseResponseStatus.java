@@ -1,4 +1,4 @@
-package com.project.dungi.common.response;
+package com.dungi.common.response;
 
 import lombok.Getter;
 

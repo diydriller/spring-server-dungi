@@ -1,10 +1,10 @@
-package com.project.dungi.common.response;
+package com.dungi.common.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import static com.project.dungi.common.response.BaseResponseStatus.SUCCESS;
+import static com.dungi.common.response.BaseResponseStatus.SUCCESS;
 
 @Getter
 @Builder
