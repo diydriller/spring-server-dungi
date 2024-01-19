@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.file;
+package com.dungi.file.infrastructure.file;
 
 import com.dungi.common.exception.BaseException;
 import com.dungi.common.response.BaseResponseStatus;
