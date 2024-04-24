@@ -8,10 +8,8 @@ bootJar {
 dependencies {
     implementation project(':domain-core')
     implementation project(':common')
-    implementation project(':infrastructure-jpa')
     implementation project(':infrastructure-sns')
     implementation project(':infrastructure-sms')
-    implementation project(':infrastructure-redis')
     implementation project(':infrastructure-file')
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'

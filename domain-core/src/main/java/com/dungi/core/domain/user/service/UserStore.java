@@ -7,4 +7,6 @@ public interface UserStore {
     void checkEmailPresent(String email);
     User findUserByEmail(String email);
     User findUserById(Long id);
+    void saveCode(String number, String code);
+    String getCode(String number);
 }

@@ -22,7 +22,6 @@ public class UserServiceImpl implements UserService {
     private final FileUploader fileUploader;
     private final UserStore userStore;
     private final SnsHttpService snsHttpService;
-    private final UserCacheStore userCacheStore;
     private final SmsSender smsSender;
 
     // 회원가입 기능
@@ -57,7 +56,7 @@ public class UserServiceImpl implements UserService {
     public void sendSms(String phoneNumber) {
         String randomNumber = StringUtil.randomNumber();
         String trimmedPhoneNumber = StringUtil.trimPhoneNumber(phoneNumber);
-        userCacheStore.saveCode(trimmedPhoneNumber, randomNumber);
+        userStore.saveCode(trimmedPhoneNumber, randomNumber);
         smsSender.sendSms(trimmedPhoneNumber,randomNumber);
     }
 
@@ -66,7 +65,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public void compareCode(String code, String phoneNumber)  {
         String trimmedPhoneNumber = StringUtil.trimPhoneNumber(phoneNumber);
-        String savedCode = userCacheStore.getCode(trimmedPhoneNumber);
+        String savedCode = userStore.getCode(trimmedPhoneNumber);
         if (savedCode.equals(code)) {
             throw new BaseException(CODE_NOT_EQUAL);
         }
