@@ -3,13 +3,11 @@ package com.dungi.sns.infrastructure.kakao;
 import com.dungi.sns.infrastructure.SnsHttpService;
 import com.dungi.sns.infrastructure.SnsTokenDto;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@Component
 public class KakaoHttpServiceImpl implements SnsHttpService {
 
     @Value("${kakao.accountId}")

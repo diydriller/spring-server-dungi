@@ -3,10 +3,3 @@ server:
   tomcat:
     threads:
       max: 200
-
-# file 설정
-file:
-  upload:
-    path: images/
-  down:
-    path: http://localhost:9002/static/

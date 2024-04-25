@@ -2,7 +2,6 @@ package com.dungi.file.infrastructure.local;
 
 import com.dungi.file.infrastructure.FileUploader;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -10,7 +9,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@Component
 public class FileLocalUploaderImpl implements FileUploader {
 
     @Value("${file.upload.path}")

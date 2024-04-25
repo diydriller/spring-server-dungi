@@ -11,8 +11,8 @@ cloud:
     s3:
       bucket: diydriller-s3
     credentials:
-      access-key: ENC(8/TZy+kkY/3+MyCwjWzJqsiV6Niu22QZTOwCrZx532k=)
-      secret-key: ENC(ElUmdO3SowTsAOp38So3cocEdN29wqDtwR6soClLoOBhZGefhqwihaiBuOewLzY/tSkuZkiAz0s=)
+      access-key:
+      secret-key:
     region:
       static: ap-northeast-2
     stack:

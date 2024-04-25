@@ -1,0 +1,6 @@
+# oath kakao 설정
+kakao:
+  accountId:
+  secret:
+  callbackUri:
+

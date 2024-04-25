@@ -1,0 +1,5 @@
+# twilio 설정
+twilio:
+  accountId:
+  authToken:
+  adminPhoneNumber:
