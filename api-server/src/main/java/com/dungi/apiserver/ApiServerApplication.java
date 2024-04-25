@@ -10,7 +10,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
         "com.dungi.core",
         "com.dungi.file",
         "com.dungi.sms",
-        "com.dungi.sns"
+        "com.dungi.sns",
+        "com.dungi.common"
 })
 @EnableAsync
 @SpringBootApplication

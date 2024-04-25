@@ -10,4 +10,10 @@
             <appender-ref ref="CONSOLE"/>
         </root>
     </springProfile>
+    <springProfile name="prod">
+        <include resource="console-appender.xml"/>
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
 </configuration>

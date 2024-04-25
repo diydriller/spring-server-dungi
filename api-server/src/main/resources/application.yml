@@ -8,7 +8,9 @@ spring:
 
   # 프로필 설정
   profiles:
-    active: local
+    active: prod
+    include:
+    - core
 
   # 요청 설정
   servlet:

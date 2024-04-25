@@ -11,6 +11,7 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
@@ -42,6 +43,7 @@ public class DatabaseConfig {
         return properties.initializeDataSourceBuilder().type(HikariDataSource.class).build();
     }
 
+    @Profile("local")
     @Bean
     @Primary
     @ConfigurationProperties("spring.datasource.replica")
@@ -49,6 +51,7 @@ public class DatabaseConfig {
         return new DataSourceProperties();
     }
 
+    @Profile("local")
     @Bean
     @ConfigurationProperties("spring.datasource.replica.hikari")
     public HikariDataSource replicaDataSource(
@@ -63,12 +66,14 @@ public class DatabaseConfig {
         return DataSourceBuilder.create().type(HikariDataSource.class).build();
     }
 
+    @Profile("local")
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource.replica")
     public DataSource replicaDataSource() {
         return DataSourceBuilder.create().type(HikariDataSource.class).build();
     }
 
+    @Profile("local")
     @Bean
     public DataSource routingDataSource(
             @Qualifier("sourceDataSource") DataSource masterDataSource,
@@ -84,6 +89,7 @@ public class DatabaseConfig {
         return routingDataSource;
     }
 
+    @Profile("local")
     @Primary
     @Bean
     public DataSource dataSource(

@@ -1,0 +1,33 @@
+spring:
+  # 데이터베이스 설정
+  datasource:
+    source:
+      url: ENC(v2PMj9Zv9IIKWknaW/H+A+MTSp+15GhasAECP6vxPVdk3ZEV7qAk0hXnSnTQ+6RmAGQ4WFcCgz6+OpMTWMusoK66RHeByvtoJ9r5fIjET0jiLhXkYNWfvr/Kh/F3Dhr/RYlZY+HuA5PD/vE+w1888aHUgWsO3nw3TVeCChvPtWoU90+yX4Y2xQ==)
+      username: ENC(+eu7rNdRpOi0PPtPvgvIkrzCXtgSWW8Q)
+      password: ENC(+eu7rNdRpOi0PPtPvgvIkrzCXtgSWW8Q)
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari:
+        maximum-pool-size: 10
+
+  # jpa 설정
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: validate
+    generate-ddl: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+
+# redis 설정
+redis:
+  port: 6379
+  host: ENC(f/Q4/p96zl6cKaChDuFd98FVOcjtSjX6)
+  password: ENC(35dqZWwfegMqS+s+9963h4aHZ/QdFEeffQQLh2RPVog=)
+  lettuce:
+    pool:
+      max-idle: 8
+      min-idle: 2
+      max-active: 8
