@@ -2,15 +2,16 @@ package com.dungi.core.domain.user.service;
 
 import com.dungi.common.exception.BaseException;
 import com.dungi.common.util.StringUtil;
-import com.dungi.core.domain.file.FileUploader;
 import com.dungi.core.domain.sms.SmsSender;
 import com.dungi.core.domain.sns.SnsHttpService;
 import com.dungi.core.domain.user.dto.SnsTokenDto;
 import com.dungi.core.domain.user.model.User;
+import com.dungi.file.infrastructure.FileUploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.dungi.common.response.BaseResponseStatus.*;
 
@@ -28,15 +29,14 @@ public class UserServiceImpl implements UserService {
     // 이메일 중복 여부 - 이미지 업로드 - 비밀번호 암호화 - 유저 저장
     @Transactional
     public void createUser(String email,
-                           byte[] imageContent,
-                           String imageName,
+                           MultipartFile file,
                            String password,
                            String name,
                            String nickname,
                            String phoneNumber
     ) throws Exception {
         checkEmailPresent(email);
-        String imageDownUrl = fileUploader.imageUpload(imageContent, imageName);
+        String imageDownUrl = fileUploader.imageUpload(file);
         String hashedPassword = passwordEncoder.encode(password);
         var user = User.builder()
                 .email(email)
@@ -78,8 +78,7 @@ public class UserServiceImpl implements UserService {
                               String nickname,
                               String kakaoImg,
                               String accessToken,
-                              byte[] imageContent,
-                              String imageName
+                              MultipartFile file
     ) throws Exception {
         String kakaoEmail = snsHttpService.getSnsInfo(accessToken);
         if(!email.equals(kakaoEmail)){
@@ -88,7 +87,7 @@ public class UserServiceImpl implements UserService {
         checkEmailPresent(email);
         String imageDownUrl = kakaoImg;
         if(imageDownUrl == null){
-            imageDownUrl = fileUploader.imageUpload(imageContent, imageName);
+            imageDownUrl = fileUploader.imageUpload(file);
         }
 
         User user = User.builder()

@@ -28,8 +28,7 @@ public class UserController {
 
             userService.createUser(
                     request.getEmail(),
-                    request.getImg().getBytes(),
-                    request.getImg().getOriginalFilename(),
+                    request.getImg(),
                     request.getPassword(),
                     request.getName(),
                     request.getNickname(),
@@ -70,8 +69,7 @@ public class UserController {
                     requestDto.getNickname(),
                     requestDto.getKakaoImg(),
                     requestDto.getAccess_token(),
-                    requestDto.getProfileImg().getBytes(),
-                    requestDto.getProfileImg().getOriginalFilename()
+                    requestDto.getProfileImg()
             );
             return new BaseResponse<>(SUCCESS);
     }

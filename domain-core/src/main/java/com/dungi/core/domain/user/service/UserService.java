@@ -2,12 +2,12 @@ package com.dungi.core.domain.user.service;
 
 import com.dungi.core.domain.user.dto.SnsTokenDto;
 import com.dungi.core.domain.user.model.User;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
     void createUser(
             String email,
-            byte[] imageContent,
-            String imageName,
+            MultipartFile file,
             String password,
             String name,
             String nickname,
@@ -21,8 +21,7 @@ public interface UserService {
             String nickname,
             String kakaoImg,
             String accessToken,
-            byte[] imageContent,
-            String imageName
+            MultipartFile file
     ) throws Exception;
     SnsTokenDto snsToken(String code) throws Exception;
     User login(String email, String password) throws Exception;

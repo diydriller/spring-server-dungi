@@ -9,8 +9,6 @@ public enum BaseResponseStatus {
     SUCCESS(true, 1000, "요청에 성공하였습니다."),
 
     INVALID_VALUE(false,2000,"유효하지 않는 값입니다."),
-    FILE_UPLOAD_ERROR(false,2001,"파일 업로드 에러입니다."),
-    FILE_NAME_NOT_ALLOWED(false,2002,"허용되지 않은 파일이름입니다."),
 
     AUTHENTICATION_ERROR(false,2101,"인증되지 않았습니다."),
     ALREADY_EXISTS_EMAIL(false,2102,"중복된 이메일입니다."),
