@@ -2,11 +2,11 @@ package com.dungi.core.domain.user.service;
 
 import com.dungi.common.exception.BaseException;
 import com.dungi.common.util.StringUtil;
-import com.dungi.core.domain.sns.SnsHttpService;
-import com.dungi.core.domain.user.dto.SnsTokenDto;
 import com.dungi.core.domain.user.model.User;
 import com.dungi.file.infrastructure.FileUploader;
 import com.dungi.sms.infrastructure.SmsSender;
+import com.dungi.sns.infrastructure.SnsHttpService;
+import com.dungi.sns.infrastructure.SnsTokenDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

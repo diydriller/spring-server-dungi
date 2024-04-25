@@ -1,7 +1,7 @@
 package com.dungi.sns.infrastructure.kakao;
 
-import com.dungi.core.domain.sns.SnsHttpService;
-import com.dungi.core.domain.user.dto.SnsTokenDto;
+import com.dungi.sns.infrastructure.SnsHttpService;
+import com.dungi.sns.infrastructure.SnsTokenDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import retrofit2.Call;

@@ -1,7 +1,7 @@
 package com.dungi.core.domain.user.service;
 
-import com.dungi.core.domain.user.dto.SnsTokenDto;
 import com.dungi.core.domain.user.model.User;
+import com.dungi.sns.infrastructure.SnsTokenDto;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {

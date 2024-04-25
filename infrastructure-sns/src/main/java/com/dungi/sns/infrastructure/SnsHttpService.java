@@ -1,6 +1,4 @@
-package com.dungi.core.domain.sns;
-
-import com.dungi.core.domain.user.dto.SnsTokenDto;
+package com.dungi.sns.infrastructure;
 
 public interface SnsHttpService {
     String getSnsInfo(String token) throws Exception;

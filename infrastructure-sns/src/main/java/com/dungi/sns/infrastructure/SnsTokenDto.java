@@ -1,4 +1,4 @@
-package com.dungi.core.domain.user.dto;
+package com.dungi.sns.infrastructure;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
