@@ -1,5 +1,5 @@
 jar {
-    enabled = true
+    enabled = false
 }
 bootJar {
     enabled = true

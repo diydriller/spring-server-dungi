@@ -6,7 +6,6 @@
 out/
 build/
 .gradle/
-gradlew
 
 docker_data/
 images/
