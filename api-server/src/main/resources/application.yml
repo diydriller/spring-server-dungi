@@ -1,6 +1,6 @@
 # 서버 설정
 server:
-  port: 8080
+  port: 9002
 
 spring:
   application:
@@ -18,6 +18,22 @@ spring:
       max-file-size: 50MB
       max-request-size: 50MB
 
+  # aws 설정
+  config:
+    import: 'aws-parameterstore:'
+
+aws:
+  paramstore:
+    enabled: true
+    prefix: /diydriller
+    profileSeparator: _
+    name: dungi
+
 # jwt 설정
 jwt:
-  secret:
+  secret: ${JWT_SECRET}
+
+# jasypt 설정
+jasypt:
+  encryptor:
+    password: ${JASYPT_PASSWORD}

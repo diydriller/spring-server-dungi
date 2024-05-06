@@ -1,5 +1,5 @@
 # twilio 설정
 twilio:
-  accountId:
-  authToken:
-  adminPhoneNumber:
+  accountId: ${TWILIO_ACCOUNT_ID}
+  authToken: ${TWILIO_AUTH_TOKEN}
+  adminPhoneNumber: ${TWILIO_ADMIN_PHONE_NUMBER}

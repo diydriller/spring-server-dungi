@@ -11,8 +11,8 @@ cloud:
     s3:
       bucket: diydriller-s3
     credentials:
-      access-key:
-      secret-key:
+      access-key: ${AWS_ACCESS_KEY_ID}
+      secret-key: ${AWS_ACCESS_KEY_SECRET}
     region:
       static: ap-northeast-2
     stack:
