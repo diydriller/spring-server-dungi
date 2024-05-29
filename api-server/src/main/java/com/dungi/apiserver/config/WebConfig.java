@@ -23,7 +23,11 @@ public class WebConfig implements WebMvcConfigurer {
             "/kakao/user",
             "/kakao/callback",
             "/kakao/login",
-            "/static/**"
+            "/static/**",
+            "/favicon.ico",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/swagger-ui.html"
     };
 
     @Override

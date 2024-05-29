@@ -6,6 +6,7 @@ import com.dungi.common.response.BaseResponse;
 import com.dungi.core.domain.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -21,7 +22,11 @@ public class UserController {
     private final UserService userService;
     private final TokenProvider tokenProvider;
 
-    @PostMapping(value = "/user")
+    @PostMapping(
+            value = "/user",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public BaseResponse<?> join(
             @Valid JoinRequestDto request
     ) throws Exception {
@@ -61,7 +66,11 @@ public class UserController {
             return new BaseResponse<>(SUCCESS);
     }
 
-    @PostMapping("/kakao/user")
+    @PostMapping(
+            value = "/kakao/user",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public BaseResponse<?> kakaoJoin(
             @Valid SnsJoinRequestDto requestDto) throws Exception {
             userService.createSnsUser(
