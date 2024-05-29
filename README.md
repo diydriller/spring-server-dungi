@@ -7,7 +7,7 @@
 서버를 운영하고 있습니다.
   * [플레이스토어 링크](https://play.google.com/store/apps/details?id=com.nestmate.nm1)
   * [시연영상 링크](https://youtu.be/6M-7nF22ruM?t=0s)
-  * [서버 API 명세 링크](http://43.203.225.1/swagger-ui.html)
+  * [서버 API 명세 링크](http://43.203.225.1:9002/swagger-ui.html)
 ## 개발 간략소개
 ![둥지_아키텍처](https://github.com/diydriller/spring-server-dungi/assets/41245313/342ddd45-723a-4760-b016-4bf01e4dcaca)
 ![둥지_ERD](https://github.com/diydriller/spring-server-dungi/assets/41245313/921ec14e-b298-4afd-9b15-b019f15b8d25)
