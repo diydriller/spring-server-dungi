@@ -3,3 +3,10 @@ server:
   tomcat:
     threads:
       max: 200
+
+# monitoring 설정
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus

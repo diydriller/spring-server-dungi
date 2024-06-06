@@ -1,6 +1,7 @@
 version: '3.7'
 
 services:
+  ## database
   # mysql
   mysql_source:
     container_name: "mysql_source"
@@ -47,6 +48,7 @@ services:
     command: redis-server /usr/local/etc/redis/redis.conf --requirepass ${REDIS_SOURCE_PASSWORD}
     restart: always
 
+  ## server
   # nginx
   nginx:
     container_name: nginx
@@ -102,3 +104,31 @@ services:
     depends_on:
       - mysql_replica
       - mysql_source
+
+  ## monitoring
+  # prometheus
+  prometheus:
+      image: prom/prometheus
+      ports:
+        - "9090:9090"
+      volumes:
+        - ./docker/docker_conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+        - ./docker/docker_data/prometheus:/prometheus
+      command:
+        - '--config.file=/etc/prometheus/prometheus.yml'
+      restart: always
+
+  # grafana
+  grafana:
+    image: "grafana/grafana"
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+    volumes:
+      - ./docker/docker_conf/grafana/grafana.ini:/etc/grafana/grafana.ini:ro
+      - ./docker/docker_data/grafana:/var/lib/grafana
+    restart: always
+    depends_on:
+      - prometheus

@@ -9,7 +9,7 @@
   * [시연영상 링크](https://youtu.be/6M-7nF22ruM?t=0s)
 ## 개발 간략소개
 ### [서버 API 명세 알아보기](http://43.203.225.1:9002/swagger-ui.html)
-![둥지_아키텍처](https://github.com/diydriller/spring-server-dungi/assets/41245313/342ddd45-723a-4760-b016-4bf01e4dcaca)
+![둥지_아키텍처](https://github.com/diydriller/spring-server-dungi/assets/41245313/c1d3e6b1-714e-4eee-9834-4e2758ce5181)
 ![둥지_ERD](https://github.com/diydriller/spring-server-dungi/assets/41245313/921ec14e-b298-4afd-9b15-b019f15b8d25)
 
 ## [>> 개발내용 자세히 알아보기 <<](https://github.com/diydriller/spring-server-dungi/wiki)
