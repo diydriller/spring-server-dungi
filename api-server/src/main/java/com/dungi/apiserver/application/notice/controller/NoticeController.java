@@ -1,7 +1,6 @@
 package com.dungi.apiserver.application.notice.controller;
 
 import com.dungi.apiserver.application.notice.dto.CreateNoticeRequestDto;
-import com.dungi.common.exception.AuthenticationException;
 import com.dungi.common.response.BaseResponse;
 import com.dungi.core.domain.notice.service.NoticeService;
 import com.dungi.core.domain.user.model.User;
@@ -13,9 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Optional;
 
-import static com.dungi.common.response.BaseResponseStatus.AUTHENTICATION_ERROR;
 import static com.dungi.common.response.BaseResponseStatus.SUCCESS;
 import static com.dungi.common.util.StringUtil.LOGIN_USER;
 
@@ -31,9 +28,7 @@ public class NoticeController {
             @RequestBody @Valid CreateNoticeRequestDto noticeRequestDto,
             HttpSession session
     ) {
-        var user = Optional.ofNullable(session.getAttribute(LOGIN_USER))
-                .map(o -> (User)o)
-                .orElseThrow(() -> new AuthenticationException(AUTHENTICATION_ERROR));
+        var user = (User) session.getAttribute(LOGIN_USER);
         noticeService.createNotice(noticeRequestDto.getNotice(), user.getId(), roomId);
         return new BaseResponse<>(SUCCESS);
     }

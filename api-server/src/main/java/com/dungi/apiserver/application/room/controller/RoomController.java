@@ -2,7 +2,6 @@ package com.dungi.apiserver.application.room.controller;
 
 import com.dungi.apiserver.application.room.dto.CreateRoomRequestDto;
 import com.dungi.apiserver.application.room.dto.GetRoomResponseDto;
-import com.dungi.common.exception.AuthenticationException;
 import com.dungi.common.response.BaseResponse;
 import com.dungi.core.domain.room.service.RoomService;
 import com.dungi.core.domain.user.model.User;
@@ -11,10 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.dungi.common.response.BaseResponseStatus.AUTHENTICATION_ERROR;
 import static com.dungi.common.response.BaseResponseStatus.SUCCESS;
 import static com.dungi.common.util.StringUtil.LOGIN_USER;
 
@@ -29,9 +26,7 @@ public class RoomController {
             @RequestBody @Valid CreateRoomRequestDto requestDto,
             HttpSession session
     ) {
-        var user = Optional.ofNullable(session.getAttribute(LOGIN_USER))
-                .map(o -> (User)o)
-                .orElseThrow(() -> new AuthenticationException(AUTHENTICATION_ERROR));
+        var user = (User) session.getAttribute(LOGIN_USER);
         roomService.createRoom(requestDto.getName(), requestDto.getColor(), user.getId());
         return new BaseResponse<>(SUCCESS);
     }
@@ -40,10 +35,8 @@ public class RoomController {
     BaseResponse<?> enterRoom(
             @PathVariable Long roomId,
             HttpSession session
-    ){
-        var user = Optional.ofNullable(session.getAttribute(LOGIN_USER))
-                .map(o -> (User)o)
-                .orElseThrow(() -> new AuthenticationException(AUTHENTICATION_ERROR));
+    ) {
+        var user = (User) session.getAttribute(LOGIN_USER);
         roomService.enterRoom(user.getId(), roomId);
         return new BaseResponse<>(SUCCESS);
     }
@@ -52,12 +45,10 @@ public class RoomController {
     BaseResponse<?> leaveRoom(
             @PathVariable Long roomId,
             HttpSession session
-    ){
-        var user = Optional.ofNullable(session.getAttribute(LOGIN_USER))
-                .map(o -> (User)o)
-                .orElseThrow(() -> new AuthenticationException(AUTHENTICATION_ERROR));
-            roomService.leaveRoom(user.getId(), roomId);
-            return new BaseResponse<>(SUCCESS);
+    ) {
+        var user = (User) session.getAttribute(LOGIN_USER);
+        roomService.leaveRoom(user.getId(), roomId);
+        return new BaseResponse<>(SUCCESS);
     }
 
 
@@ -67,9 +58,7 @@ public class RoomController {
             @RequestParam int size,
             HttpSession session
     ) {
-        var user = Optional.ofNullable(session.getAttribute(LOGIN_USER))
-                .map(o -> (User)o)
-                .orElseThrow(() -> new AuthenticationException(AUTHENTICATION_ERROR));
+        var user = (User) session.getAttribute(LOGIN_USER);
         var roomInfoDto = roomService.getAllRoomInfo(user.getId(), page, size);
         var roomInfoRes = new GetRoomResponseDto(
                 roomInfoDto.getRoomInfo().stream()
@@ -84,7 +73,7 @@ public class RoomController {
                                         ).collect(Collectors.toList()))
                                 .build()
                         ).collect(Collectors.toList())
-                ,user.getNickname());
+                , user.getNickname());
         return new BaseResponse<>(roomInfoRes);
     }
 }

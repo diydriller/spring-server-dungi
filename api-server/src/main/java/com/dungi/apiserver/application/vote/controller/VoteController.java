@@ -2,7 +2,6 @@ package com.dungi.apiserver.application.vote.controller;
 
 import com.dungi.apiserver.application.vote.dto.CreateVoteRequestDto;
 import com.dungi.apiserver.application.vote.dto.GetVoteItemResponseDto;
-import com.dungi.common.exception.AuthenticationException;
 import com.dungi.common.response.BaseResponse;
 import com.dungi.core.domain.user.model.User;
 import com.dungi.core.domain.vote.service.VoteService;
@@ -11,10 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.dungi.common.response.BaseResponseStatus.AUTHENTICATION_ERROR;
 import static com.dungi.common.response.BaseResponseStatus.SUCCESS;
 import static com.dungi.common.util.StringUtil.LOGIN_USER;
 
@@ -28,10 +25,8 @@ public class VoteController {
             @PathVariable Long roomId,
             @RequestBody @Valid CreateVoteRequestDto requestDto,
             HttpSession session
-    ){
-        var user = Optional.ofNullable(session.getAttribute(LOGIN_USER))
-                .map(o -> (User)o)
-                .orElseThrow(() -> new AuthenticationException(AUTHENTICATION_ERROR));
+    ) {
+        var user = (User) session.getAttribute(LOGIN_USER);
         voteService.createVote(requestDto.getTitle(), requestDto.getChoiceArr(), user.getId(), roomId);
         return new BaseResponse<>(SUCCESS);
     }
@@ -41,10 +36,8 @@ public class VoteController {
             @PathVariable Long roomId,
             @PathVariable Long voteId,
             HttpSession session
-    )  {
-        var user = Optional.ofNullable(session.getAttribute(LOGIN_USER))
-                .map(o -> (User)o)
-                .orElseThrow(() -> new AuthenticationException(AUTHENTICATION_ERROR));
+    ) {
+        var user = (User) session.getAttribute(LOGIN_USER);
         var getVoteItemDto = voteService.getVote(roomId, user.getId(), voteId);
         var getVoteItem = GetVoteItemResponseDto.builder()
                 .choice(getVoteItemDto.getChoice().stream()
@@ -68,13 +61,11 @@ public class VoteController {
 
     @PatchMapping("/room/{roomId}/vote/{voteId}/choice/{choiceId}")
     public BaseResponse<?> createVoteChoice(
-            @PathVariable  Long roomId,
+            @PathVariable Long roomId,
             @PathVariable Long voteId,
-            @PathVariable Long choiceId,HttpSession session
+            @PathVariable Long choiceId, HttpSession session
     ) {
-        var user = Optional.ofNullable(session.getAttribute(LOGIN_USER))
-                .map(o -> (User)o)
-                .orElseThrow(() -> new AuthenticationException(AUTHENTICATION_ERROR));
+        var user = (User) session.getAttribute(LOGIN_USER);
         voteService.createVoteChoice(roomId, user.getId(), voteId, choiceId);
         return new BaseResponse<>(SUCCESS);
     }
