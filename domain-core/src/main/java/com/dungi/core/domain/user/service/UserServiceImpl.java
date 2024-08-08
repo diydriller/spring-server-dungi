@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import static com.dungi.common.response.BaseResponseStatus.*;
+import static com.dungi.common.util.NumberUtil.CODE_DURATION;
 
 @Service
 @RequiredArgsConstructor
@@ -56,14 +57,14 @@ public class UserServiceImpl implements UserService {
     public void sendSms(String phoneNumber) {
         String randomNumber = StringUtil.randomNumber();
         String trimmedPhoneNumber = StringUtil.trimPhoneNumber(phoneNumber);
-        userStore.saveCode(trimmedPhoneNumber, randomNumber);
-        smsSender.sendSms(trimmedPhoneNumber,randomNumber);
+        userStore.saveCode(trimmedPhoneNumber, randomNumber, CODE_DURATION);
+        smsSender.sendSms(trimmedPhoneNumber, randomNumber);
     }
 
     // SMS 인증번호 검증 기능
     // 인증번호 조회 - 인증번호 비교
     @Transactional(readOnly = true)
-    public void compareCode(String code, String phoneNumber)  {
+    public void compareCode(String code, String phoneNumber) {
         String trimmedPhoneNumber = StringUtil.trimPhoneNumber(phoneNumber);
         String savedCode = userStore.getCode(trimmedPhoneNumber);
         if (savedCode.equals(code)) {
@@ -81,12 +82,12 @@ public class UserServiceImpl implements UserService {
                               MultipartFile file
     ) throws Exception {
         String kakaoEmail = snsHttpService.getSnsInfo(accessToken);
-        if(!email.equals(kakaoEmail)){
+        if (!email.equals(kakaoEmail)) {
             throw new BaseException(NOT_EXISTS_EMAIL);
         }
         checkEmailPresent(email);
         String imageDownUrl = kakaoImg;
-        if(imageDownUrl == null){
+        if (imageDownUrl == null) {
             imageDownUrl = fileUploader.imageUpload(file);
         }
 
@@ -102,9 +103,9 @@ public class UserServiceImpl implements UserService {
     // 로그인 기능
     // 이메일 조회 - 비밀번호 일치여부
     @Transactional(readOnly = true)
-    public User login(String email, String password){
+    public User login(String email, String password) {
         User user = userStore.findUserByEmail(email);
-        if(!passwordEncoder.matches(password, user.getPassword())){
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new BaseException(PASSWORD_NOT_EQUAL);
         }
         return user;
@@ -116,7 +117,7 @@ public class UserServiceImpl implements UserService {
     public User snsLogin(String email, String accessToken)
             throws Exception {
         String kakaoEmail = snsHttpService.getSnsInfo(accessToken);
-        if(!email.equals(kakaoEmail)){
+        if (!email.equals(kakaoEmail)) {
             throw new BaseException(KAKAO_LOGIN_FAIL);
         }
         return userStore.findUserByEmail(email);

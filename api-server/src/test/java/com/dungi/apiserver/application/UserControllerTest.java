@@ -3,6 +3,7 @@ package com.dungi.apiserver.application;
 import com.dungi.apiserver.application.user.controller.UserController;
 import com.dungi.apiserver.application.user.dto.JoinRequestDto;
 import com.dungi.apiserver.application.user.dto.LoginRequestDto;
+import com.dungi.apiserver.application.user.dto.TokenResponseDto;
 import com.dungi.apiserver.web.TokenProvider;
 import com.dungi.core.domain.user.model.User;
 import com.dungi.core.domain.user.service.UserServiceImpl;
@@ -99,11 +100,13 @@ public class UserControllerTest {
 
         given(userService.login(requestDto.getEmail(), requestDto.getPassword()))
                 .willReturn(user);
-        given(tokenProvider.createToken(user.getId(), user.getEmail()))
-                .willReturn("token");
+        given(tokenProvider.createAccessToken(user.getEmail()))
+                .willReturn("accessToken");
+        given(tokenProvider.createRefreshToken())
+                .willReturn("refreshToken");
 
         // when
-        var token = userController.login(requestDto, new MockHttpSession()).getData();
+        var tokenDto = (TokenResponseDto) userController.login(requestDto, new MockHttpSession()).getData();
 
         var result = mockMvc.perform(
                 MockMvcRequestBuilders.post("/login")
@@ -113,7 +116,7 @@ public class UserControllerTest {
 
         // then
         result.andExpect(status().isOk());
-
-        assertThat(token).isEqualTo("token");
+        assertThat(tokenDto.getAccessToken()).isEqualTo("accessToken");
+        assertThat(tokenDto.getRefreshToken()).isEqualTo("refreshToken");
     }
 }

@@ -33,7 +33,7 @@ public class UserStoreImpl implements UserStore {
     @Override
     public User findUserByEmail(String email) {
         return userJpaRepository.findByEmail(email)
-                .orElseThrow(()-> new BaseException(NOT_EXISTS_EMAIL));
+                .orElseThrow(() -> new BaseException(NOT_EXISTS_EMAIL));
     }
 
 
@@ -44,13 +44,18 @@ public class UserStoreImpl implements UserStore {
     }
 
     @Override
-    public void saveCode(String number, String code) {
-        redisRepository.saveString(number,code,90);
+    public void saveCode(String number, String code, long time) {
+        redisRepository.saveString(number, code, time);
     }
 
     @Override
     public String getCode(String number) {
         return redisRepository.getString(number)
                 .orElseThrow(() -> new BaseException(CODE_NOT_EXIST));
+    }
+
+    @Override
+    public void saveToken(String token, String email, long time) {
+        redisRepository.saveString(token, email, time);
     }
 }

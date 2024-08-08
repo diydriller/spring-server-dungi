@@ -4,6 +4,7 @@ import com.dungi.apiserver.application.user.dto.*;
 import com.dungi.apiserver.web.TokenProvider;
 import com.dungi.common.response.BaseResponse;
 import com.dungi.core.domain.user.service.UserService;
+import com.dungi.core.domain.user.service.UserStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ public class UserController {
 
     private final UserService userService;
     private final TokenProvider tokenProvider;
+    private final UserStore userStore;
 
     @PostMapping(
             value = "/user",
@@ -96,8 +98,14 @@ public class UserController {
     ) throws Exception {
         var user = userService.login(requestDto.getEmail(), requestDto.getPassword());
         session.setAttribute(LOGIN_USER, user);
-        String token = tokenProvider.createToken(user.getId(), user.getEmail());
-        return new BaseResponse<>(token);
+        String accessToken = tokenProvider.createAccessToken(user.getEmail());
+        String refreshToken = tokenProvider.createRefreshToken();
+        userStore.saveToken(refreshToken, user.getEmail(), tokenProvider.getExpirationDuration(refreshToken));
+        return new BaseResponse<>(
+                TokenResponseDto.builder()
+                        .accessToken(accessToken)
+                        .refreshToken(refreshToken).build()
+        );
     }
 
     @PostMapping("/kakao/login")
@@ -107,8 +115,14 @@ public class UserController {
     ) throws Exception {
         var user = userService.snsLogin(requestDto.getEmail(), requestDto.getAccess_token());
         session.setAttribute(LOGIN_USER, user);
-        String token = tokenProvider.createToken(user.getId(), user.getEmail());
-        return new BaseResponse<>(token);
+        String accessToken = tokenProvider.createAccessToken(user.getEmail());
+        String refreshToken = tokenProvider.createRefreshToken();
+        userStore.saveToken(refreshToken, user.getEmail(), tokenProvider.getExpirationDuration(refreshToken));
+        return new BaseResponse<>(
+                TokenResponseDto.builder()
+                        .accessToken(accessToken)
+                        .refreshToken(refreshToken).build()
+        );
     }
 }
 

@@ -14,11 +14,11 @@ public class RedisRepository {
 
     private final RedisTemplate redisTemplate;
 
-    public void saveString(String k, String v,int time){
-        redisTemplate.opsForValue().set(k, v, time, TimeUnit.SECONDS);
+    public void saveString(String k, String v, long time) {
+        redisTemplate.opsForValue().set(k, v, time, TimeUnit.MILLISECONDS);
     }
 
-    public Optional<String> getString(String k){
+    public Optional<String> getString(String k) {
         return Optional.ofNullable(redisTemplate.opsForValue().get(k).toString());
     }
 }
