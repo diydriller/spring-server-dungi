@@ -4,7 +4,6 @@ import com.dungi.apiserver.application.todo.dto.CreateRepeatTodoRequestDto;
 import com.dungi.apiserver.application.todo.dto.CreateTodayTodoRequestDto;
 import com.dungi.apiserver.application.todo.dto.GetRepeatTodoResponseDto;
 import com.dungi.apiserver.application.todo.dto.GetTodayTodoResponseDto;
-import com.dungi.common.exception.AuthenticationException;
 import com.dungi.common.response.BaseResponse;
 import com.dungi.common.util.TimeUtil;
 import com.dungi.core.domain.todo.service.TodoService;
@@ -14,10 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.dungi.common.response.BaseResponseStatus.AUTHENTICATION_ERROR;
 import static com.dungi.common.response.BaseResponseStatus.SUCCESS;
 import static com.dungi.common.util.StringUtil.LOGIN_USER;
 
@@ -32,12 +29,10 @@ public class TodoController {
             @PathVariable Long roomId,
             @RequestBody @Valid CreateTodayTodoRequestDto todoRequestDto,
             HttpSession session
-    ){
-        var user = Optional.ofNullable(session.getAttribute(LOGIN_USER))
-                .map(o -> (User)o)
-                .orElseThrow(() -> new AuthenticationException(AUTHENTICATION_ERROR));
-            todoService.createTodayTodo(todoRequestDto.getTodo(), todoRequestDto.getTime(), user.getId(), roomId);
-            return new BaseResponse<>(SUCCESS);
+    ) {
+        var user = (User) session.getAttribute(LOGIN_USER);
+        todoService.createTodayTodo(todoRequestDto.getTodo(), todoRequestDto.getTime(), user.getId(), roomId);
+        return new BaseResponse<>(SUCCESS);
     }
 
     @PostMapping("/room/{roomId}/todo/days")
@@ -46,17 +41,15 @@ public class TodoController {
             @RequestBody @Valid CreateRepeatTodoRequestDto requestDto,
             HttpSession session
     ) {
-        var user = Optional.ofNullable(session.getAttribute(LOGIN_USER))
-                .map(o -> (User)o)
-                .orElseThrow(() -> new AuthenticationException(AUTHENTICATION_ERROR));
-            todoService.createRepeatTodo(
-                    requestDto.getTodo(),
-                    requestDto.getTime(),
-                    requestDto.getDays(),
-                    user.getId(),
-                    roomId
-            );
-            return new BaseResponse<>(SUCCESS);
+        var user = (User) session.getAttribute(LOGIN_USER);
+        todoService.createRepeatTodo(
+                requestDto.getTodo(),
+                requestDto.getTime(),
+                requestDto.getDays(),
+                user.getId(),
+                roomId
+        );
+        return new BaseResponse<>(SUCCESS);
     }
 
     @GetMapping("/room/{roomId}/todo/day")
@@ -65,10 +58,8 @@ public class TodoController {
             @RequestParam("page") int page,
             @RequestParam("size") int size,
             HttpSession session
-    ){
-        var user = Optional.ofNullable(session.getAttribute(LOGIN_USER))
-                .map(o -> (User)o)
-                .orElseThrow(() -> new AuthenticationException(AUTHENTICATION_ERROR));
+    ) {
+        var user = (User) session.getAttribute(LOGIN_USER);
         var todayTodo = todoService.getTodayTodo(user.getId(), roomId, page, size).stream()
                 .map(t -> GetTodayTodoResponseDto.builder()
                         .todo(t.getTodoItem())
@@ -77,7 +68,7 @@ public class TodoController {
                         .deadline(TimeUtil.localDateTimeToTimeStr(t.getDeadline()))
                         .build())
                 .collect(Collectors.toList());
-            return new BaseResponse<>(todayTodo);
+        return new BaseResponse<>(todayTodo);
     }
 
     @GetMapping("/room/{roomId}/todo/days")
@@ -86,10 +77,8 @@ public class TodoController {
             @RequestParam("page") int page,
             @RequestParam("size") int size,
             HttpSession session
-    ){
-        var user = Optional.ofNullable(session.getAttribute(LOGIN_USER))
-                .map(o -> (User)o)
-                .orElseThrow(() -> new AuthenticationException(AUTHENTICATION_ERROR));
+    ) {
+        var user = (User) session.getAttribute(LOGIN_USER);
 
         var repeatTodoList = todoService.getRepeatTodo(user.getId(), roomId, page, size).stream()
                 .map(t -> GetRepeatTodoResponseDto.builder()
@@ -100,6 +89,6 @@ public class TodoController {
                         .day(t.getDay())
                         .build()
                 ).collect(Collectors.toList());
-            return new BaseResponse<>(repeatTodoList);
+        return new BaseResponse<>(repeatTodoList);
     }
 }

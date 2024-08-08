@@ -4,7 +4,6 @@ import com.dungi.apiserver.application.user.dto.*;
 import com.dungi.apiserver.web.TokenProvider;
 import com.dungi.common.response.BaseResponse;
 import com.dungi.core.domain.user.service.UserService;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -31,39 +30,39 @@ public class UserController {
             @Valid JoinRequestDto request
     ) throws Exception {
 
-            userService.createUser(
-                    request.getEmail(),
-                    request.getImg(),
-                    request.getPassword(),
-                    request.getName(),
-                    request.getNickname(),
-                    request.getPhoneNumber()
-            );
-            return new BaseResponse<>(SUCCESS);
+        userService.createUser(
+                request.getEmail(),
+                request.getImg(),
+                request.getPassword(),
+                request.getName(),
+                request.getNickname(),
+                request.getPhoneNumber()
+        );
+        return new BaseResponse<>(SUCCESS);
     }
 
     @PostMapping("/check/email")
     public BaseResponse<?> checkEmail(
             @RequestBody @Valid CheckEmailRequestDto requestDto
     ) throws Exception {
-            userService.checkEmailPresent(requestDto.getEmail());
-            return new BaseResponse<>(SUCCESS);
+        userService.checkEmailPresent(requestDto.getEmail());
+        return new BaseResponse<>(SUCCESS);
     }
 
     @PostMapping(value = "/phone")
     public BaseResponse<?> sendSms(
             @RequestBody @Valid SendSmsRequestDto requestDto
     ) throws Exception {
-            userService.sendSms(requestDto.getPhoneNumber());
-            return new BaseResponse<>(SUCCESS);
+        userService.sendSms(requestDto.getPhoneNumber());
+        return new BaseResponse<>(SUCCESS);
     }
 
     @PostMapping("/check/phone")
     public BaseResponse<?> checkCode(
             @RequestBody @Valid CheckCodeRequestDto requestDto
     ) throws Exception {
-            userService.compareCode(requestDto.getCode(), requestDto.getPhoneNumber());
-            return new BaseResponse<>(SUCCESS);
+        userService.compareCode(requestDto.getCode(), requestDto.getPhoneNumber());
+        return new BaseResponse<>(SUCCESS);
     }
 
     @PostMapping(
@@ -73,21 +72,21 @@ public class UserController {
     )
     public BaseResponse<?> kakaoJoin(
             @Valid SnsJoinRequestDto requestDto) throws Exception {
-            userService.createSnsUser(
-                    requestDto.getEmail(),
-                    requestDto.getNickname(),
-                    requestDto.getKakaoImg(),
-                    requestDto.getAccess_token(),
-                    requestDto.getProfileImg()
-            );
-            return new BaseResponse<>(SUCCESS);
+        userService.createSnsUser(
+                requestDto.getEmail(),
+                requestDto.getNickname(),
+                requestDto.getKakaoImg(),
+                requestDto.getAccess_token(),
+                requestDto.getProfileImg()
+        );
+        return new BaseResponse<>(SUCCESS);
     }
 
     @GetMapping("/kakao/callback")
     public BaseResponse<?> kakaoOauth(
             @RequestParam String code
     ) throws Exception {
-            return new BaseResponse<>(userService.snsToken(code));
+        return new BaseResponse<>(userService.snsToken(code));
     }
 
     @PostMapping("/login")

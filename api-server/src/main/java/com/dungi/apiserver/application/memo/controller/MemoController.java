@@ -4,7 +4,6 @@ import com.dungi.apiserver.application.memo.dto.CreateMemoRequestDto;
 import com.dungi.apiserver.application.memo.dto.GetMemoResponseDto;
 import com.dungi.apiserver.application.memo.dto.MoveMemoRequestDto;
 import com.dungi.apiserver.application.memo.dto.UpdateMemoRequestDto;
-import com.dungi.common.exception.AuthenticationException;
 import com.dungi.common.response.BaseResponse;
 import com.dungi.common.util.TimeUtil;
 import com.dungi.core.domain.memo.service.MemoService;
@@ -14,9 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Optional;
 
-import static com.dungi.common.response.BaseResponseStatus.AUTHENTICATION_ERROR;
 import static com.dungi.common.response.BaseResponseStatus.SUCCESS;
 import static com.dungi.common.util.StringUtil.LOGIN_USER;
 
@@ -32,9 +29,7 @@ public class MemoController {
             @RequestBody @Valid CreateMemoRequestDto memoRequestDto,
             HttpSession session
     ) throws Exception {
-        var user = Optional.ofNullable(session.getAttribute(LOGIN_USER))
-                .map(o -> (User)o)
-                .orElseThrow(() -> new AuthenticationException(AUTHENTICATION_ERROR));
+        var user = (User) session.getAttribute(LOGIN_USER);
         memoService.createMemo(memoRequestDto.getMemo(),
                 memoRequestDto.getMemoColor(),
                 memoRequestDto.getX(),
@@ -50,9 +45,7 @@ public class MemoController {
             @PathVariable Long roomId,
             HttpSession session
     ) throws Exception {
-        var user = Optional.ofNullable(session.getAttribute(LOGIN_USER))
-                .map(o -> (User)o)
-                .orElseThrow(() -> new AuthenticationException(AUTHENTICATION_ERROR));
+        var user = (User) session.getAttribute(LOGIN_USER);
         var memoList = memoService.getMemo(roomId, user.getId()).stream()
                 .map(m -> GetMemoResponseDto.builder()
                         .memoId(m.getId())
@@ -75,9 +68,7 @@ public class MemoController {
             @RequestBody @Valid UpdateMemoRequestDto memoRequestDto,
             HttpSession session
     ) {
-        var user = Optional.ofNullable(session.getAttribute(LOGIN_USER))
-                .map(o -> (User)o)
-                .orElseThrow(() -> new AuthenticationException(AUTHENTICATION_ERROR));
+        var user = (User) session.getAttribute(LOGIN_USER);
         memoService.updateMemo(memoRequestDto.getMemo(),
                 memoRequestDto.getMemoColor(),
                 user.getId(),
@@ -94,9 +85,7 @@ public class MemoController {
             @RequestBody @Valid MoveMemoRequestDto memoRequestDto,
             HttpSession session
     ) {
-        var user = Optional.ofNullable(session.getAttribute(LOGIN_USER))
-                .map(o -> (User)o)
-                .orElseThrow(() -> new AuthenticationException(AUTHENTICATION_ERROR));
+        var user = (User) session.getAttribute(LOGIN_USER);
         memoService.moveMemo(memoRequestDto.getX(),
                 memoRequestDto.getY(),
                 user.getId(),
@@ -109,11 +98,9 @@ public class MemoController {
     @DeleteMapping("/room/{roomId}/memo/{memoId}")
     BaseResponse<?> deleteMemo(
             @PathVariable Long roomId,
-            @PathVariable Long memoId,HttpSession session
+            @PathVariable Long memoId, HttpSession session
     ) {
-        var user = Optional.ofNullable(session.getAttribute(LOGIN_USER))
-                .map(o -> (User)o)
-                .orElseThrow(() -> new AuthenticationException(AUTHENTICATION_ERROR));
+        var user = (User) session.getAttribute(LOGIN_USER);
         memoService.deleteMemo(user.getId(), roomId, memoId);
         return new BaseResponse<>(SUCCESS);
     }
