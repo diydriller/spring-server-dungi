@@ -7,6 +7,7 @@ import com.dungi.apiserver.application.user.dto.TokenResponseDto;
 import com.dungi.apiserver.web.TokenProvider;
 import com.dungi.core.domain.user.model.User;
 import com.dungi.core.domain.user.service.UserServiceImpl;
+import com.dungi.core.store.user.UserStoreImpl;
 import com.google.gson.Gson;
 
 import org.junit.jupiter.api.*;
@@ -40,6 +41,9 @@ public class UserControllerTest {
 
     @Mock
     private TokenProvider tokenProvider;
+
+    @Mock
+    private UserStoreImpl userStore;
 
     private MockMvc mockMvc;
 

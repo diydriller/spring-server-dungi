@@ -124,5 +124,19 @@ public class UserController {
                         .refreshToken(refreshToken).build()
         );
     }
+
+    @PostMapping("/refresh")
+    public BaseResponse<?> refresh(
+            @RequestBody @Valid RefreshTokenRequestDto requestDto
+    ) {
+        String refreshToken = requestDto.getRefresh_token();
+        var email = userStore.getInfo(refreshToken);
+        String accessToken = tokenProvider.createAccessToken(email);
+        return new BaseResponse<>(
+                TokenResponseDto.builder()
+                        .accessToken(accessToken)
+                        .refreshToken(refreshToken).build()
+        );
+    }
 }
 

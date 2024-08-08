@@ -58,4 +58,10 @@ public class UserStoreImpl implements UserStore {
     public void saveToken(String token, String email, long time) {
         redisRepository.saveString(token, email, time);
     }
+
+    @Override
+    public String getInfo(String token) {
+        return redisRepository.getString(token)
+                .orElseThrow(() -> new BaseException(AUTHORIZATION_ERROR));
+    }
 }

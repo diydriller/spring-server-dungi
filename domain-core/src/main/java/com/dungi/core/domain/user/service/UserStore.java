@@ -16,4 +16,6 @@ public interface UserStore {
     String getCode(String number);
 
     void saveToken(String token, String email, long time);
+
+    String getInfo(String token);
 }
