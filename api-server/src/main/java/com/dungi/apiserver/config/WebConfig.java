@@ -14,7 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     private final Interceptor interceptor;
 
-    private final String[] INTERCEPTOR_EXCLUDE_LIST={
+    private final String[] INTERCEPTOR_EXCLUDE_LIST = {
             "/check/email",
             "/phone",
             "/check/phone",
@@ -27,7 +27,8 @@ public class WebConfig implements WebMvcConfigurer {
             "/favicon.ico",
             "/swagger-ui/**",
             "/v3/api-docs/**",
-            "/swagger-ui.html"
+            "/swagger-ui.html",
+            "/refresh"
     };
 
     @Override
@@ -46,6 +47,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**")
-                .addResourceLocations( "file:images/");
+                .addResourceLocations("file:images/");
     }
 }
