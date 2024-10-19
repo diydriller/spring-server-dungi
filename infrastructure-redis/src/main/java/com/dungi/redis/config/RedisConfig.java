@@ -1,4 +1,4 @@
-package com.dungi.core.config;
+package com.dungi.redis.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
@@ -22,8 +22,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableCaching
 @Configuration
 @RequiredArgsConstructor
-public class RedisConfig{
-
+public class RedisConfig {
     @Value("${redis.host}")
     private String redisSourceHost;
     @Value("${redis.port}")
@@ -37,9 +36,7 @@ public class RedisConfig{
         redisConfiguration.setHostName(redisSourceHost);
         redisConfiguration.setPort(redisSourcePort);
         redisConfiguration.setPassword(redisSourcePassword);
-        LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(redisConfiguration);
-        return lettuceConnectionFactory;
-
+        return new LettuceConnectionFactory(redisConfiguration);
     }
 
     @Bean
@@ -54,7 +51,6 @@ public class RedisConfig{
 
     @Bean
     public CacheManager redisCacheManager() {
-
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(
                         new StringRedisSerializer()
