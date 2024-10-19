@@ -2,7 +2,8 @@ package com.dungi.core.domain.notice.service;
 
 import com.dungi.core.domain.notice.model.Notice;
 import com.dungi.core.domain.notice_vote.event.SaveNoticeVoteEvent;
-import com.dungi.core.domain.room.service.RoomStore;
+import com.dungi.core.infrastructure.store.notice.NoticeStore;
+import com.dungi.core.infrastructure.store.room.RoomStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -13,8 +14,7 @@ import static com.dungi.common.util.StringUtil.NOTICE_TYPE;
 
 @Service
 @RequiredArgsConstructor
-public class NoticeServiceImpl implements NoticeService{
-
+public class NoticeServiceImpl implements NoticeService {
     private final RoomStore roomStore;
     private final NoticeStore noticeStore;
     private final ApplicationEventPublisher publisher;
