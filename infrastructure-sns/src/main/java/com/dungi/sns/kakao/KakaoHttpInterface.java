@@ -1,6 +1,6 @@
-package com.dungi.sns.infrastructure.kakao;
+package com.dungi.sns.kakao;
 
-import com.dungi.sns.infrastructure.SnsTokenDto;
+import com.dungi.core.infrastructure.sns.dto.SnsTokenDto;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -8,7 +8,6 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface KakaoHttpInterface {
-
     @GET("/v2/user/me")
     Call<KakaoInfoDto> getKakaoInfo(
             @Header("Authorization") String token,

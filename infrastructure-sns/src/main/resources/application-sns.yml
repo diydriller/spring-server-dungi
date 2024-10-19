@@ -1,6 +1,1 @@
-# oath kakao 설정
-kakao:
-  accountId: ${KAKAO_ACCOUNT_ID}
-  secret: ${KAKAO_SECRET}
-  callbackUri: ${KAKAO_CALLBACK_URI}
 

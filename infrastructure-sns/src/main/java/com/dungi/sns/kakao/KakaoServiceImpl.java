@@ -1,15 +1,16 @@
-package com.dungi.sns.infrastructure.kakao;
+package com.dungi.sns.kakao;
 
-import com.dungi.sns.infrastructure.SnsHttpService;
-import com.dungi.sns.infrastructure.SnsTokenDto;
+import com.dungi.core.infrastructure.sns.SnsService;
+import com.dungi.core.infrastructure.sns.dto.SnsTokenDto;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class KakaoHttpServiceImpl implements SnsHttpService {
-
+@Component
+public class KakaoServiceImpl implements SnsService {
     @Value("${kakao.accountId}")
     private String kakaoAccountId;
     @Value("${kakao.secret}")
@@ -23,7 +24,7 @@ public class KakaoHttpServiceImpl implements SnsHttpService {
     private final KakaoHttpInterface kakaoApiService;
     private final KakaoHttpInterface kakaoAuthService;
 
-    public KakaoHttpServiceImpl() {
+    public KakaoServiceImpl() {
         Retrofit kakaoApiRetrofit = new Retrofit.Builder()
                 .baseUrl(KAKAO_API_URL)
                 .addConverterFactory(GsonConverterFactory.create())

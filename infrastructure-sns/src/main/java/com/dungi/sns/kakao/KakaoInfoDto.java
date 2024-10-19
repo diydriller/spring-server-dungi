@@ -1,4 +1,4 @@
-package com.dungi.sns.infrastructure.kakao;
+package com.dungi.sns.kakao;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class KakaoInfoDto {
-
     Account kakao_account;
 
     @Data
