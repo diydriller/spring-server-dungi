@@ -1,13 +1,14 @@
-package com.dungi.sms.infrastructure.twilio;
+package com.dungi.sms.twilio;
 
-import com.dungi.sms.infrastructure.SmsSender;
+import com.dungi.core.infrastructure.sms.SmsSender;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TwilioSmsSender implements SmsSender {
-
     @Value("${twilio.accountId}")
     private String twilioAccountSid;
     @Value("${twilio.authToken}")
