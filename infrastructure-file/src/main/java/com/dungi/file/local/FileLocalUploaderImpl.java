@@ -1,7 +1,9 @@
-package com.dungi.file.infrastructure.local;
+package com.dungi.file.local;
 
-import com.dungi.file.infrastructure.FileUploader;
+import com.dungi.core.infrastructure.file.FileUploader;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -9,8 +11,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Component
+@Profile("local")
 public class FileLocalUploaderImpl implements FileUploader {
-
     @Value("${file.upload.path}")
     private String fileUploadPath;
     @Value("${file.down.path}")
@@ -24,7 +27,7 @@ public class FileLocalUploaderImpl implements FileUploader {
         String basePath = folder.getAbsolutePath();
 
         String[] imageFileFlags = file.getOriginalFilename().split("\\.");
-        String imageExt = imageFileFlags[imageFileFlags.length-1];
+        String imageExt = imageFileFlags[imageFileFlags.length - 1];
 
         String imagePath = basePath + "/image" + current_date + "." + imageExt;
         String imageDownUrl = fileDownPath + "image" + current_date + "." + imageExt;
