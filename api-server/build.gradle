@@ -11,6 +11,10 @@ dependencies {
     implementation project(':infrastructure-sns')
     implementation project(':infrastructure-sms')
     implementation project(':infrastructure-file')
+    implementation project(':infrastructure-jpa')
+    implementation project(':infrastructure-redis')
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.session:spring-session-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation group: 'com.auth0', name: 'java-jwt', version: '3.18.0'

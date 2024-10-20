@@ -6,4 +6,6 @@ include 'common'
 include 'infrastructure-sms'
 include 'infrastructure-file'
 include 'infrastructure-sns'
+include 'infrastructure-redis'
+include 'infrastructure-jpa'
 
