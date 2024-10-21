@@ -6,15 +6,15 @@ import com.dungi.apiserver.application.user.dto.LoginRequestDto;
 import com.dungi.apiserver.application.user.dto.TokenResponseDto;
 import com.dungi.apiserver.web.TokenProvider;
 import com.dungi.core.domain.user.model.User;
-import com.dungi.core.domain.user.service.UserServiceImpl;
-import com.dungi.core.store.user.UserStoreImpl;
+import com.dungi.core.domain.user.service.UserService;
+import com.dungi.core.infrastructure.store.user.UserCacheStore;
 import com.google.gson.Gson;
-
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
@@ -27,35 +27,34 @@ import java.lang.reflect.Field;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 public class UserControllerTest {
-
     @InjectMocks
     private UserController userController;
 
     @Mock
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @Mock
     private TokenProvider tokenProvider;
 
     @Mock
-    private UserStoreImpl userStore;
+    private UserCacheStore userCacheStore;
 
     private MockMvc mockMvc;
 
     @BeforeEach
-    public void initEach(){
+    public void initEach() {
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
     }
 
     @Test
     @DisplayName("회원가입 컨트롤러 성공 테스트")
     void signUpSuccessTest() throws Exception {
-
         // given
         final var requestDto = new JoinRequestDto(
                 "aaa@naver.com",
@@ -86,9 +85,8 @@ public class UserControllerTest {
     @Test
     @DisplayName("로그인 컨트롤러 성공 테스트")
     void loginSuccessTest() throws Exception {
-
         // given
-        final var requestDto = new LoginRequestDto("aaa@naver.com","aaa");
+        final var requestDto = new LoginRequestDto("aaa@naver.com", "aaa");
         var user = User.builder()
                 .email("aaa@naver.com")
                 .name("park")
@@ -98,7 +96,7 @@ public class UserControllerTest {
                 .profileImg("http://localhost:9002/static/aaa.jpg")
                 .password("encrypted")
                 .build();
-        Field field  = User.class.getDeclaredField("id");
+        Field field = User.class.getDeclaredField("id");
         field.setAccessible(true);
         field.set(user, 1L);
 
@@ -108,6 +106,9 @@ public class UserControllerTest {
                 .willReturn("accessToken");
         given(tokenProvider.createRefreshToken())
                 .willReturn("refreshToken");
+        given(tokenProvider.getExpirationDuration("refreshToken"))
+                .willReturn(10000L);
+        willDoNothing().given(userCacheStore).saveToken("refreshToken", user.getEmail(), 10000L);
 
         // when
         var tokenDto = (TokenResponseDto) userController.login(requestDto, new MockHttpSession()).getData();
