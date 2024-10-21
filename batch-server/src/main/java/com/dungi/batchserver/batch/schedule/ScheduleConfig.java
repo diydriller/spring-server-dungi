@@ -14,15 +14,14 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @Component
 public class ScheduleConfig {
-
     @Qualifier("decideBestMateJob")
     private final Job decideBestJob;
 
     private final JobLauncher jobLauncher;
 
     @Scheduled(cron = "10 0 * * 1 *")
-    public void executeDecideBestMemberJob(){
-        try{
+    public void executeDecideBestMemberJob() {
+        try {
             jobLauncher.run(
                     decideBestJob,
                     new JobParametersBuilder()
@@ -30,8 +29,7 @@ public class ScheduleConfig {
                             .toJobParameters()
             );
 
-        }
-        catch(JobExecutionException ex){
+        } catch (JobExecutionException ex) {
         }
     }
 

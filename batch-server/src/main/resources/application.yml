@@ -1,5 +1,5 @@
 server:
-  port: 10000
+  port: 10001
 
 spring:
   application:
@@ -8,7 +8,14 @@ spring:
   # 프로필 설정
   profiles:
     active: local
+    include:
+      - core
 
   # batch 설정
   batch:
     initialize-schema: always
+
+# jasypt 설정
+jasypt:
+  encryptor:
+    password: ${JASYPT_PASSWORD}

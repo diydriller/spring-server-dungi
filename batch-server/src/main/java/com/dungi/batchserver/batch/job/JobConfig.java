@@ -5,7 +5,7 @@ import com.dungi.core.domain.common.DeleteStatus;
 import com.dungi.core.domain.room.model.Room;
 import com.dungi.core.domain.todo.service.TodoService;
 import com.dungi.core.domain.user.model.User;
-import com.dungi.core.domain.user.service.UserStore;
+import com.dungi.core.infrastructure.store.user.UserStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -27,7 +27,6 @@ import static com.dungi.common.response.BaseResponseStatus.NOT_EXIST_BEST_MATE;
 @Configuration
 @RequiredArgsConstructor
 public class JobConfig {
-
     private final JobBuilderFactory job;
     private final EntityManagerFactory entityManagerFactory;
     private final TodoService todoService;
@@ -36,7 +35,7 @@ public class JobConfig {
     private final int chunkSize = 10;
 
     @Bean
-    public Step decideBestMemberStep(){
+    public Step decideBestMemberStep() {
         return steps.get("decideBestMemberStep")
                 .<Room, User>chunk(chunkSize)
                 .reader(decideBestMemberPagingReader())
@@ -62,7 +61,7 @@ public class JobConfig {
     public ItemProcessor<Room, User> decideBestMemberProcessor() {
         return room -> {
             var bestMemberIdList = todoService.findBestMember(room.getId());
-            if(bestMemberIdList.isEmpty()){
+            if (bestMemberIdList.isEmpty()) {
                 throw new BaseException(NOT_EXIST_BEST_MATE);
             }
             var bestMember = userStore.findUserById(bestMemberIdList.get(0));
@@ -79,7 +78,7 @@ public class JobConfig {
     }
 
     @Bean(name = "decideBestMateJob")
-    public Job decideBestMemberJob(){
+    public Job decideBestMemberJob() {
         return job.get("decideBestMemberJob")
                 .start(decideBestMemberStep())
                 .build();
