@@ -1,4 +1,4 @@
-package com.dungi.core.config;
+package com.dungi.common.config;
 
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.env.PropertiesPropertySource;

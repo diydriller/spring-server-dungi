@@ -1,4 +1,4 @@
-package com.dungi.core.config;
+package com.dungi.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

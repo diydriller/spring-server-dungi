@@ -11,7 +11,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-
     private final Interceptor interceptor;
 
     private final String[] INTERCEPTOR_EXCLUDE_LIST = {
