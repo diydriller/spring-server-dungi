@@ -3,10 +3,12 @@ package com.dungi.core.domain.user.service;
 import com.dungi.common.exception.BaseException;
 import com.dungi.common.util.StringUtil;
 import com.dungi.core.domain.user.model.User;
-import com.dungi.file.infrastructure.FileUploader;
-import com.dungi.sms.infrastructure.SmsSender;
-import com.dungi.sns.infrastructure.SnsHttpService;
-import com.dungi.sns.infrastructure.SnsTokenDto;
+import com.dungi.core.infrastructure.store.user.UserCacheStore;
+import com.dungi.core.infrastructure.store.user.UserStore;
+import com.dungi.core.infrastructure.file.FileUploader;
+import com.dungi.core.infrastructure.sms.SmsSender;
+import com.dungi.core.infrastructure.sns.SnsService;
+import com.dungi.core.infrastructure.sns.dto.SnsTokenDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,11 +21,11 @@ import static com.dungi.common.util.NumberUtil.CODE_DURATION;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
     private final PasswordEncoder passwordEncoder;
     private final FileUploader fileUploader;
     private final UserStore userStore;
-    private final SnsHttpService snsHttpService;
+    private final UserCacheStore userCacheStore;
+    private final SnsService snsService;
     private final SmsSender smsSender;
 
     // 회원가입 기능
@@ -57,7 +59,7 @@ public class UserServiceImpl implements UserService {
     public void sendSms(String phoneNumber) {
         String randomNumber = StringUtil.randomNumber();
         String trimmedPhoneNumber = StringUtil.trimPhoneNumber(phoneNumber);
-        userStore.saveCode(trimmedPhoneNumber, randomNumber, CODE_DURATION);
+        userCacheStore.saveCode(trimmedPhoneNumber, randomNumber, CODE_DURATION);
         smsSender.sendSms(trimmedPhoneNumber, randomNumber);
     }
 
@@ -66,7 +68,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public void compareCode(String code, String phoneNumber) {
         String trimmedPhoneNumber = StringUtil.trimPhoneNumber(phoneNumber);
-        String savedCode = userStore.getCode(trimmedPhoneNumber);
+        String savedCode = userCacheStore.getCode(trimmedPhoneNumber);
         if (savedCode.equals(code)) {
             throw new BaseException(CODE_NOT_EQUAL);
         }
@@ -81,7 +83,7 @@ public class UserServiceImpl implements UserService {
                               String accessToken,
                               MultipartFile file
     ) throws Exception {
-        String kakaoEmail = snsHttpService.getSnsInfo(accessToken);
+        String kakaoEmail = snsService.getSnsInfo(accessToken);
         if (!email.equals(kakaoEmail)) {
             throw new BaseException(NOT_EXISTS_EMAIL);
         }
@@ -116,7 +118,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public User snsLogin(String email, String accessToken)
             throws Exception {
-        String kakaoEmail = snsHttpService.getSnsInfo(accessToken);
+        String kakaoEmail = snsService.getSnsInfo(accessToken);
         if (!email.equals(kakaoEmail)) {
             throw new BaseException(KAKAO_LOGIN_FAIL);
         }
@@ -125,7 +127,7 @@ public class UserServiceImpl implements UserService {
 
     // 카카오 토큰 가져오기 메서드
     public SnsTokenDto snsToken(String code) throws Exception {
-        return snsHttpService.getSnsToken(code);
+        return snsService.getSnsToken(code);
     }
 
     // 이메일 조회 메서드

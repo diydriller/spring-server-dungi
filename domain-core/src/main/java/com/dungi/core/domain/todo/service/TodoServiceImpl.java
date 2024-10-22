@@ -1,13 +1,13 @@
 package com.dungi.core.domain.todo.service;
 
 import com.dungi.common.util.TimeUtil;
-import com.dungi.core.domain.room.service.RoomStore;
 import com.dungi.core.domain.todo.dto.GetRepeatTodoDto;
 import com.dungi.core.domain.todo.model.RepeatDay;
 import com.dungi.core.domain.todo.model.RepeatTodo;
 import com.dungi.core.domain.todo.model.TodayTodo;
+import com.dungi.core.infrastructure.store.room.RoomStore;
+import com.dungi.core.infrastructure.store.todo.TodoStore;
 import lombok.AllArgsConstructor;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class TodoServiceImpl implements TodoService {
-
     private final TodoStore todoStore;
     private final RoomStore roomStore;
 
@@ -88,20 +87,20 @@ public class TodoServiceImpl implements TodoService {
 
         List<Long> bestMemberList = new ArrayList<>();
         long maxCount = 0;
-        for(var memberTodoCount : memberTodoCountList){
+        for (var memberTodoCount : memberTodoCountList) {
             maxCount = Math.max(maxCount, memberTodoCount.getTodoCount());
         }
-        for(var memberTodoCount : memberTodoCountList){
-            if(memberTodoCount.getTodoCount() == maxCount){
+        for (var memberTodoCount : memberTodoCountList) {
+            if (memberTodoCount.getTodoCount() == maxCount) {
                 bestMemberList.add(memberTodoCount.getUserId());
             }
         }
         return bestMemberList;
     }
 
-    private List<RepeatDay> dayStrToRepeatDay(String days){
+    private List<RepeatDay> dayStrToRepeatDay(String days) {
         List<RepeatDay> repeatDayList = new ArrayList<>();
-        for(TimeUtil.DAY day : TimeUtil.DAY.values()) {
+        for (TimeUtil.DAY day : TimeUtil.DAY.values()) {
             int dayNum = day.ordinal();
             if (days.charAt(dayNum) == '1') {
                 var repeatDay = new RepeatDay(dayNum);
@@ -111,10 +110,10 @@ public class TodoServiceImpl implements TodoService {
         return repeatDayList;
     }
 
-    private String repeatDayTodayStr(List<RepeatDay> repeatDayList){
+    private String repeatDayTodayStr(List<RepeatDay> repeatDayList) {
         StringBuilder sb = new StringBuilder("0000000");
-        for(RepeatDay repeatDay : repeatDayList){
-            sb.setCharAt(repeatDay.getDay(),'1');
+        for (RepeatDay repeatDay : repeatDayList) {
+            sb.setCharAt(repeatDay.getDay(), '1');
         }
         return sb.toString();
     }

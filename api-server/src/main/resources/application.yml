@@ -18,16 +18,9 @@ spring:
       max-file-size: 50MB
       max-request-size: 50MB
 
-  # aws 설정
-  config:
-    import: 'aws-parameterstore:'
-
-aws:
-  paramstore:
-    enabled: true
-    prefix: /diydriller
-    profileSeparator: _
-    name: dungi
+# 데이터베이스 replication 유무 설정
+database:
+  replication: false
 
 # jwt 설정
 jwt:
@@ -37,3 +30,15 @@ jwt:
 jasypt:
   encryptor:
     password: ${JASYPT_PASSWORD}
+
+# oath kakao 설정
+kakao:
+  accountId: ${KAKAO_ACCOUNT_ID}
+  secret: ${KAKAO_SECRET}
+  callbackUri: ${KAKAO_CALLBACK_URI}
+
+# twilio 설정
+twilio:
+  accountId: ${TWILIO_ACCOUNT_ID}
+  authToken: ${TWILIO_AUTH_TOKEN}
+  adminPhoneNumber: ${TWILIO_ADMIN_PHONE_NUMBER}

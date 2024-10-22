@@ -1,6 +1,7 @@
 package com.dungi.core.domain.room.service;
 
 import com.dungi.core.domain.room.dto.GetRoomDto;
+import com.dungi.core.infrastructure.store.room.RoomStore;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,8 +11,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class RoomServiceImpl implements RoomService{
-
+public class RoomServiceImpl implements RoomService {
     private final RoomStore roomStore;
 
     // 방 생성 기능
@@ -32,7 +32,7 @@ public class RoomServiceImpl implements RoomService{
     // 방 퇴장 기능
     // 방에 유저 있는지 확인 - 방에서 유저 삭제
     @Transactional
-    public void leaveRoom(Long userId, Long roomId)  {
+    public void leaveRoom(Long userId, Long roomId) {
         var room = roomStore.getRoomEnteredByUser(userId, roomId);
         roomStore.leaveRoom(userId, room);
     }
@@ -44,7 +44,7 @@ public class RoomServiceImpl implements RoomService{
         var roomList = roomStore.getAllRoomEnteredByUser(userId, page, size);
 
         List<GetRoomDto.RoomInfo> roomInfoList = new ArrayList<>();
-        for(var room : roomList){
+        for (var room : roomList) {
             var memberInfoList = roomStore.getAllMemberInfo(room);
             var roomInfo = GetRoomDto.RoomInfo.builder()
                     .roomId(room.getId())

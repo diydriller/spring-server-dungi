@@ -2,11 +2,12 @@ package com.dungi.core.domain.vote.service;
 
 import com.dungi.core.domain.common.FinishStatus;
 import com.dungi.core.domain.notice_vote.event.SaveNoticeVoteEvent;
-import com.dungi.core.domain.room.service.RoomStore;
 import com.dungi.core.domain.vote.dto.GetVoteItemDto;
 import com.dungi.core.domain.vote.dto.VoteUserDto;
 import com.dungi.core.domain.vote.model.Vote;
 import com.dungi.core.domain.vote.model.VoteItem;
+import com.dungi.core.infrastructure.store.room.RoomStore;
+import com.dungi.core.infrastructure.store.vote.VoteStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,7 @@ import static com.dungi.common.util.StringUtil.VOTE_TYPE;
 
 @RequiredArgsConstructor
 @Service
-public class VoteServiceImpl implements VoteService{
-
+public class VoteServiceImpl implements VoteService {
     private final VoteStore voteStore;
     private final RoomStore roomStore;
     private final ApplicationEventPublisher publisher;
@@ -71,18 +71,18 @@ public class VoteServiceImpl implements VoteService{
         var voteItemList = voteStore.getVoteItemList(vote);
 
         var voteUserList = voteStore.getVoteUser(voteItemList);
-        for(var voteUser : voteUserList){
+        for (var voteUser : voteUserList) {
             voteUserIdSet.add(voteUser.getUserId());
-            if(voteUser.getUserId().equals(userId)){
+            if (voteUser.getUserId().equals(userId)) {
                 myChoiceList.add(voteUser.getVoteItemId());
             }
             voteUserForChoiceMap.putIfAbsent(voteUser.getChoice(), new ArrayList<>());
             voteUserForChoiceMap.get(voteUser.getChoice()).add(voteUser);
         }
-        for(var voteItem : voteItemList){
+        for (var voteItem : voteItemList) {
             var choice = voteItem.getChoice();
             List<VoteUserDto> voteUser = new ArrayList<>();
-            if(voteUserForChoiceMap.containsKey(choice)){
+            if (voteUserForChoiceMap.containsKey(choice)) {
                 voteUser = voteUserForChoiceMap.get(choice);
             }
             voteChoiceDtoList.add(
