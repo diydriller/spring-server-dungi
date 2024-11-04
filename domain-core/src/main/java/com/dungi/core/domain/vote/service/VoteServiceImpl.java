@@ -1,7 +1,7 @@
 package com.dungi.core.domain.vote.service;
 
 import com.dungi.core.domain.common.FinishStatus;
-import com.dungi.core.domain.notice_vote.event.SaveNoticeVoteEvent;
+import com.dungi.core.domain.summary.event.SaveNoticeVoteEvent;
 import com.dungi.core.domain.vote.dto.GetVoteItemDto;
 import com.dungi.core.domain.vote.dto.VoteUserDto;
 import com.dungi.core.domain.vote.model.Vote;

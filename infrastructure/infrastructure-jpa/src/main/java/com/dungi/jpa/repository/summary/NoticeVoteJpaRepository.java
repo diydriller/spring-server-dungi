@@ -1,8 +1,8 @@
-package com.dungi.jpa.repository.notice_vote;
+package com.dungi.jpa.repository.summary;
 
 import com.dungi.core.domain.common.DeleteStatus;
-import com.dungi.core.domain.notice_vote.dto.GetNoticeVoteDto;
-import com.dungi.core.domain.notice_vote.model.NoticeVote;
+import com.dungi.core.domain.summary.dto.GetNoticeVoteDto;
+import com.dungi.core.domain.summary.model.NoticeVote;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface NoticeVoteJpaRepository extends CrudRepository<NoticeVote, Long> {
-    @Query(value = "SELECT new com.dungi.core.domain.notice_vote.dto.GetNoticeVoteDto(" +
+    @Query(value = "SELECT new com.dungi.core.domain.summary.dto.GetNoticeVoteDto(" +
             " nv.type," +
             " nv.noticeVoteId," +
             " u.profileImg," +

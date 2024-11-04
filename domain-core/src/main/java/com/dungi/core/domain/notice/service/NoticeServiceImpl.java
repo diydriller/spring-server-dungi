@@ -1,7 +1,7 @@
 package com.dungi.core.domain.notice.service;
 
 import com.dungi.core.domain.notice.model.Notice;
-import com.dungi.core.domain.notice_vote.event.SaveNoticeVoteEvent;
+import com.dungi.core.domain.summary.event.SaveNoticeVoteEvent;
 import com.dungi.core.infrastructure.store.notice.NoticeStore;
 import com.dungi.core.infrastructure.store.room.RoomStore;
 import lombok.RequiredArgsConstructor;

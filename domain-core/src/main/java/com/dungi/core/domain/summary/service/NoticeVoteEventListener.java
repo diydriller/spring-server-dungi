@@ -1,8 +1,8 @@
-package com.dungi.core.domain.notice_vote.service;
+package com.dungi.core.domain.summary.service;
 
-import com.dungi.core.domain.notice_vote.event.SaveNoticeVoteEvent;
-import com.dungi.core.domain.notice_vote.model.NoticeVote;
-import com.dungi.core.infrastructure.store.notice_vote.NoticeVoteStore;
+import com.dungi.core.domain.summary.event.SaveNoticeVoteEvent;
+import com.dungi.core.domain.summary.model.NoticeVote;
+import com.dungi.core.infrastructure.store.summary.NoticeVoteStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;

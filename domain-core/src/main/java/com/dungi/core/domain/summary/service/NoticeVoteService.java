@@ -1,6 +1,6 @@
-package com.dungi.core.domain.notice_vote.service;
+package com.dungi.core.domain.summary.service;
 
-import com.dungi.core.domain.notice_vote.dto.GetNoticeVoteDto;
+import com.dungi.core.domain.summary.dto.GetNoticeVoteDto;
 
 import java.util.List;
 

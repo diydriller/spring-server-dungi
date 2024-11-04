@@ -1,4 +1,4 @@
-package com.dungi.core.domain.notice_vote.event;
+package com.dungi.core.domain.summary.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

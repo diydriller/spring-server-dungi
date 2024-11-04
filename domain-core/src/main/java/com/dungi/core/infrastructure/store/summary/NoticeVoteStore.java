@@ -1,7 +1,7 @@
-package com.dungi.core.infrastructure.store.notice_vote;
+package com.dungi.core.infrastructure.store.summary;
 
-import com.dungi.core.domain.notice_vote.dto.GetNoticeVoteDto;
-import com.dungi.core.domain.notice_vote.model.NoticeVote;
+import com.dungi.core.domain.summary.dto.GetNoticeVoteDto;
+import com.dungi.core.domain.summary.model.NoticeVote;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

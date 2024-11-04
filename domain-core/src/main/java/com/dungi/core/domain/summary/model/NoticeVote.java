@@ -1,4 +1,4 @@
-package com.dungi.core.domain.notice_vote.model;
+package com.dungi.core.domain.summary.model;
 
 import com.dungi.common.exception.BaseException;
 import com.dungi.core.domain.common.DeleteStatus;

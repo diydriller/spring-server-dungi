@@ -1,4 +1,4 @@
-package com.dungi.core.domain.notice_vote.dto;
+package com.dungi.core.domain.summary.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

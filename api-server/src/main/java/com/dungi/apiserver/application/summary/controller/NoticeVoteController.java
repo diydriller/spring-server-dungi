@@ -1,9 +1,9 @@
-package com.dungi.apiserver.application.notice_vote.controller;
+package com.dungi.apiserver.application.summary.controller;
 
 import com.dungi.apiserver.application.notice.dto.GetNoticeVoteResponseDto;
 import com.dungi.common.response.BaseResponse;
 import com.dungi.common.util.TimeUtil;
-import com.dungi.core.domain.notice_vote.service.NoticeVoteService;
+import com.dungi.core.domain.summary.service.NoticeVoteService;
 import com.dungi.core.domain.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
