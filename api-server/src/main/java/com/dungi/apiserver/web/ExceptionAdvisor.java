@@ -2,6 +2,8 @@ package com.dungi.apiserver.web;
 
 import com.dungi.common.exception.AuthenticationException;
 import com.dungi.common.exception.BaseException;
+import com.dungi.common.exception.ConflictException;
+import com.dungi.common.exception.NotFoundException;
 import com.dungi.common.response.BaseResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
@@ -54,6 +56,26 @@ public class ExceptionAdvisor {
     @ExceptionHandler(AuthenticationException.class)
     @ResponseBody
     public BaseResponse<?> handleAuthenticationException(AuthenticationException e){
+        String eventId = MDC.get(REQUEST_KEY);
+        log.info("eventId = {} ", eventId, e);
+        return new BaseResponse<>(e.getStatus());
+    }
+
+    // 리소스가 없을 경우 에러 핸들러
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseBody
+    public BaseResponse<?> handleNotFoundException(NotFoundException e){
+        String eventId = MDC.get(REQUEST_KEY);
+        log.info("eventId = {} ", eventId, e);
+        return new BaseResponse<>(e.getStatus());
+    }
+
+    // 클라이언트와 서버의 상태 충돌이 일어날 경우 에러 핸들러
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(ConflictException.class)
+    @ResponseBody
+    public BaseResponse<?> handleConflictException(ConflictException e){
         String eventId = MDC.get(REQUEST_KEY);
         log.info("eventId = {} ", eventId, e);
         return new BaseResponse<>(e.getStatus());

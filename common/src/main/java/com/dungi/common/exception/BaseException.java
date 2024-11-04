@@ -7,5 +7,5 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class BaseException extends RuntimeException {
-    private BaseResponseStatus status;
+    private final BaseResponseStatus status;
 }
