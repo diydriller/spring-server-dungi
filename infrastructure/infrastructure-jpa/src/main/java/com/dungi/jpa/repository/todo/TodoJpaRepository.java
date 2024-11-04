@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TodoJpaRepository extends CrudRepository<Todo,Long> {
+public interface TodoJpaRepository extends CrudRepository<Todo, Long> {
     Optional<Todo> findById(Long id);
 
     @Query(value = "SELECT tt " +
@@ -26,7 +26,7 @@ public interface TodoJpaRepository extends CrudRepository<Todo,Long> {
             " AND tt.deleteStatus=:deleteStatus " +
             " AND tt.finishStatus=:finishStatus " +
             " AND tt.deadline BETWEEN :currentTime AND :todayLastTime",
-    countQuery = "SELECT COUNT(tt.id) FROM TodayTodo tt")
+            countQuery = "SELECT COUNT(tt.id) FROM TodayTodo tt")
     List<TodayTodo> findAllPossibleTodayTodo(
             @Param("roomId") Long roomId,
             @Param("deleteStatus") DeleteStatus deleteStatus,
@@ -40,7 +40,7 @@ public interface TodoJpaRepository extends CrudRepository<Todo,Long> {
     @Query(value = "SELECT rt " +
             " FROM RepeatTodo rt" +
             " WHERE rt.roomId=:roomId AND rt.deleteStatus=:status",
-    countQuery = "SELECT COUNT(rt.id) FROM RepeatTodo rt")
+            countQuery = "SELECT COUNT(rt.id) FROM RepeatTodo rt")
     List<RepeatTodo> findAllPossibleRepeatTodo(
             @Param("roomId") Long roomId,
             @Param("status") DeleteStatus status,
@@ -57,7 +57,7 @@ public interface TodoJpaRepository extends CrudRepository<Todo,Long> {
             " AND t.deleteStatus=:deleteStatus " +
             " AND t.deadline BETWEEN :startDate AND :endDate" +
             " AND u.id IN :userIdList" +
-            " GROUP BY u.id" )
+            " GROUP BY u.id")
     List<GetTodoCountDto> finAllMemberTodoCount(
             @Param("userIdList") List<Long> userIdList,
             @Param("startDate") LocalDateTime start_date,
@@ -65,4 +65,8 @@ public interface TodoJpaRepository extends CrudRepository<Todo,Long> {
             @Param("deleteStatus") DeleteStatus deleteStatus,
             @Param("finishStatus") FinishStatus finishStatus
     );
+
+    @Query("SELECT tt FROM TodayTodo tt " +
+            "WHERE tt.id = :todoId AND tt.roomId = :roomId AND tt.deleteStatus = :deleteStatus")
+    Optional<TodayTodo> findByDeleteStatusAndRoomIdAndId(DeleteStatus deleteStatus, Long roomId, Long todoId);
 }

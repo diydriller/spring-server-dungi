@@ -91,4 +91,16 @@ public class TodoController {
                 ).collect(Collectors.toList());
         return new BaseResponse<>(repeatTodoList);
     }
+
+    @PatchMapping("/room/{roomId}/todo/{todoId}/day")
+    BaseResponse<?> completeTodayTodo(
+            @PathVariable Long roomId,
+            @PathVariable Long todoId,
+            HttpSession session
+    ){
+        var user = (User) session.getAttribute(LOGIN_USER);
+
+        todoService.completeTodayTodo(user.getId(), roomId, todoId);
+        return new BaseResponse<>(SUCCESS);
+    }
 }

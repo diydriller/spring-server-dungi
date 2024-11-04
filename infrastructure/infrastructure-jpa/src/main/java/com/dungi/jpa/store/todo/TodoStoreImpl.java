@@ -1,5 +1,7 @@
 package com.dungi.jpa.store.todo;
 
+import com.dungi.common.exception.NotFoundException;
+import com.dungi.common.response.BaseResponseStatus;
 import com.dungi.common.util.TimeUtil;
 import com.dungi.core.domain.common.DeleteStatus;
 import com.dungi.core.domain.common.FinishStatus;
@@ -77,5 +79,11 @@ public class TodoStoreImpl implements TodoStore {
                 DeleteStatus.NOT_DELETED,
                 FinishStatus.FINISHED
         );
+    }
+
+    @Override
+    public TodayTodo findTodayTodo(Long roomId, Long todoId) {
+        return todoJpaRepository.findByDeleteStatusAndRoomIdAndId(DeleteStatus.NOT_DELETED, roomId, todoId)
+                .orElseThrow(() -> new NotFoundException(BaseResponseStatus.NOT_EXIST_TODO));
     }
 }

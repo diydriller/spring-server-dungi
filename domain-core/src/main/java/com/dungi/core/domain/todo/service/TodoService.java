@@ -16,4 +16,6 @@ public interface TodoService {
     List<GetRepeatTodoDto> getRepeatTodo(Long userId, Long roomId, int page, int size);
 
     List<Long> findBestMember(Long roomId);
+
+    void completeTodayTodo(Long id, Long roomId, Long todoId);
 }
