@@ -6,6 +6,11 @@ import com.dungi.jpa.repository.summary.WeeklyTodoCountJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Component
@@ -33,5 +38,18 @@ public class WeeklyTodoCountStoreImpl implements WeeklyTodoCountStore {
     @Override
     public void saveWeeklyTodoCount(WeeklyTodoCount weeklyTodoCount) {
         weeklyTodoCountJpaRepository.save(weeklyTodoCount);
+    }
+
+    @Override
+    public List<WeeklyTodoCount> getWeeklyTodoCountListInRoom(Long roomId) {
+        var now = LocalDate.now();
+        var weekFields = WeekFields.ISO;
+        var weekOfYear = now.get(weekFields.weekOfYear());
+        var year = now.getYear();
+        return weeklyTodoCountJpaRepository.findAllByRoomIdAndYearAndWeekOfYear(
+                roomId,
+                year,
+                weekOfYear
+        );
     }
 }

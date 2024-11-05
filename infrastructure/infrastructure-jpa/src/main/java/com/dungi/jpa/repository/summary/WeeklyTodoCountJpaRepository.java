@@ -4,6 +4,7 @@ import com.dungi.core.domain.summary.model.WeeklyTodoCount;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -14,5 +15,11 @@ public interface WeeklyTodoCountJpaRepository extends JpaRepository<WeeklyTodoCo
             Integer year,
             Integer weekOfYear,
             Integer dayOfWeek
+    );
+
+    List<WeeklyTodoCount> findAllByRoomIdAndYearAndWeekOfYear(
+            Long roomId,
+            Integer year,
+            Integer weekOfYear
     );
 }
