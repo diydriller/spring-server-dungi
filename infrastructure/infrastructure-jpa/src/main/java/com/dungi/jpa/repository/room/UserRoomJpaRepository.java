@@ -3,6 +3,7 @@ package com.dungi.jpa.repository.room;
 import com.dungi.core.domain.common.DeleteStatus;
 import com.dungi.core.domain.room.model.Room;
 import com.dungi.core.domain.room.model.UserRoom;
+import com.dungi.core.domain.user.model.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -40,11 +41,8 @@ public interface UserRoomJpaRepository extends CrudRepository<UserRoom, Long> {
             @Param("status") DeleteStatus status
     );
 
-    @Query("SELECT ur.userId " +
-            " FROM UserRoom ur " +
-            " INNER JOIN User u ON ur.userId=u.id" +
-            " WHERE ur.room=:room AND ur.deleteStatus=:status AND u.deleteStatus=:status")
-    List<Long> findAllMemberId(
-            @Param("room") Room room,
-            @Param("status") DeleteStatus status);
+    @Query("SELECT u FROM UserRoom ur " +
+            "JOIN User u ON ur.userId=u.id " +
+            "WHERE ur.room.id = :roomId AND ur.deleteStatus = :status AND u.deleteStatus = :status")
+    List<User> findAllMemberByRoomId(Long roomId, DeleteStatus status);
 }

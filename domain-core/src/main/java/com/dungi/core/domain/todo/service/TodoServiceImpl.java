@@ -1,6 +1,7 @@
 package com.dungi.core.domain.todo.service;
 
 import com.dungi.common.util.TimeUtil;
+import com.dungi.core.domain.summary.event.UpdateWeeklyTodoCountEvent;
 import com.dungi.core.domain.todo.dto.GetRepeatTodoDto;
 import com.dungi.core.domain.todo.model.RepeatDay;
 import com.dungi.core.domain.todo.model.RepeatTodo;
@@ -8,18 +9,22 @@ import com.dungi.core.domain.todo.model.TodayTodo;
 import com.dungi.core.infrastructure.store.room.RoomStore;
 import com.dungi.core.infrastructure.store.todo.TodoStore;
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.dungi.core.domain.user.model.User;
+
 
 @Service
 @AllArgsConstructor
 public class TodoServiceImpl implements TodoService {
     private final TodoStore todoStore;
     private final RoomStore roomStore;
+    private final ApplicationEventPublisher publisher;
 
     // 오늘 할일 생성 기능
     // 유저가 방에 입장해있는지 확인 - 오늘 할일 생성
@@ -77,7 +82,9 @@ public class TodoServiceImpl implements TodoService {
     @Transactional(readOnly = true)
     public List<Long> findBestMember(Long roomId) {
         var room = roomStore.getRoom(roomId);
-        var memberIdList = roomStore.findAllMemberId(room);
+        var memberIdList = roomStore.getAllMemberInRoom(room).stream()
+                .map(User::getId)
+                .collect(Collectors.toList());
 
         var memberTodoCountList = todoStore.findAllMemberTodoCount(
                 memberIdList,
@@ -96,6 +103,22 @@ public class TodoServiceImpl implements TodoService {
             }
         }
         return bestMemberList;
+    }
+
+    // 오늘 할일 완료 기능
+    // 유저가 방에 입장해있는지 검증 - 마감기한이 지나지 않은 경우 오늘 할일 완료 - 주간 요일별 할일 통계 업데이트
+    @Transactional
+    public void completeTodayTodo(Long userId, Long roomId, Long todoId) {
+        roomStore.getRoomEnteredByUser(userId, roomId);
+        var todo = todoStore.findTodayTodo(roomId, todoId);
+        todo.complete();
+
+        publisher.publishEvent(
+                UpdateWeeklyTodoCountEvent.builder()
+                        .userId(userId)
+                        .roomId(roomId)
+                        .build()
+        );
     }
 
     private List<RepeatDay> dayStrToRepeatDay(String days) {

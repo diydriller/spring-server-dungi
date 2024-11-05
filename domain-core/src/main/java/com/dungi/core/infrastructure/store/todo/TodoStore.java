@@ -24,4 +24,6 @@ public interface TodoStore {
             LocalDateTime startDate,
             LocalDateTime endDate
     );
+
+    TodayTodo findTodayTodo(Long roomId, Long todoId);
 }

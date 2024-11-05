@@ -1,4 +1,4 @@
-package com.dungi.apiserver.application.notice.dto;
+package com.dungi.apiserver.application.summary.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -130,6 +130,18 @@ create table if not exists notice_vote (
                              primary key (id)
 ) engine=InnoDB;
 
+create table weekly_todo_count (
+                                   id bigint not null auto_increment,
+                                   created_time datetime(6),
+                                   modified_time datetime(6),
+                                   day_of_week integer,
+                                   room_id bigint,
+                                   todo_count bigint,
+                                   user_id bigint,
+                                   week_of_year integer,
+                                   year integer,
+                                   primary key (id)
+) engine=InnoDB
 
 # 테이블 제약사항
 alter table users
@@ -199,4 +211,5 @@ alter table notice_vote
 alter table user_vote_item
     add constraint user_vote_item_idx unique (users_id, vote_item_id);
 
-
+alter table weekly_todo_count
+    add constraint weekly_todo_count_idx unique (room_id, user_id, year, week_of_year, day_of_week)

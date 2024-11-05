@@ -1,9 +1,11 @@
 package com.dungi.apiserver.application.summary.controller;
 
-import com.dungi.apiserver.application.notice.dto.GetNoticeVoteResponseDto;
+import com.dungi.apiserver.application.summary.dto.GetNoticeVoteResponseDto;
+import com.dungi.apiserver.application.summary.dto.GetWeeklyTodoCountResponseDto;
 import com.dungi.common.response.BaseResponse;
 import com.dungi.common.util.TimeUtil;
 import com.dungi.core.domain.summary.service.NoticeVoteService;
+import com.dungi.core.domain.summary.service.WeeklyTodoCountService;
 import com.dungi.core.domain.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +20,9 @@ import static com.dungi.common.util.StringUtil.*;
 
 @RestController
 @RequiredArgsConstructor
-public class NoticeVoteController {
-
+public class SummaryController {
     private final NoticeVoteService noticeVoteService;
+    private final WeeklyTodoCountService weeklyTodoCountService;
 
     @GetMapping(value = "/room/{roomId}/noticeVote")
     public BaseResponse<?> getNoticeVote(
@@ -44,5 +46,18 @@ public class NoticeVoteController {
                         .build()
                 ).collect(Collectors.toList());
         return new BaseResponse<>(noticeVoteList);
+    }
+
+    @GetMapping(value = "/room/{roomId}/weekly-todo-count")
+    public BaseResponse<?> getWeeklyTodoCount(
+            @PathVariable Long roomId
+    ) {
+        var weeklyTodoCountDto = weeklyTodoCountService.getWeeklyTodoCount(roomId);
+        return new BaseResponse<>(
+                GetWeeklyTodoCountResponseDto.from(
+                        weeklyTodoCountDto.getMemberInfoList(),
+                        weeklyTodoCountDto.getWeeklyTodoCountMap()
+                )
+        );
     }
 }

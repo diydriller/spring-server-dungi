@@ -6,6 +6,7 @@ import com.dungi.core.domain.common.DeleteStatus;
 import com.dungi.core.domain.room.dto.GetRoomUserDto;
 import com.dungi.core.domain.room.model.Room;
 import com.dungi.core.domain.room.model.UserRoom;
+import com.dungi.core.domain.user.model.User;
 import com.dungi.core.infrastructure.store.room.RoomStore;
 import com.dungi.jpa.repository.room.RoomJpaRepository;
 import com.dungi.jpa.repository.room.UserRoomJpaRepository;
@@ -91,7 +92,7 @@ public class RoomStoreImpl implements RoomStore {
     }
 
     @Override
-    public List<Long> findAllMemberId(Room room) {
-        return userRoomJpaRepository.findAllMemberId(room, DeleteStatus.NOT_DELETED);
+    public List<User> getAllMemberInRoom(Room room) {
+        return userRoomJpaRepository.findAllMemberByRoomId(room.getId(), DeleteStatus.NOT_DELETED);
     }
 }
