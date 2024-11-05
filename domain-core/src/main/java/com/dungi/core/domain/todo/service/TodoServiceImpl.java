@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.dungi.core.domain.user.model.User;
+
 
 @Service
 @AllArgsConstructor
@@ -80,7 +82,9 @@ public class TodoServiceImpl implements TodoService {
     @Transactional(readOnly = true)
     public List<Long> findBestMember(Long roomId) {
         var room = roomStore.getRoom(roomId);
-        var memberIdList = roomStore.findAllMemberId(room);
+        var memberIdList = roomStore.getAllMemberInRoom(room).stream()
+                .map(User::getId)
+                .collect(Collectors.toList());
 
         var memberTodoCountList = todoStore.findAllMemberTodoCount(
                 memberIdList,
