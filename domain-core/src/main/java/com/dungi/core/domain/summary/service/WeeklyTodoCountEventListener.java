@@ -21,7 +21,7 @@ public class WeeklyTodoCountEventListener {
     @TransactionalEventListener
     public void updateWeeklyTodoCount(UpdateWeeklyTodoCountEvent event) {
         var now = LocalDate.now();
-        var weekFields = WeekFields.of(Locale.getDefault());
+        var weekFields = WeekFields.ISO;
         var weekOfYear = now.get(weekFields.weekOfYear());
         var dayOfWeek = now.get(weekFields.dayOfWeek());
         var year = now.getYear();
