@@ -5,7 +5,7 @@ import com.dungi.apiserver.application.summary.dto.GetWeeklyTodoCountResponseDto
 import com.dungi.common.response.BaseResponse;
 import com.dungi.common.util.TimeUtil;
 import com.dungi.core.domain.summary.service.NoticeVoteService;
-import com.dungi.core.domain.summary.service.WeeklyTodoCountService;
+import com.dungi.core.domain.summary.service.WeeklyStatisticService;
 import com.dungi.core.domain.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,7 @@ import static com.dungi.common.util.StringUtil.*;
 @RequiredArgsConstructor
 public class SummaryController {
     private final NoticeVoteService noticeVoteService;
-    private final WeeklyTodoCountService weeklyTodoCountService;
+    private final WeeklyStatisticService weeklyStatisticService;
 
     @GetMapping(value = "/room/{roomId}/noticeVote")
     public BaseResponse<?> getNoticeVote(
@@ -52,7 +52,7 @@ public class SummaryController {
     public BaseResponse<?> getWeeklyTodoCount(
             @PathVariable Long roomId
     ) {
-        var weeklyTodoCountDto = weeklyTodoCountService.getWeeklyTodoCount(roomId);
+        var weeklyTodoCountDto = weeklyStatisticService.getWeeklyTodoCount(roomId);
         return new BaseResponse<>(
                 GetWeeklyTodoCountResponseDto.from(
                         weeklyTodoCountDto.getMemberInfoList(),

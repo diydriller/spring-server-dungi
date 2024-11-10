@@ -2,7 +2,7 @@ package com.dungi.core.domain.summary.service;
 
 import com.dungi.core.domain.summary.event.UpdateWeeklyTodoCountEvent;
 import com.dungi.core.domain.summary.model.WeeklyTodoCount;
-import com.dungi.core.infrastructure.store.summary.WeeklyTodoCountStore;
+import com.dungi.core.infrastructure.store.summary.WeeklyStatisticStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -10,12 +10,11 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
-import java.util.Locale;
 
 @RequiredArgsConstructor
 @Component
-public class WeeklyTodoCountEventListener {
-    private final WeeklyTodoCountStore weeklyTodoCountStore;
+public class WeeklyStatisticEventListener {
+    private final WeeklyStatisticStore weeklyStatisticStore;
 
     @Async
     @TransactionalEventListener
@@ -26,7 +25,7 @@ public class WeeklyTodoCountEventListener {
         var dayOfWeek = now.get(weekFields.dayOfWeek());
         var year = now.getYear();
 
-        weeklyTodoCountStore.getWeeklyTodoCountByUniqueKeys(
+        weeklyStatisticStore.getWeeklyTodoCountByUniqueKeys(
                 event.getRoomId(),
                 event.getUserId(),
                 year,
@@ -43,7 +42,7 @@ public class WeeklyTodoCountEventListener {
                             .weekOfYear(weekOfYear)
                             .dayOfWeek(dayOfWeek)
                             .build();
-                    weeklyTodoCountStore.saveWeeklyTodoCount(weeklyTodoCount);
+                    weeklyStatisticStore.saveWeeklyTodoCount(weeklyTodoCount);
                 }
         );
     }
