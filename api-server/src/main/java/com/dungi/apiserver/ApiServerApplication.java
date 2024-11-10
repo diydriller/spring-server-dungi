@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @ComponentScan(basePackages = {
         "com.dungi.apiserver",
         "com.dungi.rdb",
-        "com.dungi.redis",
+        "com.dungi.cache",
         "com.dungi.core",
         "com.dungi.file",
         "com.dungi.sms",

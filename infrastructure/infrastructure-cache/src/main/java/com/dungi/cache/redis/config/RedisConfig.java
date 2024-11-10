@@ -1,4 +1,4 @@
-package com.dungi.redis.config;
+package com.dungi.cache.redis.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;

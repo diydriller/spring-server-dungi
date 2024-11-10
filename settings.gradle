@@ -6,6 +6,6 @@ include 'common'
 include 'infrastructure:infrastructure-sms'
 include 'infrastructure:infrastructure-file'
 include 'infrastructure:infrastructure-sns'
-include 'infrastructure:infrastructure-redis'
+include 'infrastructure:infrastructure-cache'
 include 'infrastructure:infrastructure-rdb'
 

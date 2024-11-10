@@ -1,4 +1,4 @@
-package com.dungi.redis.repository;
+package com.dungi.cache.redis.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
