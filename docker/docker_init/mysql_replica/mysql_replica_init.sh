@@ -141,7 +141,18 @@ create table weekly_todo_count (
     week_of_year integer,
     year integer,
     primary key (id)
-) engine=InnoDB
+) engine=InnoDB;
+
+create table weekly_top_user (
+                                 id bigint not null auto_increment,
+                                 created_time datetime(6),
+                                 modified_time datetime(6),
+                                 room_id bigint,
+                                 user_id bigint,
+                                 week_of_year integer,
+                                 year integer,
+                                 primary key (id)
+) engine=InnoDB;
 
 alter table users
     add constraint user_idx unique (email);

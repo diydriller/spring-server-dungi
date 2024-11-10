@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = {
         "com.dungi.batchserver",
         "com.dungi.core.infrastructure.store.user",
-        "com.dungi.core.domain.todo",
+        "com.dungi.core.domain.summary",
         "com.dungi.jpa",
         "com.dungi.common"
 })

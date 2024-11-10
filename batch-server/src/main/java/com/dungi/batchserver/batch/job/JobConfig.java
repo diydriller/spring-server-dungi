@@ -1,11 +1,10 @@
 package com.dungi.batchserver.batch.job;
 
-import com.dungi.common.exception.BaseException;
+import com.dungi.batchserver.batch.writer.JpaItemListWriter;
 import com.dungi.core.domain.common.DeleteStatus;
 import com.dungi.core.domain.room.model.Room;
-import com.dungi.core.domain.todo.service.TodoService;
-import com.dungi.core.domain.user.model.User;
-import com.dungi.core.infrastructure.store.user.UserStore;
+import com.dungi.core.domain.summary.model.WeeklyTopUser;
+import com.dungi.core.domain.summary.service.WeeklyStatisticService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -20,27 +19,26 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.EntityManagerFactory;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import static com.dungi.common.response.BaseResponseStatus.NOT_EXIST_BEST_MATE;
+import java.util.stream.Collectors;
 
 @Configuration
 @RequiredArgsConstructor
 public class JobConfig {
     private final JobBuilderFactory job;
     private final EntityManagerFactory entityManagerFactory;
-    private final TodoService todoService;
-    private final UserStore userStore;
+    private final WeeklyStatisticService weeklyStatisticService;
     private final StepBuilderFactory steps;
     private final int chunkSize = 10;
 
     @Bean
     public Step decideBestMemberStep() {
         return steps.get("decideBestMemberStep")
-                .<Room, User>chunk(chunkSize)
+                .<Room, List<WeeklyTopUser>>chunk(chunkSize)
                 .reader(decideBestMemberPagingReader())
                 .processor(decideBestMemberProcessor())
-                .writer(decideBestMemberWriter())
+                .writer(decideBestMemberListWriter())
                 .build();
     }
 
@@ -49,7 +47,7 @@ public class JobConfig {
         Map<String, Object> parameterValues = new HashMap<>();
         parameterValues.put("deleteStatus", DeleteStatus.NOT_DELETED);
         return new JpaPagingItemReaderBuilder<Room>()
-                .queryString("SELECT r FROM Room r WHERE r.deleteStatus=:deleteStatus")
+                .queryString("SELECT r FROM Room r WHERE r.deleteStatus = :deleteStatus")
                 .pageSize(chunkSize)
                 .entityManagerFactory(entityManagerFactory)
                 .parameterValues(parameterValues)
@@ -58,23 +56,23 @@ public class JobConfig {
     }
 
     @Bean
-    public ItemProcessor<Room, User> decideBestMemberProcessor() {
-        return room -> {
-            var bestMemberIdList = todoService.findBestMember(room.getId());
-            if (bestMemberIdList.isEmpty()) {
-                throw new BaseException(NOT_EXIST_BEST_MATE);
-            }
-            var bestMember = userStore.findUserById(bestMemberIdList.get(0));
-            bestMember.increaseBestMateCount();
-            return bestMember;
-        };
+    public ItemProcessor<Room, List<WeeklyTopUser>> decideBestMemberProcessor() {
+        return room ->
+                weeklyStatisticService.decideAndGetWeeklyTopUserInRoom(room.getId()).stream()
+                        .map(weeklyTodoCount -> WeeklyTopUser.builder()
+                                .userId(weeklyTodoCount.getUserId())
+                                .roomId(weeklyTodoCount.getUserId())
+                                .weekOfYear(weeklyTodoCount.getWeekOfYear())
+                                .year(weeklyTodoCount.getYear())
+                                .build())
+                        .collect(Collectors.toList());
     }
 
     @Bean
-    public JpaItemWriter<User> decideBestMemberWriter() {
-        JpaItemWriter<User> writer = new JpaItemWriter<>();
+    public JpaItemListWriter<WeeklyTopUser> decideBestMemberListWriter() {
+        JpaItemWriter<WeeklyTopUser> writer = new JpaItemWriter<>();
         writer.setEntityManagerFactory(entityManagerFactory);
-        return writer;
+        return new JpaItemListWriter<>(writer, entityManagerFactory);
     }
 
     @Bean(name = "decideBestMateJob")
