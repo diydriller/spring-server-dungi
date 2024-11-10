@@ -11,7 +11,7 @@ dependencies {
     implementation project(':infrastructure:infrastructure-sns')
     implementation project(':infrastructure:infrastructure-sms')
     implementation project(':infrastructure:infrastructure-file')
-    implementation project(':infrastructure:infrastructure-jpa')
+    implementation project(':infrastructure:infrastructure-rdb')
     implementation project(':infrastructure:infrastructure-redis')
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.session:spring-session-data-redis'

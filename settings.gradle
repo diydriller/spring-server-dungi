@@ -7,5 +7,5 @@ include 'infrastructure:infrastructure-sms'
 include 'infrastructure:infrastructure-file'
 include 'infrastructure:infrastructure-sns'
 include 'infrastructure:infrastructure-redis'
-include 'infrastructure:infrastructure-jpa'
+include 'infrastructure:infrastructure-rdb'
 
