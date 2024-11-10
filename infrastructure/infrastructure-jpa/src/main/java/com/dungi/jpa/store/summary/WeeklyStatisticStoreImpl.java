@@ -1,13 +1,13 @@
 package com.dungi.jpa.store.summary;
 
 import com.dungi.core.domain.summary.model.WeeklyTodoCount;
+import com.dungi.core.domain.summary.model.WeeklyTopUser;
 import com.dungi.core.infrastructure.store.summary.WeeklyStatisticStore;
 import com.dungi.jpa.repository.summary.WeeklyTodoCountJpaRepository;
+import com.dungi.jpa.repository.summary.WeeklyTopUserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.time.temporal.WeekFields;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class WeeklyStatisticStoreImpl implements WeeklyStatisticStore {
     private final WeeklyTodoCountJpaRepository weeklyTodoCountJpaRepository;
+    private final WeeklyTopUserJpaRepository weeklyTopUserJpaRepository;
 
     @Override
     public Optional<WeeklyTodoCount> getWeeklyTodoCountByUniqueKeys(
@@ -59,6 +60,15 @@ public class WeeklyStatisticStoreImpl implements WeeklyStatisticStore {
             Integer weekOfYear
     ) {
         return weeklyTodoCountJpaRepository.findAllMaxTodoCountUserByRoomIdAndYearAndWeekOfYear(
+                roomId,
+                year,
+                weekOfYear
+        );
+    }
+
+    @Override
+    public List<WeeklyTopUser> getWeeklyTopUser(Long roomId, Integer year, Integer weekOfYear) {
+        return weeklyTopUserJpaRepository.findAllByRoomIdAndYearAndWeekOfYear(
                 roomId,
                 year,
                 weekOfYear

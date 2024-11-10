@@ -1,6 +1,7 @@
 package com.dungi.core.infrastructure.store.summary;
 
 import com.dungi.core.domain.summary.model.WeeklyTodoCount;
+import com.dungi.core.domain.summary.model.WeeklyTopUser;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -30,4 +31,6 @@ public interface WeeklyStatisticStore {
             Integer year,
             Integer weekOfYear
     );
+
+    List<WeeklyTopUser> getWeeklyTopUser(Long roomId, Integer year, Integer weekOfYear);
 }

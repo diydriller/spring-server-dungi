@@ -6,6 +6,7 @@ import com.dungi.core.domain.summary.model.WeeklyTodoCount;
 import com.dungi.core.domain.user.model.User;
 import com.dungi.core.infrastructure.store.room.RoomStore;
 import com.dungi.core.infrastructure.store.summary.WeeklyStatisticStore;
+import com.dungi.core.infrastructure.store.user.UserStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 public class WeeklyStatisticServiceImpl implements WeeklyStatisticService {
     private final WeeklyStatisticStore weeklyStatisticStore;
     private final RoomStore roomStore;
+    private final UserStore userStore;
 
     @Transactional(readOnly = true)
     public WeeklyTodoCountDto getWeeklyTodoCount(Long roomId) {
@@ -68,6 +70,22 @@ public class WeeklyStatisticServiceImpl implements WeeklyStatisticService {
                 year,
                 weekOfYear
         );
+    }
+
+    @Transactional
+    public List<User> getWeeklyTopUser(Long roomId) {
+        var lastWeekDate = LocalDate.now().minusWeeks(1);
+        var weekFields = WeekFields.ISO;
+        var year = lastWeekDate.getYear();
+        var weekOfYear = lastWeekDate.get(weekFields.weekOfYear());
+
+        return weeklyStatisticStore.getWeeklyTopUser(
+                        roomId,
+                        year,
+                        weekOfYear
+                ).stream()
+                .map(weeklyTopUser -> userStore.findUserById(weeklyTopUser.getUserId()))
+                .collect(Collectors.toList());
     }
 
     private Map<Integer, Map<Long, Long>> initializeWeeklyTodoCountMap(List<User> memberList) {

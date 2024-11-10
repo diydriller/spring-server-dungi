@@ -2,6 +2,7 @@ package com.dungi.apiserver.application.summary.controller;
 
 import com.dungi.apiserver.application.summary.dto.GetNoticeVoteResponseDto;
 import com.dungi.apiserver.application.summary.dto.GetWeeklyTodoCountResponseDto;
+import com.dungi.apiserver.application.summary.dto.GetWeeklyTopUserResponseDto;
 import com.dungi.common.response.BaseResponse;
 import com.dungi.common.util.TimeUtil;
 import com.dungi.core.domain.summary.service.NoticeVoteService;
@@ -57,6 +58,22 @@ public class SummaryController {
                 GetWeeklyTodoCountResponseDto.from(
                         weeklyTodoCountDto.getMemberInfoList(),
                         weeklyTodoCountDto.getWeeklyTodoCountMap()
+                )
+        );
+    }
+
+    @GetMapping(value = "/room/{roomId}/weekly-todo-user")
+    public BaseResponse<?> getWeeklyTopUser(
+            @PathVariable Long roomId
+    ) {
+        var userList = weeklyStatisticService.getWeeklyTopUser(roomId);
+        return new BaseResponse<>(
+                userList.stream().map(
+                        user -> GetWeeklyTopUserResponseDto.builder()
+                                .memberId(user.getId())
+                                .memberNickname(user.getNickname())
+                                .memberImageUrl(user.getProfileImg())
+                                .build()
                 )
         );
     }
