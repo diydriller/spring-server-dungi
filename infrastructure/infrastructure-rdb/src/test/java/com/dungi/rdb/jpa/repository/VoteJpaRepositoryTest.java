@@ -1,4 +1,4 @@
-package com.dungi.rdb.repository;
+package com.dungi.rdb.jpa.repository;
 
 import com.dungi.core.domain.vote.model.UserVoteItem;
 import com.dungi.core.domain.vote.model.Vote;
@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.List;
@@ -32,22 +31,40 @@ public class VoteJpaRepositoryTest {
 
     @Autowired
     private VoteJpaRepository voteJpaRepository;
-
     @Autowired
     private TransactionTemplate transaction;
 
     @Test
-    @DisplayName("멤버의 투표 선택이 중복으로 저장되는 문제")
+    @DisplayName("멤버의 투표 선택이 중복으로 저장되면 예외가 발생하는지 테스트")
     void userVoteChoiceNotUniqueTest() throws InterruptedException {
 
         // given
         int threadNum = 5;
-        ExecutorService service = Executors.newFixedThreadPool(threadNum);
-        CountDownLatch latch = new CountDownLatch(threadNum);
+        var savedVoteItem = createVoteItem();
 
-        transaction.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        // when
+        List<Exception> exceptionList = new CopyOnWriteArrayList<>();
+        executeConcurrentTasks(threadNum, () -> {
+            try {
+                transaction.execute(status -> {
+                    createUserVoteItem(savedVoteItem);
+                    return null;
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                exceptionList.add(e);
+            }
+        });
 
-        var savedVoteItem = transaction.execute((status -> {
+        // then
+        Assertions.assertFalse(exceptionList.isEmpty(), "예외가 발생하지 않았습니다.");
+        for (Exception e : exceptionList) {
+            Assertions.assertTrue(e instanceof DataIntegrityViolationException);
+        }
+    }
+
+    private VoteItem createVoteItem() {
+        return transaction.execute(status -> {
             var vote = Vote.builder()
                     .roomId(1L)
                     .userId(1L)
@@ -58,44 +75,36 @@ public class VoteJpaRepositoryTest {
             var voteItem = new VoteItem("선택1");
             voteItem.setVote(vote);
             return voteItemJpaRepository.save(voteItem);
-        }));
-
-        // when
-        List<Exception> exceptionList = new CopyOnWriteArrayList<>();
-        for (int i = 0; i < threadNum; i++) {
-            service.execute(() -> {
-                try {
-                    transaction.execute((status -> {
-                        createUserVoteItem(1L, savedVoteItem);
-                        return null;
-                    }));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    exceptionList.add(e);
-                } finally {
-                    latch.countDown();
-                }
-            });
-        }
-        service.shutdown();
-        latch.await();
-
-        // then
-        Assertions.assertTrue(exceptionList.size() != 0);
-        for (Exception e : exceptionList) {
-            Assertions.assertTrue(e instanceof DataIntegrityViolationException);
-        }
+        });
     }
 
-    private void createUserVoteItem(Long userId, VoteItem voteItem) {
-        userVoteItemJpaRepository.findByUserAndVoteItem(userId, voteItem)
+    private void createUserVoteItem(VoteItem voteItem) {
+        userVoteItemJpaRepository.findByUserAndVoteItem(1L, voteItem)
                 .ifPresentOrElse(
                         (uvi) -> {
                             uvi.changeChoice();
                             userVoteItemJpaRepository.save(uvi);
                         }, () -> {
-                            var userVoteItem = new UserVoteItem(userId, voteItem);
+                            var userVoteItem = new UserVoteItem(1L, voteItem);
                             userVoteItemJpaRepository.save(userVoteItem);
                         });
+    }
+
+    private void executeConcurrentTasks(int threadNum, Runnable task) throws InterruptedException {
+        ExecutorService service = Executors.newFixedThreadPool(threadNum);
+        CountDownLatch latch = new CountDownLatch(threadNum);
+
+        for (int i = 0; i < threadNum; i++) {
+            service.execute(() -> {
+                try {
+                    task.run();
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+
+        service.shutdown();
+        latch.await();
     }
 }

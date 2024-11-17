@@ -1,4 +1,4 @@
-package com.dungi.rdb.repository;
+package com.dungi.rdb.jpa.repository;
 
 import com.dungi.common.exception.BaseException;
 import com.dungi.core.domain.user.model.User;
@@ -22,15 +22,7 @@ public class UserJpaRepositoryTest {
     void saveUserSuccessTest() {
 
         // given
-        var user = User.builder()
-                .email("aaa@naver.com")
-                .name("park")
-                .nickname("monkey")
-                .phoneNumber("01012341234")
-                .provider("local")
-                .profileImg("http://localhost:9002/static/aaa.jpg")
-                .password("encrypted")
-                .build();
+        var user = createUser();
 
         // when
         userJpaRepository.save(user);
@@ -40,10 +32,20 @@ public class UserJpaRepositoryTest {
         assertEquals(user.getId(), savedUser.getId());
     }
 
-    private User findUser(String email){
+    private User createUser() {
+        return User.builder()
+                .email("aaa@naver.com")
+                .name("park")
+                .nickname("monkey")
+                .phoneNumber("01012341234")
+                .provider("local")
+                .profileImg("http://localhost:9002/static/aaa.jpg")
+                .password("encrypted")
+                .build();
+    }
+
+    private User findUser(String email) {
         return userJpaRepository.findByEmail(email)
-                .orElseThrow(() -> {
-                    throw new BaseException(NOT_EXIST_USER);
-                });
+                .orElseThrow(() -> new BaseException(NOT_EXIST_USER));
     }
 }
