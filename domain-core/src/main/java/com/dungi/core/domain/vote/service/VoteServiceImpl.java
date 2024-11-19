@@ -6,10 +6,10 @@ import com.dungi.core.domain.vote.dto.GetVoteItemDto;
 import com.dungi.core.domain.vote.dto.VoteUserDto;
 import com.dungi.core.domain.vote.model.Vote;
 import com.dungi.core.domain.vote.model.VoteItem;
+import com.dungi.core.infrastructure.message.common.MessagePublisher;
 import com.dungi.core.infrastructure.store.room.RoomStore;
 import com.dungi.core.infrastructure.store.vote.VoteStore;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +23,7 @@ import static com.dungi.common.util.StringUtil.VOTE_TYPE;
 public class VoteServiceImpl implements VoteService {
     private final VoteStore voteStore;
     private final RoomStore roomStore;
-    private final ApplicationEventPublisher publisher;
+    private final MessagePublisher messagePublisher;
 
     // 투표 생성 기능
     // 방에 유저 있는지 조회 - 투표 생성 - 조회용 테이블 데이터 생성
@@ -42,8 +42,9 @@ public class VoteServiceImpl implements VoteService {
                 .collect(Collectors.toList());
         var savedVote = voteStore.saveVote(vote, voteItemList);
 
-        publisher.publishEvent(
-                SaveNoticeVoteEvent.builder()
+        messagePublisher.publish(
+                "save-notice-vote"
+                , SaveNoticeVoteEvent.builder()
                         .content(title)
                         .createdTime(savedVote.getCreatedTime())
                         .userId(userId)
