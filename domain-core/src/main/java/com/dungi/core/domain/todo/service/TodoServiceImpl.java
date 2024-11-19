@@ -6,6 +6,7 @@ import com.dungi.core.domain.todo.dto.GetRepeatTodoDto;
 import com.dungi.core.domain.todo.model.RepeatDay;
 import com.dungi.core.domain.todo.model.RepeatTodo;
 import com.dungi.core.domain.todo.model.TodayTodo;
+import com.dungi.core.infrastructure.message.common.MessagePublisher;
 import com.dungi.core.infrastructure.store.room.RoomStore;
 import com.dungi.core.infrastructure.store.todo.TodoStore;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ import com.dungi.core.domain.user.model.User;
 public class TodoServiceImpl implements TodoService {
     private final TodoStore todoStore;
     private final RoomStore roomStore;
-    private final ApplicationEventPublisher publisher;
+    private final MessagePublisher messagePublisher;
 
     // 오늘 할일 생성 기능
     // 유저가 방에 입장해있는지 확인 - 오늘 할일 생성
@@ -113,8 +114,9 @@ public class TodoServiceImpl implements TodoService {
         var todo = todoStore.findTodayTodo(roomId, todoId);
         todo.complete();
 
-        publisher.publishEvent(
-                UpdateWeeklyTodoCountEvent.builder()
+        messagePublisher.publish(
+                "update-weekly-todo-count"
+                , UpdateWeeklyTodoCountEvent.builder()
                         .userId(userId)
                         .roomId(roomId)
                         .build()

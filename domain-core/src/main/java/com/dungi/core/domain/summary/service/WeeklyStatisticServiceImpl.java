@@ -4,6 +4,7 @@ import com.dungi.common.util.TimeUtil;
 import com.dungi.core.domain.summary.dto.WeeklyTodoCountDto;
 import com.dungi.core.domain.summary.model.WeeklyTodoCount;
 import com.dungi.core.domain.user.model.User;
+import com.dungi.core.infrastructure.message.common.MessagePublisher;
 import com.dungi.core.infrastructure.store.room.RoomStore;
 import com.dungi.core.infrastructure.store.summary.WeeklyStatisticStore;
 import com.dungi.core.infrastructure.store.user.UserStore;
