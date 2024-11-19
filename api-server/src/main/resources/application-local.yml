@@ -40,6 +40,10 @@ redis:
       min-idle: 2
       max-active: 8
 
+# kafka 연결 설정
+kafka:
+  broker: host.docker.internal:29092
+
 # local file 설정
 file:
   upload:
