@@ -41,8 +41,10 @@ redis:
       max-active: 8
 
 # kafka 연결 설정
+message:
+  kind: kafka
 kafka:
-  broker: host.docker.internal:29092
+  broker: ${KAFKA_BROKER_URL}
 
 # local file 설정
 file:
