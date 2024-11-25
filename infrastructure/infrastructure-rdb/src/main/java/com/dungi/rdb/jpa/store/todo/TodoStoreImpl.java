@@ -9,7 +9,7 @@ import com.dungi.core.domain.todo.dto.GetTodoCountDto;
 import com.dungi.core.domain.todo.model.RepeatDay;
 import com.dungi.core.domain.todo.model.RepeatTodo;
 import com.dungi.core.domain.todo.model.TodayTodo;
-import com.dungi.core.infrastructure.store.todo.TodoStore;
+import com.dungi.core.integration.store.todo.TodoStore;
 import com.dungi.rdb.jpa.repository.todo.RepeatDayJdbcRepository;
 import com.dungi.rdb.jpa.repository.todo.TodoJpaRepository;
 import lombok.RequiredArgsConstructor;

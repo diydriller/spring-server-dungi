@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.message.common;
+package com.dungi.core.integration.message.common;
 
 import java.util.Map;
 

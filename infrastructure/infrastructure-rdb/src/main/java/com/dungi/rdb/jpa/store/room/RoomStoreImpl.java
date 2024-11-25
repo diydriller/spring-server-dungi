@@ -7,7 +7,7 @@ import com.dungi.core.domain.room.dto.GetRoomUserDto;
 import com.dungi.core.domain.room.model.Room;
 import com.dungi.core.domain.room.model.UserRoom;
 import com.dungi.core.domain.user.model.User;
-import com.dungi.core.infrastructure.store.room.RoomStore;
+import com.dungi.core.integration.store.room.RoomStore;
 import com.dungi.rdb.jpa.repository.room.RoomJpaRepository;
 import com.dungi.rdb.jpa.repository.room.UserRoomJpaRepository;
 import lombok.RequiredArgsConstructor;

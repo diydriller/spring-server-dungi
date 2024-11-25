@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.sns.dto;
+package com.dungi.core.integration.sns.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.store.room;
+package com.dungi.core.integration.store.room;
 
 import com.dungi.core.domain.room.dto.GetRoomUserDto;
 import com.dungi.core.domain.room.model.Room;

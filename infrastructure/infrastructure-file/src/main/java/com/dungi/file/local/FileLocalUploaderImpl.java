@@ -1,6 +1,6 @@
 package com.dungi.file.local;
 
-import com.dungi.core.infrastructure.file.FileUploader;
+import com.dungi.core.integration.file.FileUploader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;

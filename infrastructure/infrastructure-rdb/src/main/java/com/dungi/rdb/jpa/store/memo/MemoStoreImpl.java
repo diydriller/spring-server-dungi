@@ -5,7 +5,7 @@ import com.dungi.common.response.BaseResponseStatus;
 import com.dungi.core.domain.common.DeleteStatus;
 import com.dungi.core.domain.memo.dto.GetMemoDto;
 import com.dungi.core.domain.memo.model.Memo;
-import com.dungi.core.infrastructure.store.memo.MemoStore;
+import com.dungi.core.integration.store.memo.MemoStore;
 import com.dungi.rdb.jpa.repository.memo.MemoJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

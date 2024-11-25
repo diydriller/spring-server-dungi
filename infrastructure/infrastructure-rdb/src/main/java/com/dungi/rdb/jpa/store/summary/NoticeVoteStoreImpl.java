@@ -3,7 +3,7 @@ package com.dungi.rdb.jpa.store.summary;
 import com.dungi.core.domain.common.DeleteStatus;
 import com.dungi.core.domain.summary.dto.GetNoticeVoteDto;
 import com.dungi.core.domain.summary.model.NoticeVote;
-import com.dungi.core.infrastructure.store.summary.NoticeVoteStore;
+import com.dungi.core.integration.store.summary.NoticeVoteStore;
 import com.dungi.rdb.jpa.repository.summary.NoticeVoteJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

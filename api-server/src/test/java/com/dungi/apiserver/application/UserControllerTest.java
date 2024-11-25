@@ -7,7 +7,7 @@ import com.dungi.apiserver.application.user.dto.TokenResponseDto;
 import com.dungi.apiserver.web.TokenProvider;
 import com.dungi.core.domain.user.model.User;
 import com.dungi.core.domain.user.service.UserService;
-import com.dungi.core.infrastructure.store.user.UserCacheStore;
+import com.dungi.core.integration.store.user.UserCacheStore;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

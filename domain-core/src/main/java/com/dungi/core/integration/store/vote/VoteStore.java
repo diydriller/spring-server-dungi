@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.store.vote;
+package com.dungi.core.integration.store.vote;
 
 import com.dungi.core.domain.vote.dto.VoteUserDto;
 import com.dungi.core.domain.vote.model.Vote;

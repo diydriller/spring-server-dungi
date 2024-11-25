@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.sms;
+package com.dungi.core.integration.sms;
 
 import org.springframework.stereotype.Component;
 

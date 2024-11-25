@@ -2,8 +2,8 @@ package com.dungi.core.domain.memo.service;
 
 import com.dungi.core.domain.memo.dto.GetMemoDto;
 import com.dungi.core.domain.memo.model.Memo;
-import com.dungi.core.infrastructure.store.memo.MemoStore;
-import com.dungi.core.infrastructure.store.room.RoomStore;
+import com.dungi.core.integration.store.memo.MemoStore;
+import com.dungi.core.integration.store.room.RoomStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;

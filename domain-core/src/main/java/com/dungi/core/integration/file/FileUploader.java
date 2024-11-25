@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.file;
+package com.dungi.core.integration.file;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;

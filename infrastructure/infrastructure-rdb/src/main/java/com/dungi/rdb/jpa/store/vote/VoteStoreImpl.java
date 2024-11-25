@@ -7,7 +7,7 @@ import com.dungi.core.domain.vote.dto.VoteUserDto;
 import com.dungi.core.domain.vote.model.UserVoteItem;
 import com.dungi.core.domain.vote.model.Vote;
 import com.dungi.core.domain.vote.model.VoteItem;
-import com.dungi.core.infrastructure.store.vote.VoteStore;
+import com.dungi.core.integration.store.vote.VoteStore;
 import com.dungi.rdb.jpa.repository.vote.UserVoteItemJpaRepository;
 import com.dungi.rdb.jpa.repository.vote.VoteItemJdbcRepository;
 import com.dungi.rdb.jpa.repository.vote.VoteItemJpaRepository;

@@ -1,7 +1,7 @@
 package com.dungi.core.domain.room.service;
 
 import com.dungi.core.domain.room.dto.GetRoomDto;
-import com.dungi.core.infrastructure.store.room.RoomStore;
+import com.dungi.core.integration.store.room.RoomStore;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

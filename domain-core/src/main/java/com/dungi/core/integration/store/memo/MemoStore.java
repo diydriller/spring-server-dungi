@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.store.memo;
+package com.dungi.core.integration.store.memo;
 
 import com.dungi.core.domain.memo.dto.GetMemoDto;
 import com.dungi.core.domain.memo.model.Memo;

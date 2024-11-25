@@ -2,7 +2,7 @@ package com.dungi.rdb.jpa.store.summary;
 
 import com.dungi.core.domain.summary.model.WeeklyTodoCount;
 import com.dungi.core.domain.summary.model.WeeklyTopUser;
-import com.dungi.core.infrastructure.store.summary.WeeklyStatisticStore;
+import com.dungi.core.integration.store.summary.WeeklyStatisticStore;
 import com.dungi.rdb.jpa.repository.summary.WeeklyTodoCountJpaRepository;
 import com.dungi.rdb.jpa.repository.summary.WeeklyTopUserJpaRepository;
 import lombok.RequiredArgsConstructor;

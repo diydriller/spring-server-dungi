@@ -2,9 +2,9 @@ package com.dungi.core.domain.notice.service;
 
 import com.dungi.core.domain.notice.model.Notice;
 import com.dungi.core.domain.summary.event.SaveNoticeVoteEvent;
-import com.dungi.core.infrastructure.message.common.MessagePublisher;
-import com.dungi.core.infrastructure.store.notice.NoticeStore;
-import com.dungi.core.infrastructure.store.room.RoomStore;
+import com.dungi.core.integration.message.common.MessagePublisher;
+import com.dungi.core.integration.store.notice.NoticeStore;
+import com.dungi.core.integration.store.room.RoomStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

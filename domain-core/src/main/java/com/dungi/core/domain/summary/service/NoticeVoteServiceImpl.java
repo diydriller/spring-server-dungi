@@ -1,8 +1,8 @@
 package com.dungi.core.domain.summary.service;
 
 import com.dungi.core.domain.summary.dto.GetNoticeVoteDto;
-import com.dungi.core.infrastructure.store.summary.NoticeVoteStore;
-import com.dungi.core.infrastructure.store.room.RoomStore;
+import com.dungi.core.integration.store.summary.NoticeVoteStore;
+import com.dungi.core.integration.store.room.RoomStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

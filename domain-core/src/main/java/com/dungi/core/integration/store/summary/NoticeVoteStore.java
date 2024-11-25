@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.store.summary;
+package com.dungi.core.integration.store.summary;
 
 import com.dungi.core.domain.summary.dto.GetNoticeVoteDto;
 import com.dungi.core.domain.summary.model.NoticeVote;

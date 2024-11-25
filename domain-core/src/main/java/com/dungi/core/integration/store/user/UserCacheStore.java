@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.store.user;
+package com.dungi.core.integration.store.user;
 
 import org.springframework.stereotype.Repository;
 

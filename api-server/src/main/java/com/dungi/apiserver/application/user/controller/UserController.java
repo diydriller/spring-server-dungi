@@ -4,7 +4,7 @@ import com.dungi.apiserver.application.user.dto.*;
 import com.dungi.apiserver.web.TokenProvider;
 import com.dungi.common.response.BaseResponse;
 import com.dungi.core.domain.user.service.UserService;
-import com.dungi.core.infrastructure.store.user.UserCacheStore;
+import com.dungi.core.integration.store.user.UserCacheStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

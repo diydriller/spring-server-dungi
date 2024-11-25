@@ -2,7 +2,7 @@ package com.dungi.core.service;
 
 import com.dungi.core.domain.user.model.User;
 import com.dungi.core.domain.user.service.UserServiceImpl;
-import com.dungi.core.infrastructure.store.user.UserStore;
+import com.dungi.core.integration.store.user.UserStore;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

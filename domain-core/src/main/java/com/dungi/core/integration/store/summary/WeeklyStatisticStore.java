@@ -1,4 +1,4 @@
-package com.dungi.core.infrastructure.store.summary;
+package com.dungi.core.integration.store.summary;
 
 import com.dungi.core.domain.summary.model.WeeklyTodoCount;
 import com.dungi.core.domain.summary.model.WeeklyTopUser;

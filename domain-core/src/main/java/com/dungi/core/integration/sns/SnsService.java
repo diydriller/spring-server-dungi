@@ -1,6 +1,6 @@
-package com.dungi.core.infrastructure.sns;
+package com.dungi.core.integration.sns;
 
-import com.dungi.core.infrastructure.sns.dto.SnsTokenDto;
+import com.dungi.core.integration.sns.dto.SnsTokenDto;
 import org.springframework.stereotype.Component;
 
 @Component

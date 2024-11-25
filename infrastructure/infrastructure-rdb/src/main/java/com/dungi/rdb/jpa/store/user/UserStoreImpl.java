@@ -3,7 +3,7 @@ package com.dungi.rdb.jpa.store.user;
 import com.dungi.common.exception.BaseException;
 import com.dungi.common.response.BaseResponseStatus;
 import com.dungi.core.domain.user.model.User;
-import com.dungi.core.infrastructure.store.user.UserStore;
+import com.dungi.core.integration.store.user.UserStore;
 import com.dungi.rdb.jpa.repository.user.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
