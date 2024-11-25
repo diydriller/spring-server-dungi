@@ -43,15 +43,16 @@ public class VoteServiceImpl implements VoteService {
         var savedVote = voteStore.saveVote(vote, voteItemList);
 
         messagePublisher.publish(
-                "save-notice-vote"
-                , SaveNoticeVoteEvent.builder()
+                SaveNoticeVoteEvent.builder()
                         .content(title)
                         .createdTime(savedVote.getCreatedTime())
                         .userId(userId)
                         .roomId(roomId)
                         .type(VOTE_TYPE)
                         .id(savedVote.getId())
-                        .build()
+                        .build(),
+                Map.of("topic", "save-notice-vote",
+                        "type", "save-notice-vote")
         );
     }
 

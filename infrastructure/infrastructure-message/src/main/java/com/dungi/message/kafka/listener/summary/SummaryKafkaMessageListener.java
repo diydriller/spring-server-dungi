@@ -7,12 +7,14 @@ import com.dungi.core.domain.summary.model.WeeklyTodoCount;
 import com.dungi.core.infrastructure.store.summary.NoticeVoteStore;
 import com.dungi.core.infrastructure.store.summary.WeeklyStatisticStore;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 
+@ConditionalOnProperty(name = "message.kind", havingValue = "kafka")
 @RequiredArgsConstructor
 @Component
 public class SummaryKafkaMessageListener {

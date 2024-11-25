@@ -1,5 +1,7 @@
 package com.dungi.core.infrastructure.message.common;
 
+import java.util.Map;
+
 public interface MessagePublisher {
-    void publish(String topic, Object message);
+    void publish(Object message, Map<String, Object> options);
 }

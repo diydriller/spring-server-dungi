@@ -6,9 +6,10 @@ import com.dungi.core.infrastructure.message.common.MessagePublisher;
 import com.dungi.core.infrastructure.store.notice.NoticeStore;
 import com.dungi.core.infrastructure.store.room.RoomStore;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 import static com.dungi.common.util.StringUtil.NOTICE_TYPE;
 
@@ -34,7 +35,6 @@ public class NoticeServiceImpl implements NoticeService {
         var savedNotice = noticeStore.saveNotice(notice);
 
         messagePublisher.publish(
-                "save-notice-vote",
                 SaveNoticeVoteEvent.builder()
                         .id(savedNotice.getId())
                         .type(NOTICE_TYPE)
@@ -42,7 +42,9 @@ public class NoticeServiceImpl implements NoticeService {
                         .createdTime(savedNotice.getCreatedTime())
                         .roomId(roomId)
                         .userId(userId)
-                        .build()
+                        .build(),
+                Map.of("topic", "save-notice-vote",
+                        "type", "save-notice-vote")
         );
     }
 }

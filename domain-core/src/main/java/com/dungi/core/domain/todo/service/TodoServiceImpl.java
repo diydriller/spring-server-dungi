@@ -6,18 +6,18 @@ import com.dungi.core.domain.todo.dto.GetRepeatTodoDto;
 import com.dungi.core.domain.todo.model.RepeatDay;
 import com.dungi.core.domain.todo.model.RepeatTodo;
 import com.dungi.core.domain.todo.model.TodayTodo;
+import com.dungi.core.domain.user.model.User;
 import com.dungi.core.infrastructure.message.common.MessagePublisher;
 import com.dungi.core.infrastructure.store.room.RoomStore;
 import com.dungi.core.infrastructure.store.todo.TodoStore;
 import lombok.AllArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-import com.dungi.core.domain.user.model.User;
 
 
 @Service
@@ -115,11 +115,12 @@ public class TodoServiceImpl implements TodoService {
         todo.complete();
 
         messagePublisher.publish(
-                "update-weekly-todo-count"
-                , UpdateWeeklyTodoCountEvent.builder()
+                UpdateWeeklyTodoCountEvent.builder()
                         .userId(userId)
                         .roomId(roomId)
-                        .build()
+                        .build(),
+                Map.of("topic", "update-weekly-todo-count",
+                        "type", "update-weekly-todo-count")
         );
     }
 
