@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
         "com.dungi.apiserver",
         "com.dungi.rdb",
         "com.dungi.cache",
+        "com.dungi.message",
         "com.dungi.core",
         "com.dungi.file",
         "com.dungi.sms",

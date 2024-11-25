@@ -40,6 +40,12 @@ redis:
       min-idle: 2
       max-active: 8
 
+# kafka 연결 설정
+message:
+  kind: kafka
+kafka:
+  broker: ${KAFKA_BROKER_URL}
+
 # local file 설정
 file:
   upload:

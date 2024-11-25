@@ -44,11 +44,9 @@ redis:
       max-active: 8
 
 
-# AWS S3 설정
+# AWS 설정
 cloud:
   aws:
-    s3:
-      bucket: diydriller-s3
     credentials:
       access-key: ${AWS_ACCESS_KEY_ID}
       secret-key: ${AWS_ACCESS_KEY_SECRET}
@@ -56,3 +54,10 @@ cloud:
       static: ap-northeast-2
     stack:
       auto: false
+    # S3
+    s3:
+      bucket: diydriller-s3
+    # SQS
+    sqs:
+      queue:
+        url: ${AWS_SQS_URL}

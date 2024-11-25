@@ -1,0 +1,14 @@
+jar {
+    enabled = true
+}
+bootJar {
+    enabled = false
+}
+
+dependencies {
+    implementation project(':common')
+    implementation project(':domain-core')
+    implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.1.RELEASE'
+    implementation 'org.springframework.cloud:spring-cloud-aws-messaging:2.2.3.RELEASE'
+}
