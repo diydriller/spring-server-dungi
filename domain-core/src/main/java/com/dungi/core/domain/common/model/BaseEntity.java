@@ -1,4 +1,4 @@
-package com.dungi.core.domain.common;
+package com.dungi.core.domain.common.model;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

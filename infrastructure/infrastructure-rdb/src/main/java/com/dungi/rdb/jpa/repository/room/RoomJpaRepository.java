@@ -1,6 +1,6 @@
 package com.dungi.rdb.jpa.repository.room;
 
-import com.dungi.core.domain.common.DeleteStatus;
+import com.dungi.core.domain.common.value.DeleteStatus;
 import com.dungi.core.domain.room.model.Room;
 import com.dungi.rdb.dto.room.GetRoomUserDto;
 import org.springframework.data.domain.Pageable;

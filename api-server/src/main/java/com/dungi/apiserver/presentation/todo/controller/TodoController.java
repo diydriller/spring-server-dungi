@@ -5,6 +5,7 @@ import com.dungi.apiserver.presentation.todo.dto.CreateRepeatTodoRequestDto;
 import com.dungi.apiserver.presentation.todo.dto.CreateTodayTodoRequestDto;
 import com.dungi.apiserver.presentation.todo.dto.GetRepeatTodoResponseDto;
 import com.dungi.apiserver.presentation.todo.dto.GetTodayTodoResponseDto;
+import com.dungi.common.dto.PageDto;
 import com.dungi.common.response.BaseResponse;
 import com.dungi.common.util.TimeUtil;
 import com.dungi.core.domain.user.model.User;
@@ -31,7 +32,11 @@ public class TodoController {
             HttpSession session
     ) {
         var user = (User) session.getAttribute(LOGIN_USER);
-        todoService.createTodayTodo(todoRequestDto.getTodo(), todoRequestDto.getTime(), user.getId(), roomId);
+        todoService.createTodayTodo(
+                todoRequestDto.createTodayTodoDto(),
+                user.getId(),
+                roomId
+        );
         return new BaseResponse<>(SUCCESS);
     }
 
@@ -43,9 +48,7 @@ public class TodoController {
     ) {
         var user = (User) session.getAttribute(LOGIN_USER);
         todoService.createRepeatTodo(
-                requestDto.getTodo(),
-                requestDto.getTime(),
-                requestDto.getDays(),
+                requestDto.createRepeatTodoDto(),
                 user.getId(),
                 roomId
         );
@@ -60,7 +63,14 @@ public class TodoController {
             HttpSession session
     ) {
         var user = (User) session.getAttribute(LOGIN_USER);
-        var todayTodo = todoService.getTodayTodo(user.getId(), roomId, page, size).stream()
+        var todayTodo = todoService.getTodayTodo(
+                        PageDto.builder()
+                                .userId(user.getId())
+                                .roomId(roomId)
+                                .page(page)
+                                .size(size)
+                                .build()
+                ).stream()
                 .map(t -> GetTodayTodoResponseDto.builder()
                         .todo(t.getTodoItem())
                         .todoId(t.getId())
@@ -80,7 +90,14 @@ public class TodoController {
     ) {
         var user = (User) session.getAttribute(LOGIN_USER);
 
-        var repeatTodoList = todoService.getRepeatTodo(user.getId(), roomId, page, size).stream()
+        var repeatTodoList = todoService.getRepeatTodo(
+                        PageDto.builder()
+                                .roomId(roomId)
+                                .userId(user.getId())
+                                .page(page)
+                                .size(size)
+                                .build()
+                ).stream()
                 .map(t -> GetRepeatTodoResponseDto.builder()
                         .todoId(t.getTodoId())
                         .todo(t.getTodo())

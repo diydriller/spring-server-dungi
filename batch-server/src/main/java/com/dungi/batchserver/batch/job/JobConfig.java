@@ -1,7 +1,7 @@
 package com.dungi.batchserver.batch.job;
 
 import com.dungi.batchserver.batch.writer.JpaItemListWriter;
-import com.dungi.core.domain.common.DeleteStatus;
+import com.dungi.core.domain.common.value.DeleteStatus;
 import com.dungi.core.domain.room.model.Room;
 import com.dungi.core.domain.summary.model.WeeklyTopUser;
 import com.dungi.core.domain.summary.service.WeeklyStatisticService;

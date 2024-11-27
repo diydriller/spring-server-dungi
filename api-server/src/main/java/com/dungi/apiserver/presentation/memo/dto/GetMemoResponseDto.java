@@ -16,4 +16,6 @@ public class GetMemoResponseDto {
     private String createdAt;
     private double x;
     private double y;
+
+
 }

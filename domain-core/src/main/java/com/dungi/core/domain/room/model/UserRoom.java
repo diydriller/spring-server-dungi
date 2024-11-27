@@ -1,13 +1,12 @@
 package com.dungi.core.domain.room.model;
 
-import com.dungi.common.exception.BaseException;
-import com.dungi.core.domain.common.BaseEntity;
-import com.dungi.core.domain.common.DeleteStatus;
-import lombok.*;
+import com.dungi.core.domain.common.model.BaseEntity;
+import com.dungi.core.domain.common.value.DeleteStatus;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-import static com.dungi.common.response.BaseResponseStatus.INVALID_VALUE;
 
 
 @Getter
@@ -18,7 +17,7 @@ public class UserRoom extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="users_room_id")
+    @Column(name = "users_room_id")
     private Long id;
 
     @Column(name = "users_id")
@@ -32,24 +31,21 @@ public class UserRoom extends BaseEntity {
     @Column(name = "delete_status")
     private DeleteStatus deleteStatus;
 
-    public UserRoom(Long userId, Room room){
-        if(userId == null) throw new BaseException(INVALID_VALUE);
-        if(room == null) throw new BaseException(INVALID_VALUE);
-
+    public UserRoom(Long userId, Room room) {
         this.userId = userId;
         setRoom(room);
         this.deleteStatus = DeleteStatus.NOT_DELETED;
     }
 
-    public void leave(){
+    public void leave() {
         this.deleteStatus = DeleteStatus.DELETED;
     }
 
-    public void enter(){
+    public void reenter() {
         this.deleteStatus = DeleteStatus.NOT_DELETED;
     }
 
-    private void setRoom(Room room){
+    private void setRoom(Room room) {
         this.room = room;
         room.getUserRoomList().add(this);
     }

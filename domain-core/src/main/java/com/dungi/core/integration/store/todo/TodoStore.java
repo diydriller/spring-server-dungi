@@ -1,9 +1,10 @@
 package com.dungi.core.integration.store.todo;
 
-import com.dungi.core.domain.todo.query.TodoStatistic;
+import com.dungi.common.dto.PageDto;
 import com.dungi.core.domain.todo.model.RepeatDay;
 import com.dungi.core.domain.todo.model.RepeatTodo;
 import com.dungi.core.domain.todo.model.TodayTodo;
+import com.dungi.core.domain.todo.query.TodoStatistic;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -15,11 +16,11 @@ public interface TodoStore {
 
     void saveRepeatTodo(RepeatTodo todo, List<RepeatDay> repeatDayList);
 
-    List<TodayTodo> findTodayTodo(Long roomId, Long userId, int page, int size);
+    List<TodayTodo> getTodayTodo(PageDto dto);
 
-    List<RepeatTodo> findRepeatTodo(Long roomId, Long userId, int page, int size);
+    List<RepeatTodo> getRepeatTodo(PageDto dto);
 
-    List<TodoStatistic> findAllMemberTodoCount(
+    List<TodoStatistic> getAllMemberTodoCount(
             List<Long> userIdList,
             LocalDateTime startDate,
             LocalDateTime endDate

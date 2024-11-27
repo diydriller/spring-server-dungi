@@ -1,5 +1,6 @@
 package com.dungi.apiserver.application.notice.service;
 
+import com.dungi.apiserver.application.notice.dto.CreateNoticeDto;
 import com.dungi.core.domain.notice.model.Notice;
 import com.dungi.core.domain.summary.event.SaveNoticeVoteEvent;
 import com.dungi.core.integration.message.common.MessagePublisher;
@@ -24,13 +25,13 @@ public class NoticeService {
     // 공지 생성 기능
     // 방에 유저 있는지 조회 - 공지 생성 - 조회용 테이블 데이터 생성
     @Transactional
-    public void createNotice(String noticeItem, Long userId, Long roomId) {
-        roomStore.getRoomEnteredByUser(userId, roomId);
+    public void createNotice(CreateNoticeDto dto) {
+        roomStore.getRoomEnteredByUser(dto.getUserId(), dto.getRoomId());
 
         var notice = Notice.builder()
-                .noticeItem(noticeItem)
-                .roomId(roomId)
-                .userId(userId)
+                .noticeItem(dto.getNoticeItem())
+                .roomId(dto.getRoomId())
+                .userId(dto.getUserId())
                 .build();
         var savedNotice = noticeStore.saveNotice(notice);
 
@@ -38,10 +39,10 @@ public class NoticeService {
                 SaveNoticeVoteEvent.builder()
                         .id(savedNotice.getId())
                         .type(NOTICE_TYPE)
-                        .content(noticeItem)
+                        .content(dto.getNoticeItem())
                         .createdTime(savedNotice.getCreatedTime())
-                        .roomId(roomId)
-                        .userId(userId)
+                        .roomId(dto.getRoomId())
+                        .userId(dto.getUserId())
                         .build(),
                 Map.of("topic", "save-notice-vote",
                         "type", "save-notice-vote")

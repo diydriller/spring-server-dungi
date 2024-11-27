@@ -1,6 +1,6 @@
 package com.dungi.rdb.jpa.repository.vote;
 
-import com.dungi.core.domain.common.DeleteStatus;
+import com.dungi.core.domain.common.value.DeleteStatus;
 import com.dungi.core.domain.vote.model.UserVoteItem;
 import com.dungi.core.domain.vote.model.VoteItem;
 import com.dungi.rdb.dto.VoteUserDto;

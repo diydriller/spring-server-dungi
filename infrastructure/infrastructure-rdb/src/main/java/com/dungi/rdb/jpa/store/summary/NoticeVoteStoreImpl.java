@@ -1,6 +1,7 @@
 package com.dungi.rdb.jpa.store.summary;
 
-import com.dungi.core.domain.common.DeleteStatus;
+import com.dungi.common.dto.PageDto;
+import com.dungi.core.domain.common.value.DeleteStatus;
 import com.dungi.core.domain.summary.query.NoticeVoteDetail;
 import com.dungi.core.integration.store.summary.NoticeVoteStore;
 import com.dungi.rdb.jpa.repository.summary.NoticeVoteJpaRepository;
@@ -17,11 +18,11 @@ import java.util.List;
 public class NoticeVoteStoreImpl implements NoticeVoteStore {
     private final NoticeVoteJpaRepository noticeVoteJpaRepository;
 
-    public List<NoticeVoteDetail> getNoticeVote(Long roomId, Long userId, int page, int size) {
+    public List<NoticeVoteDetail> getNoticeVote(PageDto dto) {
 
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "createdTime");
+        PageRequest pageRequest = PageRequest.of(dto.getPage(), dto.getSize(), Sort.Direction.DESC, "createdTime");
         return noticeVoteJpaRepository.findAllNoticeVote(
-                roomId,
+                dto.getRoomId(),
                 DeleteStatus.NOT_DELETED,
                 pageRequest
         );

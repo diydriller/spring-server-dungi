@@ -1,7 +1,7 @@
 package com.dungi.rdb.jpa.repository.todo;
 
-import com.dungi.core.domain.common.DeleteStatus;
-import com.dungi.core.domain.common.FinishStatus;
+import com.dungi.core.domain.common.value.DeleteStatus;
+import com.dungi.core.domain.common.value.FinishStatus;
 import com.dungi.core.domain.todo.model.RepeatTodo;
 import com.dungi.core.domain.todo.model.TodayTodo;
 import com.dungi.core.domain.todo.model.Todo;

@@ -9,7 +9,7 @@ public interface UserStore {
 
     void checkEmailPresent(String email);
 
-    User findUserByEmail(String email);
+    User getUserByEmail(String email);
 
-    User findUserById(Long id);
+    User getUserById(Long id);
 }

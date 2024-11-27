@@ -1,15 +1,14 @@
 package com.dungi.core.domain.room.model;
 
-import com.dungi.common.exception.BaseException;
-import com.dungi.core.domain.common.BaseEntity;
-import com.dungi.core.domain.common.DeleteStatus;
-import lombok.*;
-import org.apache.commons.lang3.StringUtils;
+import com.dungi.core.domain.common.model.BaseEntity;
+import com.dungi.core.domain.common.value.DeleteStatus;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.dungi.common.response.BaseResponseStatus.INVALID_VALUE;
 
 
 @Getter
@@ -31,19 +30,16 @@ public class Room extends BaseEntity {
     @Column(name = "delete_status")
     private DeleteStatus deleteStatus;
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room", cascade = CascadeType.PERSIST)
     private List<UserRoom> userRoomList = new ArrayList<>();
 
-    public Room(String name, String color){
-        if(StringUtils.isEmpty(name)) throw new BaseException(INVALID_VALUE);
-        if(StringUtils.isEmpty(color)) throw new BaseException(INVALID_VALUE);
-
+    public Room(String name, String color) {
         this.color = color;
         this.name = name;
         this.deleteStatus = DeleteStatus.NOT_DELETED;
     }
 
-    public void deactivate(){
+    public void deactivate() {
         this.deleteStatus = DeleteStatus.DELETED;
     }
 }

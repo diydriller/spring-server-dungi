@@ -27,7 +27,11 @@ public class VoteController {
             HttpSession session
     ) {
         var user = (User) session.getAttribute(LOGIN_USER);
-        voteService.createVote(requestDto.getTitle(), requestDto.getChoiceArr(), user.getId(), roomId);
+        voteService.createVote(
+                requestDto.createVoteDto(),
+                user.getId(),
+                roomId
+        );
         return new BaseResponse<>(SUCCESS);
     }
 

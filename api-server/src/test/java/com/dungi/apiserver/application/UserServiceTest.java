@@ -44,7 +44,7 @@ public class UserServiceTest {
 
         given(hashCipher.matches("aaa", user.getPassword()))
                 .willReturn(true);
-        given(userStore.findUserByEmail("aaa@naver.com"))
+        given(userStore.getUserByEmail("aaa@naver.com"))
                 .willReturn(user);
 
         // when

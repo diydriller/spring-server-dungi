@@ -1,29 +1,34 @@
 package com.dungi.core.integration.store.room;
 
-import com.dungi.core.domain.room.query.RoomDetail;
+import com.dungi.common.dto.PageDto;
+import com.dungi.core.domain.common.query.UserDetail;
 import com.dungi.core.domain.room.model.Room;
+import com.dungi.core.domain.room.model.UserRoom;
 import com.dungi.core.domain.user.model.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RoomStore {
     Room getRoomEnteredByUser(Long userId, Long roomId);
 
-    void saveRoom(Long userId, String roomName, String roomColor);
+    void saveRoom(Room room);
 
-    void enterRoom(Long userId, Room room);
+    void saveUserRoom(UserRoom userRoom);
+
+    Optional<UserRoom> getUserRoom(Long userId, Room room);
+
+    Integer countUserRoom(Room room);
 
     Room getRoom(Long roomId);
 
-    void leaveRoom(Long userId, Room room);
-
-    List<Room> getAllRoomEnteredByUser(Long userId, int page, int size);
+    List<Room> getAllRoomEnteredByUser(PageDto dto);
 
     int getRoomMemberCnt(Long roomId);
 
-    List<RoomDetail.RoomUser> getAllMemberInfo(Room room);
+    List<UserDetail> getAllMemberInfo(Room room);
 
     List<User> getAllMemberInRoom(Room room);
 }

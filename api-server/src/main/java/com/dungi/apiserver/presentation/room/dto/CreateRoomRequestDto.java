@@ -1,5 +1,6 @@
 package com.dungi.apiserver.presentation.room.dto;
 
+import com.dungi.apiserver.application.room.dto.CreateRoomDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,13 @@ public class CreateRoomRequestDto {
     private String color;
 
     @NotEmpty(message = "name is empty")
-    @Size(max=10,message = "name's max length is 10")
+    @Size(max = 10, message = "name's max length is 10")
     private String name;
+
+    public CreateRoomDto createRoomDto() {
+        return CreateRoomDto.builder()
+                .color(color)
+                .name(name)
+                .build();
+    }
 }

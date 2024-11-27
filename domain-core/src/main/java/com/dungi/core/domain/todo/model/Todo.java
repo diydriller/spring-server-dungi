@@ -1,7 +1,7 @@
 package com.dungi.core.domain.todo.model;
 
-import com.dungi.core.domain.common.BaseEntity;
-import com.dungi.core.domain.common.DeleteStatus;
+import com.dungi.core.domain.common.model.BaseEntity;
+import com.dungi.core.domain.common.value.DeleteStatus;
 import lombok.*;
 
 import javax.persistence.*;

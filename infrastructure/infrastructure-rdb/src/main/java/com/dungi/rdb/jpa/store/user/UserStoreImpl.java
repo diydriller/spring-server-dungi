@@ -27,14 +27,14 @@ public class UserStoreImpl implements UserStore {
     }
 
     @Override
-    public User findUserByEmail(String email) {
+    public User getUserByEmail(String email) {
         return userJpaRepository.findByEmail(email)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NOT_EXISTS_EMAIL));
     }
 
 
     @Override
-    public User findUserById(Long id) {
+    public User getUserById(Long id) {
         return userJpaRepository.findById(id)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NOT_EXIST_USER));
     }

@@ -1,7 +1,12 @@
 package com.dungi.apiserver.application.memo.service;
 
-import com.dungi.core.domain.memo.query.MemoDetail;
+import com.dungi.apiserver.application.memo.dto.CreateMemoDto;
+import com.dungi.apiserver.application.memo.dto.MoveMemoDto;
+import com.dungi.apiserver.application.memo.dto.UpdateMemoDto;
+import com.dungi.common.exception.BaseException;
+import com.dungi.common.response.BaseResponseStatus;
 import com.dungi.core.domain.memo.model.Memo;
+import com.dungi.core.domain.memo.query.MemoDetail;
 import com.dungi.core.integration.store.memo.MemoStore;
 import com.dungi.core.integration.store.room.RoomStore;
 import lombok.RequiredArgsConstructor;
@@ -23,21 +28,15 @@ public class MemoService {
     // 메모 생성시 캐시 삭제
     @Transactional
     @CacheEvict(key = "#roomId", value = "getMemo")
-    public void createMemo(String memoItem,
-                           String memoColor,
-                           Double xPosition,
-                           Double yPosition,
-                           Long userId,
-                           Long roomId
-    ) {
+    public void createMemo(CreateMemoDto dto, Long roomId, Long userId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
         var memo = Memo.builder()
                 .userId(userId)
                 .roomId(roomId)
-                .memoItem(memoItem)
-                .xPosition(xPosition)
-                .yPosition(yPosition)
-                .memoColor(memoColor)
+                .memoItem(dto.getMemoItem())
+                .xPosition(dto.getXPosition())
+                .yPosition(dto.getYPosition())
+                .memoColor(dto.getMemoColor())
                 .build();
         memoStore.saveMemo(memo);
     }
@@ -49,7 +48,7 @@ public class MemoService {
     @Cacheable(key = "#roomId", value = "getMemo")
     public List<MemoDetail> getMemo(Long roomId, Long userId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
-        return memoStore.findAllMemo(userId, roomId);
+        return memoStore.getAllMemo(userId, roomId);
     }
 
     // 메모 수정 기능
@@ -57,9 +56,13 @@ public class MemoService {
     // 메모 수정시 캐시 삭제
     @Transactional
     @CacheEvict(key = "#roomId", value = "getMemo")
-    public void updateMemo(String memoItem, String memoColor, Long userId, Long roomId, Long memoId) {
+    public void updateMemo(UpdateMemoDto dto, Long roomId, Long userId, Long memoId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
-        memoStore.updateMemo(userId, memoId, memoItem, memoColor);
+        var memo = memoStore.getMemo(memoId);
+        if (memo.getId().equals(memoId)) {
+            throw new BaseException(BaseResponseStatus.AUTHORIZATION_ERROR);
+        }
+        memo.updateMemo(dto.getMemo(), dto.getMemoColor());
     }
 
     // 메모 이동 기능
@@ -67,9 +70,10 @@ public class MemoService {
     // 메모 이동시 캐시 삭제
     @Transactional
     @CacheEvict(key = "#roomId", value = "getMemo")
-    public void moveMemo(Double xPosition, Double yPosition, Long userId, Long roomId, Long memoId) {
+    public void moveMemo(MoveMemoDto dto, Long roomId, Long userId, Long memoId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
-        memoStore.moveMemo(userId, memoId, xPosition, yPosition);
+        var memo = memoStore.getMemo(memoId);
+        memo.move(dto.getX(), dto.getY());
     }
 
     // 메모 삭제 기능
@@ -77,8 +81,12 @@ public class MemoService {
     // 메모 삭제시 캐시 삭제
     @Transactional
     @CacheEvict(key = "#roomId", value = "getMemo")
-    public void deleteMemo(Long userId, Long roomId, Long memoId) {
+    public void deleteMemo(Long roomId, Long userId, Long memoId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
-        memoStore.deleteMemo(userId, memoId);
+        var memo = memoStore.getMemo(memoId);
+        if (memo.getId().equals(memoId)) {
+            throw new BaseException(BaseResponseStatus.AUTHORIZATION_ERROR);
+        }
+        memo.deactivate();
     }
 }

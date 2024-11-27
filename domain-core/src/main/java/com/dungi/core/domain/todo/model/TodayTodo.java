@@ -2,8 +2,8 @@ package com.dungi.core.domain.todo.model;
 
 import com.dungi.common.exception.BaseException;
 import com.dungi.common.exception.ConflictException;
-import com.dungi.core.domain.common.DeleteStatus;
-import com.dungi.core.domain.common.FinishStatus;
+import com.dungi.core.domain.common.value.DeleteStatus;
+import com.dungi.core.domain.common.value.FinishStatus;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

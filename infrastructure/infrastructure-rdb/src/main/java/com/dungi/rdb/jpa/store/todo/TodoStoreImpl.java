@@ -1,14 +1,15 @@
 package com.dungi.rdb.jpa.store.todo;
 
+import com.dungi.common.dto.PageDto;
 import com.dungi.common.exception.NotFoundException;
 import com.dungi.common.response.BaseResponseStatus;
 import com.dungi.common.util.TimeUtil;
-import com.dungi.core.domain.common.DeleteStatus;
-import com.dungi.core.domain.common.FinishStatus;
-import com.dungi.core.domain.todo.query.TodoStatistic;
+import com.dungi.core.domain.common.value.DeleteStatus;
+import com.dungi.core.domain.common.value.FinishStatus;
 import com.dungi.core.domain.todo.model.RepeatDay;
 import com.dungi.core.domain.todo.model.RepeatTodo;
 import com.dungi.core.domain.todo.model.TodayTodo;
+import com.dungi.core.domain.todo.query.TodoStatistic;
 import com.dungi.core.integration.store.todo.TodoStore;
 import com.dungi.rdb.dto.todo.GetTodoCountDto;
 import com.dungi.rdb.jpa.repository.todo.RepeatDayJdbcRepository;
@@ -42,13 +43,13 @@ public class TodoStoreImpl implements TodoStore {
     }
 
     @Override
-    public List<TodayTodo> findTodayTodo(Long roomId, Long userId, int page, int size) {
+    public List<TodayTodo> getTodayTodo(PageDto dto) {
 
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "createdTime");
+        PageRequest pageRequest = PageRequest.of(dto.getPage(), dto.getSize(), Sort.Direction.DESC, "createdTime");
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime todayLastTime = LocalDate.now().plusDays(1).atStartOfDay();
         return todoJpaRepository.findAllPossibleTodayTodo(
-                roomId,
+                dto.getRoomId(),
                 DeleteStatus.NOT_DELETED,
                 FinishStatus.UNFINISHED,
                 currentTime,
@@ -58,18 +59,18 @@ public class TodoStoreImpl implements TodoStore {
     }
 
     @Override
-    public List<RepeatTodo> findRepeatTodo(Long roomId, Long userId, int page, int size) {
+    public List<RepeatTodo> getRepeatTodo(PageDto dto) {
 
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "createdTime");
+        PageRequest pageRequest = PageRequest.of(dto.getPage(), dto.getSize(), Sort.Direction.DESC, "createdTime");
         return todoJpaRepository.findAllPossibleRepeatTodo(
-                roomId,
+                dto.getRoomId(),
                 DeleteStatus.NOT_DELETED,
                 pageRequest
         );
     }
 
     @Override
-    public List<TodoStatistic> findAllMemberTodoCount(
+    public List<TodoStatistic> getAllMemberTodoCount(
             List<Long> userIdList,
             LocalDateTime startDate,
             LocalDateTime endDate

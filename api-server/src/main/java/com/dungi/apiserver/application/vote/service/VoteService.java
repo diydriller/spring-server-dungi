@@ -1,11 +1,13 @@
 package com.dungi.apiserver.application.vote.service;
 
-import com.dungi.core.domain.common.FinishStatus;
-import com.dungi.core.domain.summary.event.SaveNoticeVoteEvent;
+import com.dungi.apiserver.application.vote.dto.CreateVoteDto;
 import com.dungi.apiserver.application.vote.dto.VoteItemInfo;
-import com.dungi.core.domain.vote.query.VoteUserDetail;
+import com.dungi.core.domain.common.value.FinishStatus;
+import com.dungi.core.domain.summary.event.SaveNoticeVoteEvent;
+import com.dungi.core.domain.vote.model.UserVoteItem;
 import com.dungi.core.domain.vote.model.Vote;
 import com.dungi.core.domain.vote.model.VoteItem;
+import com.dungi.core.domain.vote.query.VoteUserDetail;
 import com.dungi.core.integration.message.common.MessagePublisher;
 import com.dungi.core.integration.store.room.RoomStore;
 import com.dungi.core.integration.store.vote.VoteStore;
@@ -28,22 +30,22 @@ public class VoteService {
     // 투표 생성 기능
     // 방에 유저 있는지 조회 - 투표 생성 - 조회용 테이블 데이터 생성
     @Transactional
-    public void createVote(String title, List<String> choiceArr, Long userId, Long roomId) {
+    public void createVote(CreateVoteDto dto, Long userId, Long roomId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
 
         var vote = Vote.builder()
-                .title(title)
+                .title(dto.getTitle())
                 .roomId(roomId)
                 .userId(userId)
                 .build();
-        var voteItemList = choiceArr.stream()
+        var voteItemList = dto.getChoiceList().stream()
                 .map(VoteItem::new)
                 .collect(Collectors.toList());
         var savedVote = voteStore.saveVote(vote, voteItemList);
 
         messagePublisher.publish(
                 SaveNoticeVoteEvent.builder()
-                        .content(title)
+                        .content(dto.getTitle())
                         .createdTime(savedVote.getCreatedTime())
                         .userId(userId)
                         .roomId(roomId)
@@ -108,6 +110,15 @@ public class VoteService {
     public void createVoteChoice(Long roomId, Long userId, Long voteId, Long choiceId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
         var voteItem = voteStore.getVoteItem(choiceId, voteId);
-        voteStore.createVoteChoice(userId, voteItem);
+        voteStore.getVoteChoice(userId, voteItem)
+                .ifPresentOrElse(
+                        (userVoteItem) -> {
+                            userVoteItem.changeChoice();
+                            voteStore.saveUserVoteChoice(userVoteItem);
+                        }, () -> {
+                            var userVoteItem = new UserVoteItem(userId, voteItem);
+                            voteStore.saveUserVoteChoice(userVoteItem);
+                        }
+                );
     }
 }

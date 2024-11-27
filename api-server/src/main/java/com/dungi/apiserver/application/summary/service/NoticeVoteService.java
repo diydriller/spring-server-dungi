@@ -1,5 +1,6 @@
 package com.dungi.apiserver.application.summary.service;
 
+import com.dungi.common.dto.PageDto;
 import com.dungi.core.domain.summary.query.NoticeVoteDetail;
 import com.dungi.core.integration.store.room.RoomStore;
 import com.dungi.core.integration.store.summary.NoticeVoteStore;
@@ -16,8 +17,8 @@ public class NoticeVoteService {
     private final NoticeVoteStore noticeVoteStore;
 
     @Transactional(readOnly = true)
-    public List<NoticeVoteDetail> getNoticeVote(Long roomId, Long userId, int page, int size) {
-        roomStore.getRoomEnteredByUser(userId, roomId);
-        return noticeVoteStore.getNoticeVote(roomId, userId, page, size);
+    public List<NoticeVoteDetail> getNoticeVote(PageDto dto) {
+        roomStore.getRoomEnteredByUser(dto.getUserId(), dto.getRoomId());
+        return noticeVoteStore.getNoticeVote(dto);
     }
 }

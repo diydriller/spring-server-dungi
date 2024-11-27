@@ -1,5 +1,6 @@
 package com.dungi.core.domain.memo.query;
 
+import com.dungi.core.domain.common.query.UserDetail;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,14 +17,5 @@ public class MemoDetail {
     private LocalDateTime createdTime;
     private Double xPosition;
     private Double yPosition;
-    private MemoUser memoUser;
-
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    public static class MemoUser{
-        private Long userId;
-        private String profileImg;
-        private String nickname;
-    }
+    private UserDetail memoUser;
 }

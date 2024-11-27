@@ -1,5 +1,7 @@
 package com.dungi.apiserver.application.user.service;
 
+import com.dungi.apiserver.application.user.dto.CreateSnsUserDto;
+import com.dungi.apiserver.application.user.dto.CreateUserDto;
 import com.dungi.common.exception.BaseException;
 import com.dungi.common.util.StringUtil;
 import com.dungi.core.domain.user.model.User;
@@ -12,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import static com.dungi.common.response.BaseResponseStatus.*;
 import static com.dungi.common.util.NumberUtil.CODE_DURATION;
@@ -30,22 +31,16 @@ public class UserService {
     // 회원가입 기능
     // 이메일 중복 여부 - 이미지 업로드 - 비밀번호 암호화 - 유저 저장
     @Transactional
-    public void createUser(String email,
-                           MultipartFile file,
-                           String password,
-                           String name,
-                           String nickname,
-                           String phoneNumber
-    ) throws Exception {
-        checkEmailPresent(email);
-        String imageDownUrl = fileUploader.imageUpload(file);
-        String hashedPassword = passwordEncoder.encode(password);
+    public void createUser(CreateUserDto dto) throws Exception {
+        checkEmailPresent(dto.getEmail());
+        String imageDownUrl = fileUploader.imageUpload(dto.getImg());
+        String hashedPassword = passwordEncoder.encode(dto.getPassword());
         var user = User.builder()
-                .email(email)
+                .email(dto.getEmail())
                 .password(hashedPassword)
-                .name(name)
-                .phoneNumber(phoneNumber)
-                .nickname(nickname)
+                .name(dto.getName())
+                .phoneNumber(dto.getPhoneNumber())
+                .nickname(dto.getNickname())
                 .profileImg(imageDownUrl)
                 .provider("local")
                 .build();
@@ -76,25 +71,20 @@ public class UserService {
     // SNS 회원가입 기능
     // 이메일 검증 - 이메일 중복 확인 - 이미지 업로드 - 유저 저장
     @Transactional
-    public void createSnsUser(String email,
-                              String nickname,
-                              String kakaoImg,
-                              String accessToken,
-                              MultipartFile file
-    ) throws Exception {
-        String kakaoEmail = snsService.getSnsInfo(accessToken);
-        if (!email.equals(kakaoEmail)) {
+    public void createSnsUser(CreateSnsUserDto dto) throws Exception {
+        String kakaoEmail = snsService.getSnsInfo(dto.getAccessToken());
+        if (!dto.getEmail().equals(kakaoEmail)) {
             throw new BaseException(NOT_EXISTS_EMAIL);
         }
-        checkEmailPresent(email);
-        String imageDownUrl = kakaoImg;
+        checkEmailPresent(dto.getEmail());
+        String imageDownUrl = dto.getKakaoImg();
         if (imageDownUrl == null) {
-            imageDownUrl = fileUploader.imageUpload(file);
+            imageDownUrl = fileUploader.imageUpload(dto.getProfileImg());
         }
 
         User user = User.builder()
-                .nickname(nickname)
-                .email(email)
+                .nickname(dto.getNickname())
+                .email(dto.getEmail())
                 .profileImg(imageDownUrl)
                 .provider("kakao")
                 .build();
@@ -105,7 +95,7 @@ public class UserService {
     // 이메일 조회 - 비밀번호 일치여부
     @Transactional(readOnly = true)
     public User login(String email, String password) {
-        User user = userStore.findUserByEmail(email);
+        User user = userStore.getUserByEmail(email);
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new BaseException(PASSWORD_NOT_EQUAL);
         }
@@ -121,7 +111,7 @@ public class UserService {
         if (!email.equals(kakaoEmail)) {
             throw new BaseException(KAKAO_LOGIN_FAIL);
         }
-        return userStore.findUserByEmail(email);
+        return userStore.getUserByEmail(email);
     }
 
     // 카카오 토큰 가져오기 메서드

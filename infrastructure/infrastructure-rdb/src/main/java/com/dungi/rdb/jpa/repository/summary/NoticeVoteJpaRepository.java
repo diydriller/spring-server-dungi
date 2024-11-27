@@ -1,6 +1,6 @@
 package com.dungi.rdb.jpa.repository.summary;
 
-import com.dungi.core.domain.common.DeleteStatus;
+import com.dungi.core.domain.common.value.DeleteStatus;
 import com.dungi.core.domain.summary.query.NoticeVoteDetail;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;

@@ -1,8 +1,11 @@
 package com.dungi.apiserver.application.todo.service;
 
+import com.dungi.apiserver.application.todo.dto.CreateRepeatTodoDto;
+import com.dungi.apiserver.application.todo.dto.CreateTodayTodoDto;
+import com.dungi.apiserver.application.todo.dto.GetRepeatTodoDto;
+import com.dungi.common.dto.PageDto;
 import com.dungi.common.util.TimeUtil;
 import com.dungi.core.domain.summary.event.UpdateWeeklyTodoCountEvent;
-import com.dungi.apiserver.application.todo.dto.GetRepeatTodoDto;
 import com.dungi.core.domain.todo.model.RepeatDay;
 import com.dungi.core.domain.todo.model.RepeatTodo;
 import com.dungi.core.domain.todo.model.TodayTodo;
@@ -30,13 +33,13 @@ public class TodoService {
     // 오늘 할일 생성 기능
     // 유저가 방에 입장해있는지 확인 - 오늘 할일 생성
     @Transactional
-    public void createTodayTodo(String todoItem, String time, Long userId, Long roomId) {
+    public void createTodayTodo(CreateTodayTodoDto dto, Long userId, Long roomId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
         var todayTodo = TodayTodo.builder()
-                .todoItem(todoItem)
+                .todoItem(dto.getTodo())
                 .roomId(roomId)
                 .userId(userId)
-                .deadline(TimeUtil.timeStrToLocalDateTime(time))
+                .deadline(TimeUtil.timeStrToLocalDateTime(dto.getTime()))
                 .build();
         todoStore.saveTodayTodo(todayTodo);
     }
@@ -44,31 +47,31 @@ public class TodoService {
     // 반복 할일 생성 기능
     // 유저가 방에 입장해있는지 검증 - 반복 할일 생성
     @Transactional
-    public void createRepeatTodo(String todoItem, String time, String days, Long userId, Long roomId) {
+    public void createRepeatTodo(CreateRepeatTodoDto dto, Long userId, Long roomId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
         var repeatTodo = RepeatTodo.builder()
-                .deadline(TimeUtil.timeStrToTodayLocalDateTime(time))
-                .todoItem(todoItem)
+                .deadline(TimeUtil.timeStrToTodayLocalDateTime(dto.getTime()))
+                .todoItem(dto.getTodo())
                 .roomId(roomId)
                 .userId(userId)
                 .build();
-        todoStore.saveRepeatTodo(repeatTodo, dayStrToRepeatDay(days));
+        todoStore.saveRepeatTodo(repeatTodo, dayStrToRepeatDay(dto.getDays()));
     }
 
     // 오늘 할일 조회 기능
     // 유저가 방에 입 장해있는지 검증 - 오늘 할일 조회
     @Transactional(readOnly = true)
-    public List<TodayTodo> getTodayTodo(Long userId, Long roomId, int page, int size) {
-        roomStore.getRoomEnteredByUser(userId, roomId);
-        return todoStore.findTodayTodo(roomId, userId, page, size);
+    public List<TodayTodo> getTodayTodo(PageDto dto) {
+        roomStore.getRoomEnteredByUser(dto.getUserId(), dto.getRoomId());
+        return todoStore.getTodayTodo(dto);
     }
 
     // 반복 할일 조회 기능
     // 유저가 방에 입장해있는지 검증 - 반복 할일 조회
     @Transactional(readOnly = true)
-    public List<GetRepeatTodoDto> getRepeatTodo(Long userId, Long roomId, int page, int size) {
-        roomStore.getRoomEnteredByUser(userId, roomId);
-        return todoStore.findRepeatTodo(roomId, userId, page, size).stream()
+    public List<GetRepeatTodoDto> getRepeatTodo(PageDto dto) {
+        roomStore.getRoomEnteredByUser(dto.getUserId(), dto.getRoomId());
+        return todoStore.getRepeatTodo(dto).stream()
                 .map(rt -> GetRepeatTodoDto.builder()
                         .todo(rt.getTodoItem())
                         .todoId(rt.getId())
@@ -87,7 +90,7 @@ public class TodoService {
                 .map(User::getId)
                 .collect(Collectors.toList());
 
-        var memberTodoCountList = todoStore.findAllMemberTodoCount(
+        var memberTodoCountList = todoStore.getAllMemberTodoCount(
                 memberIdList,
                 TimeUtil.startOfWeek(),
                 TimeUtil.endOfWeek()

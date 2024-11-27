@@ -31,22 +31,14 @@ public class UserController {
     public BaseResponse<?> join(
             @Valid JoinRequestDto request
     ) throws Exception {
-
-        userService.createUser(
-                request.getEmail(),
-                request.getImg(),
-                request.getPassword(),
-                request.getName(),
-                request.getNickname(),
-                request.getPhoneNumber()
-        );
+        userService.createUser(request.createUserDto());
         return new BaseResponse<>(SUCCESS);
     }
 
     @PostMapping("/check/email")
     public BaseResponse<?> checkEmail(
             @RequestBody @Valid CheckEmailRequestDto requestDto
-    ) throws Exception {
+    ) {
         userService.checkEmailPresent(requestDto.getEmail());
         return new BaseResponse<>(SUCCESS);
     }
@@ -54,7 +46,7 @@ public class UserController {
     @PostMapping(value = "/phone")
     public BaseResponse<?> sendSms(
             @RequestBody @Valid SendSmsRequestDto requestDto
-    ) throws Exception {
+    ) {
         userService.sendSms(requestDto.getPhoneNumber());
         return new BaseResponse<>(SUCCESS);
     }
@@ -62,7 +54,7 @@ public class UserController {
     @PostMapping("/check/phone")
     public BaseResponse<?> checkCode(
             @RequestBody @Valid CheckCodeRequestDto requestDto
-    ) throws Exception {
+    ) {
         userService.compareCode(requestDto.getCode(), requestDto.getPhoneNumber());
         return new BaseResponse<>(SUCCESS);
     }
@@ -75,11 +67,7 @@ public class UserController {
     public BaseResponse<?> kakaoJoin(
             @Valid SnsJoinRequestDto requestDto) throws Exception {
         userService.createSnsUser(
-                requestDto.getEmail(),
-                requestDto.getNickname(),
-                requestDto.getKakaoImg(),
-                requestDto.getAccess_token(),
-                requestDto.getProfileImg()
+                requestDto.createSnsUserDto()
         );
         return new BaseResponse<>(SUCCESS);
     }
@@ -95,7 +83,7 @@ public class UserController {
     public BaseResponse<?> login(
             @RequestBody @Valid LoginRequestDto requestDto,
             HttpSession session
-    ) throws Exception {
+    ) {
         var user = userService.login(requestDto.getEmail(), requestDto.getPassword());
         session.setAttribute(LOGIN_USER, user);
         String accessToken = tokenProvider.createAccessToken(user.getEmail());

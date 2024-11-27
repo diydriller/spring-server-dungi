@@ -1,5 +1,6 @@
 package com.dungi.rdb.dto.memo;
 
+import com.dungi.core.domain.common.query.UserDetail;
 import com.dungi.core.domain.memo.query.MemoDetail;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,7 +29,7 @@ public class GetMemoDto {
                 .createdTime(dto.getCreatedTime())
                 .xPosition(dto.getXPosition())
                 .yPosition(dto.getYPosition())
-                .memoUser(MemoDetail.MemoUser.builder()
+                .memoUser(UserDetail.builder()
                         .userId(dto.getUserId())
                         .profileImg(dto.getProfileImg())
                         .build())

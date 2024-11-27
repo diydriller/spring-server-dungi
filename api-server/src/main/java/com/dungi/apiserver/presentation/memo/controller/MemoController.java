@@ -28,14 +28,12 @@ public class MemoController {
             @PathVariable Long roomId,
             @RequestBody @Valid CreateMemoRequestDto memoRequestDto,
             HttpSession session
-    ) throws Exception {
+    ) {
         var user = (User) session.getAttribute(LOGIN_USER);
-        memoService.createMemo(memoRequestDto.getMemo(),
-                memoRequestDto.getMemoColor(),
-                memoRequestDto.getX(),
-                memoRequestDto.getY(),
-                user.getId(),
-                roomId
+        memoService.createMemo(
+                memoRequestDto.createMemoDto(),
+                roomId,
+                user.getId()
         );
         return new BaseResponse<>(SUCCESS);
     }
@@ -44,7 +42,7 @@ public class MemoController {
     BaseResponse<?> getMemo(
             @PathVariable Long roomId,
             HttpSession session
-    ) throws Exception {
+    ) {
         var user = (User) session.getAttribute(LOGIN_USER);
         var memoList = memoService.getMemo(roomId, user.getId()).stream()
                 .map(m -> GetMemoResponseDto.builder()
@@ -69,10 +67,10 @@ public class MemoController {
             HttpSession session
     ) {
         var user = (User) session.getAttribute(LOGIN_USER);
-        memoService.updateMemo(memoRequestDto.getMemo(),
-                memoRequestDto.getMemoColor(),
-                user.getId(),
+        memoService.updateMemo(
+                memoRequestDto.createUpdateMemoDto(),
                 roomId,
+                user.getId(),
                 memoId
         );
         return new BaseResponse<>(SUCCESS);
@@ -86,10 +84,10 @@ public class MemoController {
             HttpSession session
     ) {
         var user = (User) session.getAttribute(LOGIN_USER);
-        memoService.moveMemo(memoRequestDto.getX(),
-                memoRequestDto.getY(),
-                user.getId(),
+        memoService.moveMemo(
+                memoRequestDto.createMemoDto(),
                 roomId,
+                user.getId(),
                 memoId
         );
         return new BaseResponse<>(SUCCESS);
@@ -101,7 +99,7 @@ public class MemoController {
             @PathVariable Long memoId, HttpSession session
     ) {
         var user = (User) session.getAttribute(LOGIN_USER);
-        memoService.deleteMemo(user.getId(), roomId, memoId);
+        memoService.deleteMemo(roomId, user.getId(), memoId);
         return new BaseResponse<>(SUCCESS);
     }
 }

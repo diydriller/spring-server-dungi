@@ -1,5 +1,6 @@
 package com.dungi.apiserver.presentation.memo.dto;
 
+import com.dungi.apiserver.application.memo.dto.CreateMemoDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,4 +22,13 @@ public class CreateMemoRequestDto {
 
     @Digits(integer = 2,fraction = 5)
     private double y;
+
+    public CreateMemoDto createMemoDto(){
+        return CreateMemoDto.builder()
+                .memoItem(memo)
+                .memoColor(memoColor)
+                .xPosition(x)
+                .yPosition(y)
+                .build();
+    }
 }

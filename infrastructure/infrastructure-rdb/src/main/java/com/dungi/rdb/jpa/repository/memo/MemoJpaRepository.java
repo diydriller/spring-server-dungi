@@ -1,6 +1,6 @@
 package com.dungi.rdb.jpa.repository.memo;
 
-import com.dungi.core.domain.common.DeleteStatus;
+import com.dungi.core.domain.common.value.DeleteStatus;
 import com.dungi.core.domain.memo.model.Memo;
 import com.dungi.rdb.dto.memo.GetMemoDto;
 import org.springframework.data.jpa.repository.Query;

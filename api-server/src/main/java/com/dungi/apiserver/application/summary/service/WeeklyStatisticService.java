@@ -84,7 +84,7 @@ public class WeeklyStatisticService {
                         year,
                         weekOfYear
                 ).stream()
-                .map(weeklyTopUser -> userStore.findUserById(weeklyTopUser.getUserId()))
+                .map(weeklyTopUser -> userStore.getUserById(weeklyTopUser.getUserId()))
                 .collect(Collectors.toList());
     }
 

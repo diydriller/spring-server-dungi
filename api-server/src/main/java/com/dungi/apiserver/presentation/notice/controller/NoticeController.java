@@ -29,7 +29,9 @@ public class NoticeController {
             HttpSession session
     ) {
         var user = (User) session.getAttribute(LOGIN_USER);
-        noticeService.createNotice(noticeRequestDto.getNotice(), user.getId(), roomId);
+        noticeService.createNotice(
+                noticeRequestDto.createNoticeDto(roomId, user.getId())
+        );
         return new BaseResponse<>(SUCCESS);
     }
 }

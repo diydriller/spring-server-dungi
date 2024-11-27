@@ -1,7 +1,7 @@
 package com.dungi.core.domain.summary.model;
 
 import com.dungi.common.exception.BaseException;
-import com.dungi.core.domain.common.DeleteStatus;
+import com.dungi.core.domain.common.value.DeleteStatus;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;

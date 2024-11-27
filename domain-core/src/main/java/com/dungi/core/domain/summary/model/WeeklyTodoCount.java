@@ -1,6 +1,6 @@
 package com.dungi.core.domain.summary.model;
 
-import com.dungi.core.domain.common.BaseEntity;
+import com.dungi.core.domain.common.model.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;

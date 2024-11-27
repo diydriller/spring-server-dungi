@@ -1,5 +1,6 @@
 package com.dungi.apiserver.presentation.vote.dto;
 
+import com.dungi.apiserver.application.vote.dto.CreateVoteDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,13 @@ public class CreateVoteRequestDto {
     @NotEmpty(message = "title is empty")
     private String title;
 
-    @Size(min=1,message="choiceArr is empty")
-    private List<@NotEmpty(message = "choice is empty") String> choiceArr = new ArrayList<>();
+    @Size(min = 1, message = "choiceList is empty")
+    private List<@NotEmpty(message = "choice is empty") String> choiceList = new ArrayList<>();
+
+    public CreateVoteDto createVoteDto() {
+        return CreateVoteDto.builder()
+                .choiceList(choiceList)
+                .title(title)
+                .build();
+    }
 }

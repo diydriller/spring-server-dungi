@@ -1,5 +1,6 @@
 package com.dungi.core.domain.room.query;
 
+import com.dungi.core.domain.common.query.UserDetail;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,15 +17,6 @@ public class RoomDetail {
     private String roomName;
     private String roomColor;
     @Builder.Default
-    private List<RoomUser> roomUserList = new ArrayList<>();
-
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    public static class RoomUser {
-        private Long userId;
-        private String profileImg;
-        private String nickname;
-    }
+    private List<UserDetail> roomUserList = new ArrayList<>();
 }
 
