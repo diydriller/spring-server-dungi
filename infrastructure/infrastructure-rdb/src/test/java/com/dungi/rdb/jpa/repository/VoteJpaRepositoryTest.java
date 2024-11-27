@@ -22,7 +22,6 @@ import java.util.concurrent.Executors;
 
 @DataJpaTest
 public class VoteJpaRepositoryTest {
-
     @Autowired
     private UserVoteItemJpaRepository userVoteItemJpaRepository;
 

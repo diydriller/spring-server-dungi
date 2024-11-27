@@ -1,6 +1,7 @@
 package com.dungi.apiserver.application;
 
 import com.dungi.apiserver.application.user.service.UserService;
+import com.dungi.common.value.Provider;
 import com.dungi.core.domain.user.model.User;
 import com.dungi.core.integration.store.user.UserStore;
 import org.junit.jupiter.api.DisplayName;
@@ -37,7 +38,7 @@ public class UserServiceTest {
                 .name("park")
                 .nickname("monkey")
                 .phoneNumber("01012341234")
-                .provider("local")
+                .provider(Provider.LOCAL)
                 .profileImg("http://localhost:9002/static/aaa.jpg")
                 .password("encrypted")
                 .build();

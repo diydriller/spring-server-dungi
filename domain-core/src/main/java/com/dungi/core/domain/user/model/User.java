@@ -1,15 +1,12 @@
 package com.dungi.core.domain.user.model;
 
-import com.dungi.common.exception.BaseException;
 import com.dungi.core.domain.common.model.BaseEntity;
 import com.dungi.core.domain.common.value.DeleteStatus;
+import com.dungi.common.value.Provider;
 import lombok.*;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
-
-import static com.dungi.common.response.BaseResponseStatus.INVALID_VALUE;
 
 
 @ToString
@@ -40,14 +37,12 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "profile_img")
     private String profileImg;
 
-    private String provider;
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "delete_status")
     private DeleteStatus deleteStatus;
-
-    @Column(name = "best_mate_count")
-    private int bestMateCount;
 
     @Builder
     public User(
@@ -57,15 +52,8 @@ public class User extends BaseEntity implements Serializable {
             String password,
             String phoneNumber,
             String profileImg,
-            String provider
+            Provider provider
     ) {
-        if(StringUtils.isEmpty(nickname)) throw new BaseException(INVALID_VALUE);
-        if(StringUtils.isEmpty(email)) throw new BaseException(INVALID_VALUE);
-        if(StringUtils.isEmpty(password)) throw new BaseException(INVALID_VALUE);
-        if(StringUtils.isEmpty(provider)) throw new BaseException(INVALID_VALUE);
-        if(StringUtils.isEmpty(phoneNumber)) throw new BaseException(INVALID_VALUE);
-        if(StringUtils.isEmpty(name)) throw new BaseException(INVALID_VALUE);
-
         this.name = name;
         this.nickname = nickname;
         this.email = email;
@@ -74,10 +62,5 @@ public class User extends BaseEntity implements Serializable {
         this.profileImg = profileImg;
         this.provider = provider;
         this.deleteStatus = DeleteStatus.NOT_DELETED;
-        this.bestMateCount = 0;
-    }
-
-    public void increaseBestMateCount() {
-        this.bestMateCount++;
     }
 }
