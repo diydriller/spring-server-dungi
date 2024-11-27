@@ -1,6 +1,7 @@
 package com.dungi.apiserver.presentation.user.dto;
 
 import com.dungi.apiserver.application.user.dto.CreateSnsUserDto;
+import com.dungi.common.value.Provider;
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,19 +20,23 @@ public class SnsJoinRequestDto {
     @Size(max = 10, message = "nickname's max length is 10")
     private String nickname;
 
-    private String kakaoImg;
+    private String snsImg;
 
     @NotEmpty(message = "token is empty")
     private String accessToken;
 
     private MultipartFile profileImg;
 
+    @Pattern(regexp = "^(KAKAO)$", message = "Provider must be KAKAO")
+    private String serviceType;
+
     public CreateSnsUserDto createSnsUserDto() {
         return CreateSnsUserDto.builder()
                 .nickname(nickname)
                 .profileImg(profileImg)
                 .accessToken(accessToken)
-                .kakaoImg(kakaoImg)
+                .snsImg(snsImg)
+                .serviceType(Provider.valueOf(serviceType))
                 .email(email)
                 .build();
     }

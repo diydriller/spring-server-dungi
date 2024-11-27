@@ -2,31 +2,52 @@ package com.dungi.apiserver.application.user.service;
 
 import com.dungi.apiserver.application.user.dto.CreateSnsUserDto;
 import com.dungi.apiserver.application.user.dto.CreateUserDto;
+import com.dungi.apiserver.application.user.dto.SnsLoginDto;
 import com.dungi.common.exception.BaseException;
 import com.dungi.common.util.StringUtil;
+import com.dungi.common.value.Provider;
 import com.dungi.core.domain.user.model.User;
 import com.dungi.core.integration.file.FileUploader;
 import com.dungi.core.integration.sms.SmsSender;
-import com.dungi.core.integration.sns.SnsService;
+import com.dungi.core.integration.sns.SnsStrategy;
 import com.dungi.core.integration.store.user.UserCacheStore;
 import com.dungi.core.integration.store.user.UserStore;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.dungi.common.response.BaseResponseStatus.*;
 import static com.dungi.common.util.NumberUtil.CODE_DURATION;
 
 @Service
-@RequiredArgsConstructor
 public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final FileUploader fileUploader;
     private final UserStore userStore;
     private final UserCacheStore userCacheStore;
-    private final SnsService snsService;
     private final SmsSender smsSender;
+    private final Map<Provider, SnsStrategy> snsStrategyMap;
+
+    public UserService(
+            List<SnsStrategy> snsStrategyList,
+            PasswordEncoder passwordEncoder,
+            FileUploader fileUploader,
+            UserStore userStore,
+            UserCacheStore userCacheStore,
+            SmsSender smsSender
+    ) {
+        this.passwordEncoder = passwordEncoder;
+        this.fileUploader = fileUploader;
+        this.userStore = userStore;
+        this.userCacheStore = userCacheStore;
+        this.smsSender = smsSender;
+        this.snsStrategyMap = snsStrategyList.stream()
+                .collect(Collectors.toMap(SnsStrategy::getServiceType, snsStrategy -> snsStrategy));
+    }
 
     // 회원가입 기능
     // 이메일 중복 여부 - 이미지 업로드 - 비밀번호 암호화 - 유저 저장
@@ -42,7 +63,7 @@ public class UserService {
                 .phoneNumber(dto.getPhoneNumber())
                 .nickname(dto.getNickname())
                 .profileImg(imageDownUrl)
-                .provider("local")
+                .provider(Provider.LOCAL)
                 .build();
         userStore.saveUser(user);
     }
@@ -72,12 +93,13 @@ public class UserService {
     // 이메일 검증 - 이메일 중복 확인 - 이미지 업로드 - 유저 저장
     @Transactional
     public void createSnsUser(CreateSnsUserDto dto) throws Exception {
-        String kakaoEmail = snsService.getSnsInfo(dto.getAccessToken());
-        if (!dto.getEmail().equals(kakaoEmail)) {
+        var snsStrategy = snsStrategyMap.get(dto.getServiceType());
+        String snsEmail = snsStrategy.getSnsEmail(dto.getAccessToken());
+        if (!dto.getEmail().equals(snsEmail)) {
             throw new BaseException(NOT_EXISTS_EMAIL);
         }
         checkEmailPresent(dto.getEmail());
-        String imageDownUrl = dto.getKakaoImg();
+        String imageDownUrl = dto.getSnsImg();
         if (imageDownUrl == null) {
             imageDownUrl = fileUploader.imageUpload(dto.getProfileImg());
         }
@@ -86,7 +108,7 @@ public class UserService {
                 .nickname(dto.getNickname())
                 .email(dto.getEmail())
                 .profileImg(imageDownUrl)
-                .provider("kakao")
+                .provider(dto.getServiceType())
                 .build();
         userStore.saveUser(user);
     }
@@ -102,21 +124,22 @@ public class UserService {
         return user;
     }
 
-    // SNS 로그인 기능
+    // sns 로그인 기능
     // 이메일 검증 - 이메일 일치여부 - 이메일 조회
     @Transactional(readOnly = true)
-    public User snsLogin(String email, String accessToken)
-            throws Exception {
-        String kakaoEmail = snsService.getSnsInfo(accessToken);
-        if (!email.equals(kakaoEmail)) {
-            throw new BaseException(KAKAO_LOGIN_FAIL);
+    public User snsLogin(SnsLoginDto dto) throws Exception {
+        var snsStrategy = snsStrategyMap.get(dto.getServiceType());
+        String snsEmail = snsStrategy.getSnsEmail(dto.getAccessToken());
+        if (!dto.getEmail().equals(snsEmail)) {
+            throw new BaseException(SNS_LOGIN_FAIL);
         }
-        return userStore.getUserByEmail(email);
+        return userStore.getUserByEmail(dto.getEmail());
     }
 
-    // 카카오 토큰 가져오기 메서드
-    public String snsToken(String code) throws Exception {
-        return snsService.getSnsToken(code);
+    // sns 토큰 가져오기 메서드
+    public String snsToken(String code, Provider serviceType) throws Exception {
+        var snsStrategy = snsStrategyMap.get(serviceType);
+        return snsStrategy.getSnsToken(code);
     }
 
     // 이메일 조회 메서드

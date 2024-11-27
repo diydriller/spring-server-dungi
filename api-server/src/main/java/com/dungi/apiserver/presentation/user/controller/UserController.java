@@ -4,6 +4,7 @@ import com.dungi.apiserver.application.user.service.UserService;
 import com.dungi.apiserver.presentation.user.dto.*;
 import com.dungi.apiserver.web.TokenProvider;
 import com.dungi.common.response.BaseResponse;
+import com.dungi.common.value.Provider;
 import com.dungi.core.integration.store.user.UserCacheStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -76,7 +77,7 @@ public class UserController {
     public BaseResponse<?> kakaoOauth(
             @RequestParam String code
     ) throws Exception {
-        return new BaseResponse<>(userService.snsToken(code));
+        return new BaseResponse<>(userService.snsToken(code, Provider.KAKAO));
     }
 
     @PostMapping("/login")
@@ -96,12 +97,12 @@ public class UserController {
         );
     }
 
-    @PostMapping("/kakao/login")
-    public BaseResponse<?> kakaoLogin(
+    @PostMapping("/sns/login")
+    public BaseResponse<?> snsLogin(
             @RequestBody @Valid SnsLoginRequestDto requestDto,
             HttpSession session
     ) throws Exception {
-        var user = userService.snsLogin(requestDto.getEmail(), requestDto.getAccess_token());
+        var user = userService.snsLogin(requestDto.createSnsLoginDto());
         session.setAttribute(LOGIN_USER, user);
         String accessToken = tokenProvider.createAccessToken(user.getEmail());
         String refreshToken = tokenProvider.createRefreshToken();
