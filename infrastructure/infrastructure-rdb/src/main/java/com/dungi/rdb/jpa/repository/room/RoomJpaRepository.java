@@ -1,8 +1,8 @@
 package com.dungi.rdb.jpa.repository.room;
 
 import com.dungi.core.domain.common.DeleteStatus;
-import com.dungi.core.domain.room.dto.GetRoomUserDto;
 import com.dungi.core.domain.room.model.Room;
+import com.dungi.rdb.dto.room.GetRoomUserDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -31,7 +31,7 @@ public interface RoomJpaRepository extends CrudRepository<Room, Long> {
             Pageable pageable
     );
 
-    @Query("SELECT new com.dungi.core.domain.room.dto.GetRoomUserDto(u.profileImg, u.nickname) " +
+    @Query("SELECT new com.dungi.rdb.dto.room.GetRoomUserDto(u.profileImg, u.nickname) " +
             " FROM User u INNER JOIN UserRoom ur ON u.id=ur.userId " +
             " WHERE ur.room=:room")
     List<GetRoomUserDto> getAllMemberInfo(

@@ -1,12 +1,12 @@
 package com.dungi.apiserver.presentation.summary.controller;
 
+import com.dungi.apiserver.application.summary.service.NoticeVoteService;
+import com.dungi.apiserver.application.summary.service.WeeklyStatisticService;
 import com.dungi.apiserver.presentation.summary.dto.GetNoticeVoteResponseDto;
 import com.dungi.apiserver.presentation.summary.dto.GetWeeklyTodoCountResponseDto;
 import com.dungi.apiserver.presentation.summary.dto.GetWeeklyTopUserResponseDto;
 import com.dungi.common.response.BaseResponse;
 import com.dungi.common.util.TimeUtil;
-import com.dungi.core.domain.summary.service.NoticeVoteService;
-import com.dungi.core.domain.summary.service.WeeklyStatisticService;
 import com.dungi.core.domain.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

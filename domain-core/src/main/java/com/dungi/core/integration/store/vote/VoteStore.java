@@ -1,6 +1,6 @@
 package com.dungi.core.integration.store.vote;
 
-import com.dungi.core.domain.vote.dto.VoteUserDto;
+import com.dungi.core.domain.vote.query.VoteUserDetail;
 import com.dungi.core.domain.vote.model.Vote;
 import com.dungi.core.domain.vote.model.VoteItem;
 import org.springframework.stereotype.Repository;
@@ -15,7 +15,7 @@ public interface VoteStore {
 
     List<VoteItem> getVoteItemList(Vote vote);
 
-    List<VoteUserDto> getVoteUser(List<VoteItem> voteItemList);
+    List<VoteUserDetail> getVoteUser(List<VoteItem> voteItemList);
 
     void createVoteChoice(Long userId, VoteItem voteItem);
 

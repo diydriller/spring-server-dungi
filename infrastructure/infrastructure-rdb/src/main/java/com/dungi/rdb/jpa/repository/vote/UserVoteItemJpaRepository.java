@@ -1,9 +1,9 @@
 package com.dungi.rdb.jpa.repository.vote;
 
 import com.dungi.core.domain.common.DeleteStatus;
-import com.dungi.core.domain.vote.dto.VoteUserDto;
 import com.dungi.core.domain.vote.model.UserVoteItem;
 import com.dungi.core.domain.vote.model.VoteItem;
+import com.dungi.rdb.dto.VoteUserDto;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserVoteItemJpaRepository extends CrudRepository<UserVoteItem, Long> {
-    @Query("SELECT new com.dungi.core.domain.vote.dto.VoteUserDto(" +
+    @Query("SELECT new com.dungi.rdb.dto.VoteUserDto(" +
             " u.profileImg," +
             " u.nickname," +
             " u.id," +

@@ -1,9 +1,9 @@
 package com.dungi.apiserver.presentation.user.controller;
 
+import com.dungi.apiserver.application.user.service.UserService;
 import com.dungi.apiserver.presentation.user.dto.*;
 import com.dungi.apiserver.web.TokenProvider;
 import com.dungi.common.response.BaseResponse;
-import com.dungi.core.domain.user.service.UserService;
 import com.dungi.core.integration.store.user.UserCacheStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;

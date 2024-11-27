@@ -5,11 +5,12 @@ import com.dungi.common.response.BaseResponseStatus;
 import com.dungi.common.util.TimeUtil;
 import com.dungi.core.domain.common.DeleteStatus;
 import com.dungi.core.domain.common.FinishStatus;
-import com.dungi.core.domain.todo.dto.GetTodoCountDto;
+import com.dungi.core.domain.todo.query.TodoStatistic;
 import com.dungi.core.domain.todo.model.RepeatDay;
 import com.dungi.core.domain.todo.model.RepeatTodo;
 import com.dungi.core.domain.todo.model.TodayTodo;
 import com.dungi.core.integration.store.todo.TodoStore;
+import com.dungi.rdb.dto.todo.GetTodoCountDto;
 import com.dungi.rdb.jpa.repository.todo.RepeatDayJdbcRepository;
 import com.dungi.rdb.jpa.repository.todo.TodoJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -67,18 +69,20 @@ public class TodoStoreImpl implements TodoStore {
     }
 
     @Override
-    public List<GetTodoCountDto> findAllMemberTodoCount(
+    public List<TodoStatistic> findAllMemberTodoCount(
             List<Long> userIdList,
             LocalDateTime startDate,
             LocalDateTime endDate
     ) {
         return todoJpaRepository.finAllMemberTodoCount(
-                userIdList,
-                TimeUtil.startOfWeek(),
-                TimeUtil.endOfWeek(),
-                DeleteStatus.NOT_DELETED,
-                FinishStatus.FINISHED
-        );
+                        userIdList,
+                        TimeUtil.startOfWeek(),
+                        TimeUtil.endOfWeek(),
+                        DeleteStatus.NOT_DELETED,
+                        FinishStatus.FINISHED
+                ).stream()
+                .map(GetTodoCountDto::createTodoStatisticInfo)
+                .collect(Collectors.toList());
     }
 
     @Override

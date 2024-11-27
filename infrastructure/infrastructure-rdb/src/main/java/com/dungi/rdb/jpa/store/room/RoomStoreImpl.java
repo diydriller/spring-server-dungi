@@ -3,11 +3,12 @@ package com.dungi.rdb.jpa.store.room;
 import com.dungi.common.exception.BaseException;
 import com.dungi.common.response.BaseResponseStatus;
 import com.dungi.core.domain.common.DeleteStatus;
-import com.dungi.core.domain.room.dto.GetRoomUserDto;
+import com.dungi.core.domain.room.query.RoomDetail;
 import com.dungi.core.domain.room.model.Room;
 import com.dungi.core.domain.room.model.UserRoom;
 import com.dungi.core.domain.user.model.User;
 import com.dungi.core.integration.store.room.RoomStore;
+import com.dungi.rdb.dto.room.GetRoomUserDto;
 import com.dungi.rdb.jpa.repository.room.RoomJpaRepository;
 import com.dungi.rdb.jpa.repository.room.UserRoomJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -87,8 +89,10 @@ public class RoomStoreImpl implements RoomStore {
     }
 
     @Override
-    public List<GetRoomUserDto> getAllMemberInfo(Room room) {
-        return roomJpaRepository.getAllMemberInfo(room);
+    public List<RoomDetail.RoomUser> getAllMemberInfo(Room room) {
+        return roomJpaRepository.getAllMemberInfo(room).stream()
+                .map(GetRoomUserDto::createRoomUser)
+                .collect(Collectors.toList());
     }
 
     @Override

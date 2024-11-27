@@ -1,6 +1,6 @@
 package com.dungi.apiserver.presentation.summary.dto;
 
-import com.dungi.core.domain.summary.dto.WeeklyTodoCountDto;
+import com.dungi.apiserver.application.summary.dto.WeeklyTodoCountDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

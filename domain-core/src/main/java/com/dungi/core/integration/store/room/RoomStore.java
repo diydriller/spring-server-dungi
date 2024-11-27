@@ -1,6 +1,6 @@
 package com.dungi.core.integration.store.room;
 
-import com.dungi.core.domain.room.dto.GetRoomUserDto;
+import com.dungi.core.domain.room.query.RoomDetail;
 import com.dungi.core.domain.room.model.Room;
 import com.dungi.core.domain.user.model.User;
 import org.springframework.stereotype.Repository;
@@ -23,7 +23,7 @@ public interface RoomStore {
 
     int getRoomMemberCnt(Long roomId);
 
-    List<GetRoomUserDto> getAllMemberInfo(Room room);
+    List<RoomDetail.RoomUser> getAllMemberInfo(Room room);
 
     List<User> getAllMemberInRoom(Room room);
 }

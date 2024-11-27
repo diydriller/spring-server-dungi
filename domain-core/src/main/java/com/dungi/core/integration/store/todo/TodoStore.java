@@ -1,6 +1,6 @@
 package com.dungi.core.integration.store.todo;
 
-import com.dungi.core.domain.todo.dto.GetTodoCountDto;
+import com.dungi.core.domain.todo.query.TodoStatistic;
 import com.dungi.core.domain.todo.model.RepeatDay;
 import com.dungi.core.domain.todo.model.RepeatTodo;
 import com.dungi.core.domain.todo.model.TodayTodo;
@@ -19,7 +19,7 @@ public interface TodoStore {
 
     List<RepeatTodo> findRepeatTodo(Long roomId, Long userId, int page, int size);
 
-    List<GetTodoCountDto> findAllMemberTodoCount(
+    List<TodoStatistic> findAllMemberTodoCount(
             List<Long> userIdList,
             LocalDateTime startDate,
             LocalDateTime endDate

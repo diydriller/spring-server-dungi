@@ -2,10 +2,10 @@ package com.dungi.rdb.jpa.repository.todo;
 
 import com.dungi.core.domain.common.DeleteStatus;
 import com.dungi.core.domain.common.FinishStatus;
-import com.dungi.core.domain.todo.dto.GetTodoCountDto;
 import com.dungi.core.domain.todo.model.RepeatTodo;
 import com.dungi.core.domain.todo.model.TodayTodo;
 import com.dungi.core.domain.todo.model.Todo;
+import com.dungi.rdb.dto.todo.GetTodoCountDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -47,7 +47,7 @@ public interface TodoJpaRepository extends CrudRepository<Todo, Long> {
             Pageable pageable
     );
 
-    @Query(value = "SELECT new com.dungi.core.domain.todo.dto.GetTodoCountDto(" +
+    @Query(value = "SELECT new com.dungi.rdb.dto.todo.GetTodoCountDto(" +
             " u.id," +
             " COUNT(t.id)" +
             " ) " +

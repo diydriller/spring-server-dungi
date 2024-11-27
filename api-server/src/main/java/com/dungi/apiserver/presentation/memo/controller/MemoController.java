@@ -1,12 +1,12 @@
 package com.dungi.apiserver.presentation.memo.controller;
 
+import com.dungi.apiserver.application.memo.service.MemoService;
 import com.dungi.apiserver.presentation.memo.dto.CreateMemoRequestDto;
 import com.dungi.apiserver.presentation.memo.dto.GetMemoResponseDto;
 import com.dungi.apiserver.presentation.memo.dto.MoveMemoRequestDto;
 import com.dungi.apiserver.presentation.memo.dto.UpdateMemoRequestDto;
 import com.dungi.common.response.BaseResponse;
 import com.dungi.common.util.TimeUtil;
-import com.dungi.core.domain.memo.service.MemoService;
 import com.dungi.core.domain.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -50,9 +50,9 @@ public class MemoController {
                 .map(m -> GetMemoResponseDto.builder()
                         .memoId(m.getId())
                         .memoColor(m.getMemoColor())
-                        .profileImg(m.getProfileImg())
+                        .profileImg(m.getMemoUser().getProfileImg())
                         .createdAt(TimeUtil.localDateTimeToTimeStr(m.getCreatedTime()))
-                        .isOwner(m.getUserId().equals(user.getId()))
+                        .isOwner(m.getMemoUser().getUserId().equals(user.getId()))
                         .memo(m.getMemoItem())
                         .x(m.getXPosition())
                         .y(m.getYPosition())

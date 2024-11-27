@@ -1,12 +1,12 @@
 package com.dungi.apiserver.presentation.todo.controller;
 
+import com.dungi.apiserver.application.todo.service.TodoService;
 import com.dungi.apiserver.presentation.todo.dto.CreateRepeatTodoRequestDto;
 import com.dungi.apiserver.presentation.todo.dto.CreateTodayTodoRequestDto;
 import com.dungi.apiserver.presentation.todo.dto.GetRepeatTodoResponseDto;
 import com.dungi.apiserver.presentation.todo.dto.GetTodayTodoResponseDto;
 import com.dungi.common.response.BaseResponse;
 import com.dungi.common.util.TimeUtil;
-import com.dungi.core.domain.todo.service.TodoService;
 import com.dungi.core.domain.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -97,7 +97,7 @@ public class TodoController {
             @PathVariable Long roomId,
             @PathVariable Long todoId,
             HttpSession session
-    ){
+    ) {
         var user = (User) session.getAttribute(LOGIN_USER);
 
         todoService.completeTodayTodo(user.getId(), roomId, todoId);

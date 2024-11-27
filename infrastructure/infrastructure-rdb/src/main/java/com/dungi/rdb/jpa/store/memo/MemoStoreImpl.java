@@ -3,14 +3,16 @@ package com.dungi.rdb.jpa.store.memo;
 import com.dungi.common.exception.BaseException;
 import com.dungi.common.response.BaseResponseStatus;
 import com.dungi.core.domain.common.DeleteStatus;
-import com.dungi.core.domain.memo.dto.GetMemoDto;
+import com.dungi.core.domain.memo.query.MemoDetail;
 import com.dungi.core.domain.memo.model.Memo;
 import com.dungi.core.integration.store.memo.MemoStore;
 import com.dungi.rdb.jpa.repository.memo.MemoJpaRepository;
+import com.dungi.rdb.dto.memo.GetMemoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -23,8 +25,10 @@ public class MemoStoreImpl implements MemoStore {
     }
 
     @Override
-    public List<GetMemoDto> findAllMemo(Long userId, Long roomId) {
-        return memoJpaRepository.findAllMemoInRoom(roomId, DeleteStatus.NOT_DELETED);
+    public List<MemoDetail> findAllMemo(Long userId, Long roomId) {
+        return memoJpaRepository.findAllMemoInRoom(roomId, DeleteStatus.NOT_DELETED).stream()
+                .map(GetMemoDto::createMemoInfo)
+                .collect(Collectors.toList());
     }
 
     @Override

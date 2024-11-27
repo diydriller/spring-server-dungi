@@ -1,8 +1,8 @@
 package com.dungi.apiserver.presentation.notice.controller;
 
+import com.dungi.apiserver.application.notice.service.NoticeService;
 import com.dungi.apiserver.presentation.notice.dto.CreateNoticeRequestDto;
 import com.dungi.common.response.BaseResponse;
-import com.dungi.core.domain.notice.service.NoticeService;
 import com.dungi.core.domain.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;

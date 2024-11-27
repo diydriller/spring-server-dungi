@@ -1,6 +1,7 @@
 package com.dungi.sns.kakao;
 
-import com.dungi.core.integration.sns.dto.SnsTokenDto;
+import com.dungi.sns.kakao.dto.KakaoInfoDto;
+import com.dungi.sns.kakao.dto.SnsTokenDto;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;

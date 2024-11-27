@@ -1,6 +1,6 @@
 package com.dungi.core.integration.store.memo;
 
-import com.dungi.core.domain.memo.dto.GetMemoDto;
+import com.dungi.core.domain.memo.query.MemoDetail;
 import com.dungi.core.domain.memo.model.Memo;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +10,7 @@ import java.util.List;
 public interface MemoStore {
     void saveMemo(Memo memo);
 
-    List<GetMemoDto> findAllMemo(Long userId, Long roomId);
+    List<MemoDetail> findAllMemo(Long userId, Long roomId);
 
     void updateMemo(Long userId, Long memoId, String memoItem, String memoColor);
 

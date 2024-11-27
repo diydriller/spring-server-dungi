@@ -1,8 +1,7 @@
 package com.dungi.rdb.jpa.store.summary;
 
 import com.dungi.core.domain.common.DeleteStatus;
-import com.dungi.core.domain.summary.dto.GetNoticeVoteDto;
-import com.dungi.core.domain.summary.model.NoticeVote;
+import com.dungi.core.domain.summary.query.NoticeVoteDetail;
 import com.dungi.core.integration.store.summary.NoticeVoteStore;
 import com.dungi.rdb.jpa.repository.summary.NoticeVoteJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,7 @@ import java.util.List;
 public class NoticeVoteStoreImpl implements NoticeVoteStore {
     private final NoticeVoteJpaRepository noticeVoteJpaRepository;
 
-    public List<GetNoticeVoteDto> getNoticeVote(Long roomId, Long userId, int page, int size) {
+    public List<NoticeVoteDetail> getNoticeVote(Long roomId, Long userId, int page, int size) {
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "createdTime");
         return noticeVoteJpaRepository.findAllNoticeVote(
@@ -28,7 +27,7 @@ public class NoticeVoteStoreImpl implements NoticeVoteStore {
         );
     }
 
-    public void saveNoticeVote(NoticeVote noticeVote) {
+    public void saveNoticeVote(com.dungi.core.domain.summary.model.NoticeVote noticeVote) {
         noticeVoteJpaRepository.save(noticeVote);
     }
 }

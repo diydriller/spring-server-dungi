@@ -1,10 +1,10 @@
 package com.dungi.apiserver.presentation.vote.controller;
 
+import com.dungi.apiserver.application.vote.service.VoteService;
 import com.dungi.apiserver.presentation.vote.dto.CreateVoteRequestDto;
 import com.dungi.apiserver.presentation.vote.dto.GetVoteItemResponseDto;
 import com.dungi.common.response.BaseResponse;
 import com.dungi.core.domain.user.model.User;
-import com.dungi.core.domain.vote.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

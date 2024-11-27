@@ -1,9 +1,9 @@
 package com.dungi.apiserver.presentation.room.controller;
 
+import com.dungi.apiserver.application.room.service.RoomService;
 import com.dungi.apiserver.presentation.room.dto.CreateRoomRequestDto;
 import com.dungi.apiserver.presentation.room.dto.GetRoomResponseDto;
 import com.dungi.common.response.BaseResponse;
-import com.dungi.core.domain.room.service.RoomService;
 import com.dungi.core.domain.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -61,7 +61,7 @@ public class RoomController {
         var user = (User) session.getAttribute(LOGIN_USER);
         var roomInfoDto = roomService.getAllRoomInfo(user.getId(), page, size);
         var roomInfoRes = new GetRoomResponseDto(
-                roomInfoDto.getRoomInfo().stream()
+                roomInfoDto.stream()
                         .map(ri -> GetRoomResponseDto.RoomInfo.builder()
                                 .roomColor(ri.getRoomColor())
                                 .roomName(ri.getRoomName())

@@ -1,12 +1,12 @@
 package com.dungi.apiserver.presentation;
 
+import com.dungi.apiserver.application.user.service.UserService;
 import com.dungi.apiserver.presentation.user.controller.UserController;
 import com.dungi.apiserver.presentation.user.dto.JoinRequestDto;
 import com.dungi.apiserver.presentation.user.dto.LoginRequestDto;
 import com.dungi.apiserver.presentation.user.dto.TokenResponseDto;
 import com.dungi.apiserver.web.TokenProvider;
 import com.dungi.core.domain.user.model.User;
-import com.dungi.core.domain.user.service.UserService;
 import com.dungi.core.integration.store.user.UserCacheStore;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;

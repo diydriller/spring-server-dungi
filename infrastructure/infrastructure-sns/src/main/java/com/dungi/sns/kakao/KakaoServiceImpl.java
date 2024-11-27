@@ -1,7 +1,8 @@
 package com.dungi.sns.kakao;
 
 import com.dungi.core.integration.sns.SnsService;
-import com.dungi.core.integration.sns.dto.SnsTokenDto;
+import com.dungi.sns.kakao.dto.KakaoInfoDto;
+import com.dungi.sns.kakao.dto.SnsTokenDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import retrofit2.Call;
@@ -47,11 +48,12 @@ public class KakaoServiceImpl implements SnsService {
     }
 
     // 카카오 토큰 가져오기 메서드
-    public SnsTokenDto getSnsToken(String code) throws Exception{
+    public String getSnsToken(String code) throws Exception{
         Call<SnsTokenDto> retrofitCall = kakaoAuthService.getKakaoToken(
                 "authorization_code", kakaoAccountId, kakaoCallbackUri, code, kakaoSecret
                 ,"application/x-www-form-urlencoded");
         Response<SnsTokenDto> response = retrofitCall.execute();
-        return response.body();
+        assert response.body() != null;
+        return response.body().getAccess_token();
     }
 }

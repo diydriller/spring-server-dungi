@@ -1,8 +1,8 @@
 package com.dungi.rdb.jpa.repository.memo;
 
 import com.dungi.core.domain.common.DeleteStatus;
-import com.dungi.core.domain.memo.dto.GetMemoDto;
 import com.dungi.core.domain.memo.model.Memo;
+import com.dungi.rdb.dto.memo.GetMemoDto;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 public interface MemoJpaRepository extends CrudRepository<Memo, Long> {
-    @Query("SELECT DISTINCT new com.dungi.core.domain.memo.dto.GetMemoDto(" +
+    @Query("SELECT DISTINCT new com.dungi.rdb.dto.memo.GetMemoDto(" +
             " m.id," +
             " u.profileImg," +
             " m.memoItem," +

@@ -1,8 +1,7 @@
 package com.dungi.rdb.jpa.repository.summary;
 
 import com.dungi.core.domain.common.DeleteStatus;
-import com.dungi.core.domain.summary.dto.GetNoticeVoteDto;
-import com.dungi.core.domain.summary.model.NoticeVote;
+import com.dungi.core.domain.summary.query.NoticeVoteDetail;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -12,8 +11,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface NoticeVoteJpaRepository extends CrudRepository<NoticeVote, Long> {
-    @Query(value = "SELECT new com.dungi.core.domain.summary.dto.GetNoticeVoteDto(" +
+public interface NoticeVoteJpaRepository extends CrudRepository<com.dungi.core.domain.summary.model.NoticeVote, Long> {
+    @Query(value = "SELECT new com.dungi.core.domain.summary.query.NoticeVoteDetail(" +
             " nv.type," +
             " nv.noticeVoteId," +
             " u.profileImg," +
@@ -24,7 +23,7 @@ public interface NoticeVoteJpaRepository extends CrudRepository<NoticeVote, Long
             " FROM NoticeVote nv" +
             " INNER JOIN User u ON nv.userId=u.id" +
             " WHERE nv.roomId=:roomId AND nv.deleteStatus=:status")
-    List<GetNoticeVoteDto> findAllNoticeVote(
+    List<NoticeVoteDetail> findAllNoticeVote(
             @Param("roomId") Long roomId,
             @Param("status") DeleteStatus status,
             Pageable pageable
