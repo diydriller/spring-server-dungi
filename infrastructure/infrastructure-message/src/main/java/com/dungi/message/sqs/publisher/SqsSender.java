@@ -3,7 +3,7 @@ package com.dungi.message.sqs.publisher;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.dungi.common.exception.ServerErrorException;
-import com.dungi.core.infrastructure.message.common.MessagePublisher;
+import com.dungi.core.integration.message.common.MessagePublisher;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

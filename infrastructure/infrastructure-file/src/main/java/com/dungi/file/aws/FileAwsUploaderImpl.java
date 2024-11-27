@@ -2,7 +2,7 @@ package com.dungi.file.aws;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.dungi.core.infrastructure.file.FileUploader;
+import com.dungi.core.integration.file.FileUploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;

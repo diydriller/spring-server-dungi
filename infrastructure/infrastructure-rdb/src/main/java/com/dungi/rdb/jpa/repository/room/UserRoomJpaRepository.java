@@ -1,6 +1,6 @@
 package com.dungi.rdb.jpa.repository.room;
 
-import com.dungi.core.domain.common.DeleteStatus;
+import com.dungi.core.domain.common.value.DeleteStatus;
 import com.dungi.core.domain.room.model.Room;
 import com.dungi.core.domain.room.model.UserRoom;
 import com.dungi.core.domain.user.model.User;

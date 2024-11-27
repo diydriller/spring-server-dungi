@@ -1,6 +1,6 @@
 package com.dungi.sms.twilio;
 
-import com.dungi.core.infrastructure.sms.SmsSender;
+import com.dungi.core.integration.sms.SmsSender;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;

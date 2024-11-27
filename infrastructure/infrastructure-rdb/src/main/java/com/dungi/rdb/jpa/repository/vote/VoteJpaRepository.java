@@ -1,6 +1,6 @@
 package com.dungi.rdb.jpa.repository.vote;
 
-import com.dungi.core.domain.common.DeleteStatus;
+import com.dungi.core.domain.common.value.DeleteStatus;
 import com.dungi.core.domain.vote.model.Vote;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

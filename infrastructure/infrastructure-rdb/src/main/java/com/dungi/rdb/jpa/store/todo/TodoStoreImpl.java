@@ -1,15 +1,17 @@
 package com.dungi.rdb.jpa.store.todo;
 
+import com.dungi.common.dto.PageDto;
 import com.dungi.common.exception.NotFoundException;
 import com.dungi.common.response.BaseResponseStatus;
 import com.dungi.common.util.TimeUtil;
-import com.dungi.core.domain.common.DeleteStatus;
-import com.dungi.core.domain.common.FinishStatus;
-import com.dungi.core.domain.todo.dto.GetTodoCountDto;
+import com.dungi.core.domain.common.value.DeleteStatus;
+import com.dungi.core.domain.common.value.FinishStatus;
 import com.dungi.core.domain.todo.model.RepeatDay;
 import com.dungi.core.domain.todo.model.RepeatTodo;
 import com.dungi.core.domain.todo.model.TodayTodo;
-import com.dungi.core.infrastructure.store.todo.TodoStore;
+import com.dungi.core.domain.todo.query.TodoStatistic;
+import com.dungi.core.integration.store.todo.TodoStore;
+import com.dungi.rdb.dto.todo.GetTodoCountDto;
 import com.dungi.rdb.jpa.repository.todo.RepeatDayJdbcRepository;
 import com.dungi.rdb.jpa.repository.todo.TodoJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -40,13 +43,13 @@ public class TodoStoreImpl implements TodoStore {
     }
 
     @Override
-    public List<TodayTodo> findTodayTodo(Long roomId, Long userId, int page, int size) {
+    public List<TodayTodo> getTodayTodo(PageDto dto) {
 
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "createdTime");
+        PageRequest pageRequest = PageRequest.of(dto.getPage(), dto.getSize(), Sort.Direction.DESC, "createdTime");
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime todayLastTime = LocalDate.now().plusDays(1).atStartOfDay();
         return todoJpaRepository.findAllPossibleTodayTodo(
-                roomId,
+                dto.getRoomId(),
                 DeleteStatus.NOT_DELETED,
                 FinishStatus.UNFINISHED,
                 currentTime,
@@ -56,29 +59,31 @@ public class TodoStoreImpl implements TodoStore {
     }
 
     @Override
-    public List<RepeatTodo> findRepeatTodo(Long roomId, Long userId, int page, int size) {
+    public List<RepeatTodo> getRepeatTodo(PageDto dto) {
 
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "createdTime");
+        PageRequest pageRequest = PageRequest.of(dto.getPage(), dto.getSize(), Sort.Direction.DESC, "createdTime");
         return todoJpaRepository.findAllPossibleRepeatTodo(
-                roomId,
+                dto.getRoomId(),
                 DeleteStatus.NOT_DELETED,
                 pageRequest
         );
     }
 
     @Override
-    public List<GetTodoCountDto> findAllMemberTodoCount(
+    public List<TodoStatistic> getAllMemberTodoCount(
             List<Long> userIdList,
             LocalDateTime startDate,
             LocalDateTime endDate
     ) {
         return todoJpaRepository.finAllMemberTodoCount(
-                userIdList,
-                TimeUtil.startOfWeek(),
-                TimeUtil.endOfWeek(),
-                DeleteStatus.NOT_DELETED,
-                FinishStatus.FINISHED
-        );
+                        userIdList,
+                        TimeUtil.startOfWeek(),
+                        TimeUtil.endOfWeek(),
+                        DeleteStatus.NOT_DELETED,
+                        FinishStatus.FINISHED
+                ).stream()
+                .map(GetTodoCountDto::createTodoStatisticInfo)
+                .collect(Collectors.toList());
     }
 
     @Override

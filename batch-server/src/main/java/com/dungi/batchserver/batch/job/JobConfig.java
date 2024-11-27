@@ -1,10 +1,10 @@
 package com.dungi.batchserver.batch.job;
 
 import com.dungi.batchserver.batch.writer.JpaItemListWriter;
-import com.dungi.core.domain.common.DeleteStatus;
+import com.dungi.core.domain.common.value.DeleteStatus;
 import com.dungi.core.domain.room.model.Room;
 import com.dungi.core.domain.summary.model.WeeklyTopUser;
-import com.dungi.core.domain.summary.service.WeeklyStatisticService;
+import com.dungi.core.integration.store.summary.WeeklyStatisticStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -18,6 +18,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.EntityManagerFactory;
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +30,7 @@ import java.util.stream.Collectors;
 public class JobConfig {
     private final JobBuilderFactory job;
     private final EntityManagerFactory entityManagerFactory;
-    private final WeeklyStatisticService weeklyStatisticService;
+    private final WeeklyStatisticStore weeklyStatisticStore;
     private final StepBuilderFactory steps;
     private final int chunkSize = 10;
 
@@ -57,15 +59,21 @@ public class JobConfig {
 
     @Bean
     public ItemProcessor<Room, List<WeeklyTopUser>> decideBestMemberProcessor() {
-        return room ->
-                weeklyStatisticService.decideAndGetWeeklyTopUserInRoom(room.getId()).stream()
-                        .map(weeklyTodoCount -> WeeklyTopUser.builder()
-                                .userId(weeklyTodoCount.getUserId())
-                                .roomId(weeklyTodoCount.getUserId())
-                                .weekOfYear(weeklyTodoCount.getWeekOfYear())
-                                .year(weeklyTodoCount.getYear())
-                                .build())
-                        .collect(Collectors.toList());
+        return room -> {
+            var lastWeekDate = LocalDate.now().minusWeeks(1);
+            var weekFields = WeekFields.ISO;
+            var year = lastWeekDate.getYear();
+            var weekOfYear = lastWeekDate.get(weekFields.weekOfYear());
+
+            return weeklyStatisticStore.decideAndGetWeeklyTopUserInRoom(room.getId(), year, weekOfYear).stream()
+                    .map(weeklyTodoCount -> WeeklyTopUser.builder()
+                            .userId(weeklyTodoCount.getUserId())
+                            .roomId(weeklyTodoCount.getUserId())
+                            .weekOfYear(weeklyTodoCount.getWeekOfYear())
+                            .year(weeklyTodoCount.getYear())
+                            .build())
+                    .collect(Collectors.toList());
+        };
     }
 
     @Bean

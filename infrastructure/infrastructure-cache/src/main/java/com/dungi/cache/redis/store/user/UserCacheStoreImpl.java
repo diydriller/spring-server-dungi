@@ -2,7 +2,7 @@ package com.dungi.cache.redis.store.user;
 
 import com.dungi.common.exception.BaseException;
 import com.dungi.cache.redis.repository.RedisRepository;
-import com.dungi.core.infrastructure.store.user.UserCacheStore;
+import com.dungi.core.integration.store.user.UserCacheStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

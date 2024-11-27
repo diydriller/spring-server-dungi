@@ -1,7 +1,7 @@
 package com.dungi.core.domain.todo.model;
 
 import com.dungi.common.exception.BaseException;
-import com.dungi.core.domain.common.DeleteStatus;
+import com.dungi.core.domain.common.value.DeleteStatus;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 

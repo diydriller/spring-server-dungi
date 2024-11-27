@@ -2,12 +2,13 @@ package com.dungi.rdb.jpa.store.vote;
 
 import com.dungi.common.exception.BaseException;
 import com.dungi.common.response.BaseResponseStatus;
-import com.dungi.core.domain.common.DeleteStatus;
-import com.dungi.core.domain.vote.dto.VoteUserDto;
+import com.dungi.core.domain.common.value.DeleteStatus;
 import com.dungi.core.domain.vote.model.UserVoteItem;
 import com.dungi.core.domain.vote.model.Vote;
 import com.dungi.core.domain.vote.model.VoteItem;
-import com.dungi.core.infrastructure.store.vote.VoteStore;
+import com.dungi.core.domain.vote.query.VoteUserDetail;
+import com.dungi.core.integration.store.vote.VoteStore;
+import com.dungi.rdb.dto.VoteUserDto;
 import com.dungi.rdb.jpa.repository.vote.UserVoteItemJpaRepository;
 import com.dungi.rdb.jpa.repository.vote.VoteItemJdbcRepository;
 import com.dungi.rdb.jpa.repository.vote.VoteItemJpaRepository;
@@ -16,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Component
@@ -46,26 +49,24 @@ public class VoteStoreImpl implements VoteStore {
     }
 
     @Override
+    public void saveUserVoteChoice(UserVoteItem userVoteItem) {
+        userVoteItemJpaRepository.save(userVoteItem);
+    }
+
+    @Override
     public List<VoteItem> getVoteItemList(Vote vote) {
         return voteItemJpaRepository.getVoteItemList(vote);
     }
 
     @Override
-    public List<VoteUserDto> getVoteUser(List<VoteItem> voteItemList) {
-        return userVoteItemJpaRepository.getVoteUser(voteItemList, DeleteStatus.NOT_DELETED);
+    public List<VoteUserDetail> getVoteUser(List<VoteItem> voteItemList) {
+        return userVoteItemJpaRepository.getVoteUser(voteItemList, DeleteStatus.NOT_DELETED).stream()
+                .map(VoteUserDto::createVoteUserItem)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public void createVoteChoice(Long userId, VoteItem voteItem) {
-        userVoteItemJpaRepository.findByUserAndVoteItem(userId, voteItem)
-                .ifPresentOrElse(
-                        (uvi) -> {
-                            uvi.changeChoice();
-                            userVoteItemJpaRepository.save(uvi);
-                        }, () -> {
-                            var userVoteItem = new UserVoteItem(userId, voteItem);
-                            userVoteItemJpaRepository.save(userVoteItem);
-                        }
-                );
+    public Optional<UserVoteItem> getVoteChoice(Long userId, VoteItem voteItem) {
+        return userVoteItemJpaRepository.findByUserAndVoteItem(userId, voteItem);
     }
 }

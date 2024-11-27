@@ -1,13 +1,15 @@
 package com.dungi.rdb.jpa.store.room;
 
+import com.dungi.common.dto.PageDto;
 import com.dungi.common.exception.BaseException;
 import com.dungi.common.response.BaseResponseStatus;
-import com.dungi.core.domain.common.DeleteStatus;
-import com.dungi.core.domain.room.dto.GetRoomUserDto;
+import com.dungi.core.domain.common.query.UserDetail;
+import com.dungi.core.domain.common.value.DeleteStatus;
 import com.dungi.core.domain.room.model.Room;
 import com.dungi.core.domain.room.model.UserRoom;
 import com.dungi.core.domain.user.model.User;
-import com.dungi.core.infrastructure.store.room.RoomStore;
+import com.dungi.core.integration.store.room.RoomStore;
+import com.dungi.rdb.dto.room.GetRoomUserDto;
 import com.dungi.rdb.jpa.repository.room.RoomJpaRepository;
 import com.dungi.rdb.jpa.repository.room.UserRoomJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -30,24 +34,19 @@ public class RoomStoreImpl implements RoomStore {
     }
 
     @Override
-    public void saveRoom(Long userId, String roomName, String roomColor) {
-        var room = new Room(roomName, roomColor);
-        var userRoom = new UserRoom(userId, room);
-        userRoomJpaRepository.save(userRoom);
+    public void saveRoom(Room room) {
         roomJpaRepository.save(room);
+    }
+
+    @Override
+    public void saveUserRoom(UserRoom userRoom) {
+        userRoomJpaRepository.save(userRoom);
     }
 
     // 이전에 퇴장한 유저라면 방에 유저를 다시 넣어준다.
     @Override
-    public void enterRoom(Long userId, Room room) {
-        userRoomJpaRepository.getUserRoom(userId, room, DeleteStatus.NOT_DELETED)
-                .ifPresentOrElse(
-                        UserRoom::enter,
-                        () -> {
-                            var userRoom = new UserRoom(userId, room);
-                            userRoomJpaRepository.save(userRoom);
-                        }
-                );
+    public Optional<UserRoom> getUserRoom(Long userId, Room room) {
+        return userRoomJpaRepository.getUserRoom(userId, room, DeleteStatus.NOT_DELETED);
     }
 
     @Override
@@ -56,26 +55,16 @@ public class RoomStoreImpl implements RoomStore {
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NOT_EXIST_ROOM));
     }
 
-    // 방에 유저가 없으면 방을 삭제한다.
     @Override
-    public void leaveRoom(Long userId, Room room) {
-        var userRoom = userRoomJpaRepository.getUserRoom(userId, room, DeleteStatus.NOT_DELETED)
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.NOT_EXIST_USER_ROOM));
-        userRoom.leave();
-        userRoomJpaRepository.save(userRoom);
-
-        int num = userRoomJpaRepository.countRoomMember(room, DeleteStatus.NOT_DELETED);
-        if (num <= 0) {
-            room.deactivate();
-            roomJpaRepository.save(room);
-        }
+    public Integer countUserRoom(Room room) {
+        return userRoomJpaRepository.countRoomMember(room, DeleteStatus.NOT_DELETED);
     }
 
     @Override
-    public List<Room> getAllRoomEnteredByUser(Long userId, int page, int size) {
-        var pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "createdTime");
+    public List<Room> getAllRoomEnteredByUser(PageDto dto) {
+        var pageRequest = PageRequest.of(dto.getPage(), dto.getSize(), Sort.Direction.DESC, "createdTime");
         return roomJpaRepository.getAllRoomEnteredByUser(
-                userId,
+                dto.getUserId(),
                 DeleteStatus.NOT_DELETED,
                 pageRequest
         );
@@ -87,8 +76,10 @@ public class RoomStoreImpl implements RoomStore {
     }
 
     @Override
-    public List<GetRoomUserDto> getAllMemberInfo(Room room) {
-        return roomJpaRepository.getAllMemberInfo(room);
+    public List<UserDetail> getAllMemberInfo(Room room) {
+        return roomJpaRepository.getAllMemberInfo(room).stream()
+                .map(GetRoomUserDto::createRoomUser)
+                .collect(Collectors.toList());
     }
 
     @Override

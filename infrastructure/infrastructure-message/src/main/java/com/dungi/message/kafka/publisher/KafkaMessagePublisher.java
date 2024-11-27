@@ -1,6 +1,6 @@
 package com.dungi.message.kafka.publisher;
 
-import com.dungi.core.infrastructure.message.common.MessagePublisher;
+import com.dungi.core.integration.message.common.MessagePublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.core.KafkaTemplate;

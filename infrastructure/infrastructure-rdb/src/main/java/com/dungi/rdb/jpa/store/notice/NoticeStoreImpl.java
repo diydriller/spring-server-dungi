@@ -1,7 +1,7 @@
 package com.dungi.rdb.jpa.store.notice;
 
 import com.dungi.core.domain.notice.model.Notice;
-import com.dungi.core.infrastructure.store.notice.NoticeStore;
+import com.dungi.core.integration.store.notice.NoticeStore;
 import com.dungi.rdb.jpa.repository.notice.NoticeJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

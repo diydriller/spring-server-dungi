@@ -1,8 +1,8 @@
 package com.dungi.core.domain.vote.model;
 
 import com.dungi.common.exception.BaseException;
-import com.dungi.core.domain.common.BaseEntity;
-import com.dungi.core.domain.common.DeleteStatus;
+import com.dungi.core.domain.common.model.BaseEntity;
+import com.dungi.core.domain.common.value.DeleteStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
