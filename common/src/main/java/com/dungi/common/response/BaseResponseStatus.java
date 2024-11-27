@@ -17,7 +17,7 @@ public enum BaseResponseStatus {
     AUTHORIZATION_ERROR(false, 2105, "권한이 없습니다."),
     NOT_EXISTS_EMAIL(false, 2106, "존재하지않는 이메일입니다."),
     PASSWORD_NOT_EQUAL(false, 2107, "비밀번호가 일치하지 않습니다."),
-    KAKAO_LOGIN_FAIL(false, 2108, "카카오 로그인 실패입니다."),
+    SNS_LOGIN_FAIL(false, 2108, "SNS 로그인 실패입니다."),
     NOT_EXIST_USER(false, 2109, "존재하지않는 유저입니다"),
     NOT_USER_LOGIN(false, 2110, "로그인 되지 않은 유저입니다."),
 
