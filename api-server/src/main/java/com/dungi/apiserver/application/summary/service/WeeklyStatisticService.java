@@ -2,7 +2,6 @@ package com.dungi.apiserver.application.summary.service;
 
 import com.dungi.apiserver.application.summary.dto.WeeklyTodoCountDto;
 import com.dungi.common.util.TimeUtil;
-import com.dungi.core.domain.summary.model.WeeklyTodoCount;
 import com.dungi.core.domain.user.model.User;
 import com.dungi.core.integration.store.room.RoomStore;
 import com.dungi.core.integration.store.summary.WeeklyStatisticStore;
@@ -56,20 +55,6 @@ public class WeeklyStatisticService {
                 )
                 .weeklyTodoCountMap(weeklyTodoCountMap)
                 .build();
-    }
-
-    @Transactional
-    public List<WeeklyTodoCount> decideAndGetWeeklyTopUserInRoom(Long roomId) {
-        var lastWeekDate = LocalDate.now().minusWeeks(1);
-        var weekFields = WeekFields.ISO;
-        var year = lastWeekDate.getYear();
-        var weekOfYear = lastWeekDate.get(weekFields.weekOfYear());
-
-        return weeklyStatisticStore.decideAndGetWeeklyTopUserInRoom(
-                roomId,
-                year,
-                weekOfYear
-        );
     }
 
     @Transactional
