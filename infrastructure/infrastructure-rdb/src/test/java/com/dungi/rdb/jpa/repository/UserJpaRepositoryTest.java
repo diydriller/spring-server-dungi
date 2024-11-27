@@ -1,6 +1,7 @@
 package com.dungi.rdb.jpa.repository;
 
 import com.dungi.common.exception.BaseException;
+import com.dungi.common.value.Provider;
 import com.dungi.core.domain.user.model.User;
 import com.dungi.rdb.jpa.repository.user.UserJpaRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -13,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 public class UserJpaRepositoryTest {
-
     @Autowired
     private UserJpaRepository userJpaRepository;
 
@@ -38,7 +38,7 @@ public class UserJpaRepositoryTest {
                 .name("park")
                 .nickname("monkey")
                 .phoneNumber("01012341234")
-                .provider("local")
+                .provider(Provider.LOCAL)
                 .profileImg("http://localhost:9002/static/aaa.jpg")
                 .password("encrypted")
                 .build();

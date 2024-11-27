@@ -4,16 +4,12 @@ import com.dungi.common.value.Provider;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Builder
 @AllArgsConstructor
-public class CreateSnsUserDto {
+public class SnsLoginDto {
     private String email;
-    private String nickname;
-    private String snsImg;
     private String accessToken;
-    private MultipartFile profileImg;
     private Provider serviceType;
 }
