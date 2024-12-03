@@ -66,12 +66,16 @@ public class JobConfig {
             var weekOfYear = lastWeekDate.get(weekFields.weekOfYear());
 
             return weeklyStatisticStore.decideAndGetWeeklyTopUserInRoom(room.getId(), year, weekOfYear).stream()
-                    .map(weeklyTodoCount -> WeeklyTopUser.builder()
-                            .userId(weeklyTodoCount.getUserId())
-                            .roomId(weeklyTodoCount.getUserId())
-                            .weekOfYear(weeklyTodoCount.getWeekOfYear())
-                            .year(weeklyTodoCount.getYear())
-                            .build())
+                    .map(weeklyTodoCount -> {
+                        var user = WeeklyTopUser.builder()
+                                .userId(weeklyTodoCount.getUserId())
+                                .roomId(weeklyTodoCount.getRoomId())
+                                .weekOfYear(weeklyTodoCount.getWeekOfYear())
+                                .year(weeklyTodoCount.getYear())
+                                .build();
+                        System.out.println(user);
+                        return user;
+                    })
                     .collect(Collectors.toList());
         };
     }

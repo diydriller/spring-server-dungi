@@ -29,7 +29,7 @@ public interface WeeklyTodoCountJpaRepository extends JpaRepository<WeeklyTodoCo
             "WHERE wtc.room_id = :roomId " +
             "AND wtc.year = :year " +
             "AND wtc.week_of_year = :weekOfYear " +
-            "AND wtc.user_id = ( " +
+            "AND wtc.user_id IN ( " +
             "   SELECT wtc2.user_id " +
             "   FROM weekly_todo_count wtc2 " +
             "   WHERE wtc2.room_id = :roomId " +

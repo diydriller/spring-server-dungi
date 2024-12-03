@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table(
         name = "weekly_todo_count",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"roomId", "userId", "year", "weekOfYear", "dayOfWeek"})
+                @UniqueConstraint(columnNames = {"room_id", "user_id", "year", "week_of_year", "day_of_week"})
         }
 )
 @AllArgsConstructor
@@ -21,16 +21,22 @@ public class WeeklyTodoCount extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "user_id")
     private Long userId;
 
+    @Column(name = "room_id")
     private Long roomId;
 
+    @Column(name = "year")
     private Integer year;
 
+    @Column(name = "week_of_year")
     private Integer weekOfYear;
 
+    @Column(name = "day_of_week")
     private Integer dayOfWeek;
 
+    @Column(name = "todo_count")
     private Long todoCount;
 
     public void addTodoCount() {
