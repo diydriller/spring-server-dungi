@@ -1,15 +1,13 @@
 package com.dungi.apiserver.presentation.room.dto;
 
 import com.dungi.apiserver.application.room.dto.CreateRoomDto;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-@Data
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
 public class CreateRoomRequestDto {
 

@@ -22,10 +22,10 @@ public class RoomService {
     // 방 생성 기능
     // 방 저장
     @Transactional
-    public void createRoom(CreateRoomDto dto, Long userId) {
+    public Room createRoom(CreateRoomDto dto, Long userId) {
         var room = new Room(dto.getName(), dto.getColor());
         new UserRoom(userId, room);
-        roomStore.saveRoom(room);
+        return roomStore.saveRoom(room);
     }
 
     // 방 입장 기능

@@ -2,6 +2,7 @@ package com.dungi.apiserver.presentation.room.controller;
 
 import com.dungi.apiserver.application.room.service.RoomService;
 import com.dungi.apiserver.presentation.room.dto.CreateRoomRequestDto;
+import com.dungi.apiserver.presentation.room.dto.CreateRoomResponseDto;
 import com.dungi.apiserver.presentation.room.dto.GetRoomResponseDto;
 import com.dungi.common.dto.PageDto;
 import com.dungi.common.response.BaseResponse;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.stream.Collectors;
 
+import static com.dungi.apiserver.presentation.room.dto.CreateRoomResponseDto.createRoomResponseDto;
 import static com.dungi.common.response.BaseResponseStatus.SUCCESS;
 import static com.dungi.common.util.StringUtil.LOGIN_USER;
 
@@ -23,16 +25,16 @@ public class RoomController {
     private final RoomService roomService;
 
     @PostMapping("/room")
-    BaseResponse<?> createRoom(
+    BaseResponse<CreateRoomResponseDto> createRoom(
             @RequestBody @Valid CreateRoomRequestDto requestDto,
             HttpSession session
     ) {
         var user = (User) session.getAttribute(LOGIN_USER);
-        roomService.createRoom(
+        var room = roomService.createRoom(
                 requestDto.createRoomDto(),
                 user.getId()
         );
-        return new BaseResponse<>(SUCCESS);
+        return new BaseResponse<>(createRoomResponseDto(room));
     }
 
     @PostMapping("/room/{roomId}/member")

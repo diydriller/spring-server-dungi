@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface RoomStore {
     Room getRoomEnteredByUser(Long userId, Long roomId);
 
-    void saveRoom(Room room);
+    Room saveRoom(Room room);
 
     void saveUserRoom(UserRoom userRoom);
 

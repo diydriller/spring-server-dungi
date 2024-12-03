@@ -34,8 +34,8 @@ public class RoomStoreImpl implements RoomStore {
     }
 
     @Override
-    public void saveRoom(Room room) {
-        roomJpaRepository.save(room);
+    public Room saveRoom(Room room) {
+        return roomJpaRepository.save(room);
     }
 
     @Override
