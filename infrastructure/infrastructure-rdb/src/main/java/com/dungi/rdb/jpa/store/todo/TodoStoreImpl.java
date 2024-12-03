@@ -9,6 +9,7 @@ import com.dungi.core.domain.common.value.FinishStatus;
 import com.dungi.core.domain.todo.model.RepeatDay;
 import com.dungi.core.domain.todo.model.RepeatTodo;
 import com.dungi.core.domain.todo.model.TodayTodo;
+import com.dungi.core.domain.todo.model.Todo;
 import com.dungi.core.domain.todo.query.TodoStatistic;
 import com.dungi.core.integration.store.todo.TodoStore;
 import com.dungi.rdb.dto.todo.GetTodoCountDto;
@@ -31,8 +32,8 @@ public class TodoStoreImpl implements TodoStore {
     private final RepeatDayJdbcRepository repeatDayJdbcRepository;
 
     @Override
-    public void saveTodayTodo(TodayTodo todayTodo) {
-        todoJpaRepository.save(todayTodo);
+    public Todo saveTodayTodo(TodayTodo todayTodo) {
+        return todoJpaRepository.save(todayTodo);
     }
 
     @Override

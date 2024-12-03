@@ -9,6 +9,7 @@ import com.dungi.core.domain.summary.event.UpdateWeeklyTodoCountEvent;
 import com.dungi.core.domain.todo.model.RepeatDay;
 import com.dungi.core.domain.todo.model.RepeatTodo;
 import com.dungi.core.domain.todo.model.TodayTodo;
+import com.dungi.core.domain.todo.model.Todo;
 import com.dungi.core.domain.user.model.User;
 import com.dungi.core.integration.message.common.MessagePublisher;
 import com.dungi.core.integration.store.room.RoomStore;
@@ -33,7 +34,7 @@ public class TodoService {
     // 오늘 할일 생성 기능
     // 유저가 방에 입장해있는지 확인 - 오늘 할일 생성
     @Transactional
-    public void createTodayTodo(CreateTodayTodoDto dto, Long userId, Long roomId) {
+    public Todo createTodayTodo(CreateTodayTodoDto dto, Long userId, Long roomId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
         var todayTodo = TodayTodo.builder()
                 .todoItem(dto.getTodo())
@@ -41,7 +42,7 @@ public class TodoService {
                 .userId(userId)
                 .deadline(TimeUtil.timeStrToLocalDateTime(dto.getTime()))
                 .build();
-        todoStore.saveTodayTodo(todayTodo);
+        return todoStore.saveTodayTodo(todayTodo);
     }
 
     // 반복 할일 생성 기능

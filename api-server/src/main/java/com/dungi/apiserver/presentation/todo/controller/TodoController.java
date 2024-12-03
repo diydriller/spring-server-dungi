@@ -1,10 +1,7 @@
 package com.dungi.apiserver.presentation.todo.controller;
 
 import com.dungi.apiserver.application.todo.service.TodoService;
-import com.dungi.apiserver.presentation.todo.dto.CreateRepeatTodoRequestDto;
-import com.dungi.apiserver.presentation.todo.dto.CreateTodayTodoRequestDto;
-import com.dungi.apiserver.presentation.todo.dto.GetRepeatTodoResponseDto;
-import com.dungi.apiserver.presentation.todo.dto.GetTodayTodoResponseDto;
+import com.dungi.apiserver.presentation.todo.dto.*;
 import com.dungi.common.dto.PageDto;
 import com.dungi.common.response.BaseResponse;
 import com.dungi.common.util.TimeUtil;
@@ -32,12 +29,17 @@ public class TodoController {
             HttpSession session
     ) {
         var user = (User) session.getAttribute(LOGIN_USER);
-        todoService.createTodayTodo(
+        var todo = todoService.createTodayTodo(
                 todoRequestDto.createTodayTodoDto(),
                 user.getId(),
                 roomId
         );
-        return new BaseResponse<>(SUCCESS);
+        return new BaseResponse<>(
+                CreateTodayTodoResponseDto.builder()
+                        .id(todo.getId())
+                        .todoItem(todo.getTodoItem())
+                        .build()
+        );
     }
 
     @PostMapping("/room/{roomId}/todo/days")

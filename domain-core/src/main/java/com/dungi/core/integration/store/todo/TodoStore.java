@@ -4,6 +4,7 @@ import com.dungi.common.dto.PageDto;
 import com.dungi.core.domain.todo.model.RepeatDay;
 import com.dungi.core.domain.todo.model.RepeatTodo;
 import com.dungi.core.domain.todo.model.TodayTodo;
+import com.dungi.core.domain.todo.model.Todo;
 import com.dungi.core.domain.todo.query.TodoStatistic;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface TodoStore {
-    void saveTodayTodo(TodayTodo todo);
+    Todo saveTodayTodo(TodayTodo todo);
 
     void saveRepeatTodo(RepeatTodo todo, List<RepeatDay> repeatDayList);
 
