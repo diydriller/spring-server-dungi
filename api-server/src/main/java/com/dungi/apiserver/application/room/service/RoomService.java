@@ -2,6 +2,7 @@ package com.dungi.apiserver.application.room.service;
 
 import com.dungi.apiserver.application.room.dto.CreateRoomDto;
 import com.dungi.common.dto.PageDto;
+import com.dungi.core.domain.common.value.DeleteStatus;
 import com.dungi.core.domain.room.model.Room;
 import com.dungi.core.domain.room.model.UserRoom;
 import com.dungi.core.domain.room.query.RoomDetail;
@@ -28,11 +29,11 @@ public class RoomService {
     }
 
     // 방 입장 기능
-    // 방 유무 확인 - 방에 유저 저장
+    // 방 유무 확인 - 이전에 퇴장한 유저라면 재입장 or 방 입장
     @Transactional
     public void enterRoom(Long roomId, Long userId) {
         var room = roomStore.getRoom(roomId);
-        roomStore.getUserRoom(userId, room)
+        roomStore.getUserRoomByDeleteStatus(userId, room, DeleteStatus.DELETED)
                 .ifPresentOrElse(
                         UserRoom::reenter,
                         () -> {
@@ -47,10 +48,10 @@ public class RoomService {
     @Transactional
     public void leaveRoom(Long roomId, Long userId) {
         var room = roomStore.getRoomEnteredByUser(userId, roomId);
-        roomStore.getUserRoom(userId, room)
+        roomStore.getUserRoomByDeleteStatus(userId, room, DeleteStatus.NOT_DELETED)
                 .ifPresent(UserRoom::leave);
         var count = roomStore.countUserRoom(room);
-        if (count < 0) {
+        if (count <= 0) {
             room.deactivate();
         }
     }

@@ -43,10 +43,9 @@ public class RoomStoreImpl implements RoomStore {
         userRoomJpaRepository.save(userRoom);
     }
 
-    // 이전에 퇴장한 유저라면 방에 유저를 다시 넣어준다.
     @Override
-    public Optional<UserRoom> getUserRoom(Long userId, Room room) {
-        return userRoomJpaRepository.getUserRoom(userId, room, DeleteStatus.NOT_DELETED);
+    public Optional<UserRoom> getUserRoomByDeleteStatus(Long userId, Room room, DeleteStatus status) {
+        return userRoomJpaRepository.getUserRoom(userId, room, status);
     }
 
     @Override

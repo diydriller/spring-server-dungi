@@ -2,6 +2,7 @@ package com.dungi.core.integration.store.room;
 
 import com.dungi.common.dto.PageDto;
 import com.dungi.core.domain.common.query.UserDetail;
+import com.dungi.core.domain.common.value.DeleteStatus;
 import com.dungi.core.domain.room.model.Room;
 import com.dungi.core.domain.room.model.UserRoom;
 import com.dungi.core.domain.user.model.User;
@@ -18,7 +19,7 @@ public interface RoomStore {
 
     void saveUserRoom(UserRoom userRoom);
 
-    Optional<UserRoom> getUserRoom(Long userId, Room room);
+    Optional<UserRoom> getUserRoomByDeleteStatus(Long userId, Room room, DeleteStatus status);
 
     Integer countUserRoom(Room room);
 
