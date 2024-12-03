@@ -50,8 +50,10 @@ public class SummaryKafkaMessageListener {
                 weekOfYear,
                 dayOfWeek
         ).ifPresentOrElse(
-                WeeklyTodoCount::addTodoCount,
-                () -> {
+                weeklyTodoCount -> {
+                  weeklyTodoCount.addTodoCount();
+                  weeklyStatisticStore.saveWeeklyTodoCount(weeklyTodoCount);
+                }, () -> {
                     var weeklyTodoCount = WeeklyTodoCount.builder()
                             .roomId(event.getRoomId())
                             .userId(event.getUserId())
