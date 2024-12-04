@@ -9,7 +9,6 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
@@ -41,9 +40,8 @@ public class JobConfig {
     @Bean
     public Step decideWeeklyTopUserStep() {
         return steps.get("decideWeeklyTopUserStep")
-                .<Room, List<WeeklyTopUser>>chunk(CHUNK_SIZE)
+                .<Room, Room>chunk(CHUNK_SIZE)
                 .reader(decideWeeklyTopUserReader())
-                .processor(decideWeeklyTopUserProcessor())
                 .writer(decideWeeklyTopUserListWriter(dataSource))
                 .build();
     }
@@ -62,30 +60,25 @@ public class JobConfig {
     }
 
     @Bean
-    public ItemProcessor<Room, List<WeeklyTopUser>> decideWeeklyTopUserProcessor() {
-        return room -> {
-            var lastWeekDate = LocalDate.now().minusWeeks(1);
-            var weekFields = WeekFields.ISO;
-            var year = lastWeekDate.getYear();
-            var weekOfYear = lastWeekDate.get(weekFields.weekOfYear());
-
-            return weeklyStatisticStore.decideAndGetWeeklyTopUserInRoom(room.getId(), year, weekOfYear).stream()
-                    .map(weeklyTodoCount ->
-                            WeeklyTopUser.builder()
-                                    .userId(weeklyTodoCount.getUserId())
-                                    .roomId(weeklyTodoCount.getRoomId())
-                                    .weekOfYear(weeklyTodoCount.getWeekOfYear())
-                                    .year(weeklyTodoCount.getYear())
-                                    .build()
-                    ).collect(Collectors.toList());
-        };
-    }
-
-    @Bean
-    public ItemWriter<List<WeeklyTopUser>> decideWeeklyTopUserListWriter(DataSource dataSource) {
+    public ItemWriter<Room> decideWeeklyTopUserListWriter(DataSource dataSource) {
         return items -> {
-            List<WeeklyTopUser> flatList = items.stream()
-                    .flatMap(List::stream)
+            List<WeeklyTopUser> flatList = items.parallelStream()
+                    .map(room -> {
+                        var lastWeekDate = LocalDate.now().minusWeeks(1);
+                        var weekFields = WeekFields.ISO;
+                        var year = lastWeekDate.getYear();
+                        var weekOfYear = lastWeekDate.get(weekFields.weekOfYear());
+
+                        return weeklyStatisticStore.decideAndGetWeeklyTopUserInRoom(room.getId(), year, weekOfYear).stream()
+                                .map(weeklyTodoCount ->
+                                        WeeklyTopUser.builder()
+                                                .userId(weeklyTodoCount.getUserId())
+                                                .roomId(weeklyTodoCount.getRoomId())
+                                                .weekOfYear(weeklyTodoCount.getWeekOfYear())
+                                                .year(weeklyTodoCount.getYear())
+                                                .build()
+                                ).collect(Collectors.toList());
+                    }).flatMap(List::stream)
                     .collect(Collectors.toList());
 
             JdbcBatchItemWriter<WeeklyTopUser> writer = new JdbcBatchItemWriter<>();
