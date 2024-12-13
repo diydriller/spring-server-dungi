@@ -1,11 +1,5 @@
 spring:
-  # 요청 설정
-  servlet:
-    multipart:
-      max-file-size: 50MB
-      max-request-size: 50MB
-
-  # mysql 연결 설정
+  # 데이터베이스 연결 설정
   datasource:
     source:
       url: jdbc:mysql://host.docker.internal:3300/spring_dungi?rewriteBatchedStatements=true
@@ -14,19 +8,12 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       hikari:
         maximum-pool-size: 10
-    replica:
-      url: jdbc:mysql://host.docker.internal:3301/spring_dungi?rewriteBatchedStatements=true
-      username: ENC(H02XFv8kQYcw+JabYK2PWA==)
-      password: ENC(uYPzCJbPjhvNmUQE5WODAm9YULJkkKPs)
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      hikari:
-        maximum-pool-size: 10
 
   # jpa 설정
   jpa:
     database: mysql
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
     generate-ddl: true
     show-sql: true
     properties:
@@ -46,36 +33,13 @@ redis:
       min-idle: 2
       max-active: 8
 
-# kafka 연결 설정
+# kafka 설정
 message:
+  owner: notification
   kind: kafka
+
 kafka:
   broker: host.docker.internal:29092
-
-# local file 설정
-file:
-  kind: local
-  upload:
-    path: images/
-  down:
-    path: host.docker.internal:9002/static/
-
-# tomcat 설정
-server:
-  tomcat:
-    threads:
-      max: 200
-
-# prometheus 연결 설정
-management:
-  endpoints:
-    web:
-      exposure:
-        include: prometheus
-
-# 데이터베이스 replication 유무 설정
-database:
-  replication: false
 
 # cloud 비활성 설정
 cloud:
@@ -84,3 +48,7 @@ cloud:
       static: ap-northeast-2
     stack:
       auto: false
+
+# 데이터베이스 replication 유무 설정
+database:
+  replication: false

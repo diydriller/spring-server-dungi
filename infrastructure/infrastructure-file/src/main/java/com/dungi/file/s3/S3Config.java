@@ -1,4 +1,4 @@
-package com.dungi.file.aws;
+package com.dungi.file.s3;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Profile("prod")
 @Configuration
-public class AwsConfig {
+public class S3Config {
     @Value("${cloud.aws.credentials.access-key}")
     private String accessKey;
     @Value("${cloud.aws.credentials.secret-key}")

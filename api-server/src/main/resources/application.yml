@@ -9,18 +9,6 @@ spring:
   # 프로필 설정
   profiles:
     active: prod
-    include:
-    - core
-
-  # 요청 설정
-  servlet:
-    multipart:
-      max-file-size: 50MB
-      max-request-size: 50MB
-
-# 데이터베이스 replication 유무 설정
-database:
-  replication: false
 
 # jwt 설정
 jwt:
@@ -30,15 +18,3 @@ jwt:
 jasypt:
   encryptor:
     password: ${JASYPT_PASSWORD}
-
-# oath kakao 설정
-kakao:
-  accountId: ${KAKAO_ACCOUNT_ID}
-  secret: ${KAKAO_SECRET}
-  callbackUri: ${KAKAO_CALLBACK_URI}
-
-# twilio 설정
-twilio:
-  accountId: ${TWILIO_ACCOUNT_ID}
-  authToken: ${TWILIO_AUTH_TOKEN}
-  adminPhoneNumber: ${TWILIO_ADMIN_PHONE_NUMBER}

@@ -7,13 +7,7 @@ spring:
 
   # 프로필 설정
   profiles:
-    active: local
-    include:
-      - core
-
-  # batch 설정
-  batch:
-    initialize-schema: always
+    active: prod
 
 # jasypt 설정
 jasypt:

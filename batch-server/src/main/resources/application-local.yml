@@ -1,5 +1,5 @@
 spring:
-  # 데이터베이스 연결 설정
+  # mysql 연결 설정
   datasource:
     source:
       url: jdbc:mysql://host.docker.internal:3300/spring_dungi?rewriteBatchedStatements=true
@@ -20,3 +20,7 @@ spring:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 100
+
+  # batch 설정
+  batch:
+    initialize-schema: always

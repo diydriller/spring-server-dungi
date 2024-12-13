@@ -12,6 +12,8 @@ public class TimeUtil {
         MON, TUE, WED, THU, FRI , SAT, SUN
     };
 
+    public static final Long SSE_DURATION = 3600000L;
+
     public static String localDateTimeToTimeStr(LocalDateTime time){
         return String.join("/",
                 String.valueOf(time.getMonthValue()),
