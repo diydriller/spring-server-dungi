@@ -1,5 +1,11 @@
 spring:
-  # 데이터베이스 연결 설정
+  # 요청 설정
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+  # mysql 연결 설정
   datasource:
     source:
       url: jdbc:mysql://host.docker.internal:3300/spring_dungi?rewriteBatchedStatements=true
@@ -27,7 +33,7 @@ spring:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 100
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
 
 # redis 연결 설정
 redis:
@@ -44,22 +50,15 @@ redis:
 message:
   kind: kafka
 kafka:
-  broker: ${KAFKA_BROKER_URL}
+  broker: host.docker.internal:29092
 
 # local file 설정
 file:
+  kind: local
   upload:
     path: images/
   down:
-    path: http://localhost:9002/static/
-
-# cloud 비활성 설정
-cloud:
-  aws:
-    region:
-      static: ap-northeast-2
-    stack:
-      auto: false
+    path: host.docker.internal:9002/static/
 
 # tomcat 설정
 server:
@@ -73,3 +72,15 @@ management:
     web:
       exposure:
         include: prometheus
+
+# 데이터베이스 replication 유무 설정
+database:
+  replication: false
+
+# cloud 비활성 설정
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

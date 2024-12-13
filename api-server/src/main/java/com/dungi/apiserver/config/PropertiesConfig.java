@@ -6,11 +6,8 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @PropertySource(value = {
-        "application-core.yml",
-        "application-file.yml",
         "application-sms.yml",
-        "application-sns.yml",
-        "application-message.yml"
-    }, factory = YamlLoadFactory.class)
+        "application-sns.yml"
+}, factory = YamlLoadFactory.class)
 public class PropertiesConfig {
 }

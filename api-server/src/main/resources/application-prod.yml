@@ -1,3 +1,4 @@
+# aws parameter store 설정
 aws:
   paramstore:
     enabled: true
@@ -6,11 +7,16 @@ aws:
     name: dungi
 
 spring:
-  # aws 설정
   config:
     import: 'aws-parameterstore:'
 
-  # 데이터베이스 설정
+  # 요청 설정
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+  # mysql 연결 설정
   datasource:
     source:
       url: ${SPRING_DATASOURCE_URL}
@@ -24,15 +30,16 @@ spring:
   jpa:
     database: mysql
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     generate-ddl: true
     show-sql: true
     properties:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 100
+        dialect: org.hibernate.dialect.MySQL8Dialect
 
-# redis 설정
+# redis 연결 설정
 redis:
   port: 6379
   host: ${REDIS_HOST}
@@ -44,7 +51,10 @@ redis:
       max-active: 8
 
 
-# AWS 설정
+# aws 설정
+message:
+  kind: sqs
+
 cloud:
   aws:
     credentials:
@@ -54,10 +64,18 @@ cloud:
       static: ap-northeast-2
     stack:
       auto: false
-    # S3
+    # s3 연결 설정
     s3:
       bucket: diydriller-s3
-    # SQS
+    # sqs 연결 설정
     sqs:
       queue:
         url: ${AWS_SQS_URL}
+
+# s3 설정
+file:
+  kind: s3
+
+# 데이터베이스 replication 유무 설정
+database:
+  replication: false
