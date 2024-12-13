@@ -122,4 +122,16 @@ public class TodoController {
         todoService.completeTodayTodo(user.getId(), roomId, todoId);
         return new BaseResponse<>(SUCCESS);
     }
+
+    @PostMapping("/room/{roomId}/compliment")
+    BaseResponse<?> complimentMember(
+            @PathVariable Long roomId,
+            @RequestParam Long memberId,
+            HttpSession session
+    ) {
+        var user = (User) session.getAttribute(LOGIN_USER);
+
+        todoService.complimentMember(user.getId(), memberId);
+        return new BaseResponse<>(SUCCESS);
+    }
 }
