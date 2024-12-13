@@ -6,15 +6,16 @@ import com.dungi.core.domain.summary.model.NoticeVote;
 import com.dungi.core.domain.summary.model.WeeklyTodoCount;
 import com.dungi.core.integration.store.summary.NoticeVoteStore;
 import com.dungi.core.integration.store.summary.WeeklyStatisticStore;
+import com.dungi.message.kafka.config.SummaryMultiValueCondition;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 
-@ConditionalOnProperty(name = "message.kind", havingValue = "kafka")
+@Conditional(SummaryMultiValueCondition.class)
 @RequiredArgsConstructor
 @Component
 public class SummaryKafkaMessageListener {
@@ -51,8 +52,8 @@ public class SummaryKafkaMessageListener {
                 dayOfWeek
         ).ifPresentOrElse(
                 weeklyTodoCount -> {
-                  weeklyTodoCount.addTodoCount();
-                  weeklyStatisticStore.saveWeeklyTodoCount(weeklyTodoCount);
+                    weeklyTodoCount.addTodoCount();
+                    weeklyStatisticStore.saveWeeklyTodoCount(weeklyTodoCount);
                 }, () -> {
                     var weeklyTodoCount = WeeklyTodoCount.builder()
                             .roomId(event.getRoomId())
