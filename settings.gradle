@@ -9,5 +9,5 @@ include 'infrastructure:infrastructure-sns'
 include 'infrastructure:infrastructure-cache'
 include 'infrastructure:infrastructure-rdb'
 include 'infrastructure:infrastructure-message'
-findProject(':infrastructure:infrastructure-message')?.name = 'infrastructure-message'
+include 'notification-server'
 

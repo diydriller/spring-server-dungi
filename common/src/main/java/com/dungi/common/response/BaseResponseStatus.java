@@ -33,6 +33,8 @@ public enum BaseResponseStatus {
     NOT_EXIST_TODO(false, 2501, "존재하지 않는 할일입니다."),
     ALREADY_PASSED_DEADLINE(false, 2502, "마감기한이 지난 할일입니다."),
 
+    NOT_EXIST_SSE(false, 2600,"존재하지않는 SSE 연결입니다."),
+
     SERVER_ERROR(false, 2015, "서버 에러입니다.");
 
     private final boolean isSuccess;
