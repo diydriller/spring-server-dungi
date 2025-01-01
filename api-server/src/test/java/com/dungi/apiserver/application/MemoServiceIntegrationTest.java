@@ -37,7 +37,6 @@ public class MemoServiceIntegrationTest extends BaseIntegrationTest {
     @Autowired
     private UserRoomJpaRepository userRoomJpaRepository;
 
-    
     @DisplayName(value = "5명이 동시에 메모 이동시 OptimisticLockingFailureException 1개 이상 발생")
     @Test
     void whenFiveUserMoveMemoThenThrowException() {
