@@ -1,14 +1,12 @@
 package com.dungi.apiserver.presentation.memo.controller;
 
 import com.dungi.apiserver.application.memo.service.MemoService;
-import com.dungi.apiserver.presentation.memo.dto.CreateMemoRequestDto;
-import com.dungi.apiserver.presentation.memo.dto.GetMemoResponseDto;
-import com.dungi.apiserver.presentation.memo.dto.MoveMemoRequestDto;
-import com.dungi.apiserver.presentation.memo.dto.UpdateMemoRequestDto;
+import com.dungi.apiserver.presentation.memo.dto.*;
 import com.dungi.common.response.BaseResponse;
-import com.dungi.common.util.TimeUtil;
 import com.dungi.core.domain.user.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -20,8 +18,8 @@ import static com.dungi.common.util.StringUtil.LOGIN_USER;
 @RestController
 @RequiredArgsConstructor
 public class MemoController {
-
     private final MemoService memoService;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @PostMapping("/room/{roomId}/memo")
     BaseResponse<?> createMemo(
@@ -45,17 +43,7 @@ public class MemoController {
     ) {
         var user = (User) session.getAttribute(LOGIN_USER);
         var memoList = memoService.getMemo(roomId, user.getId()).stream()
-                .map(m -> GetMemoResponseDto.builder()
-                        .memoId(m.getId())
-                        .memoColor(m.getMemoColor())
-                        .profileImg(m.getMemoUser().getProfileImg())
-                        .createdAt(TimeUtil.localDateTimeToTimeStr(m.getCreatedTime()))
-                        .isOwner(m.getMemoUser().getUserId().equals(user.getId()))
-                        .memo(m.getMemoItem())
-                        .x(m.getXPosition())
-                        .y(m.getYPosition())
-                        .build()
-                );
+                .map(memoDetail -> GetMemoResponseDto.fromMemoDetail(memoDetail, user.getId()));
         return new BaseResponse<>(memoList);
     }
 
@@ -76,21 +64,18 @@ public class MemoController {
         return new BaseResponse<>(SUCCESS);
     }
 
-    @PutMapping("/room/{roomId}/memo/{memoId}/move")
-    BaseResponse<?> moveMemo(
-            @PathVariable Long roomId,
-            @PathVariable Long memoId,
-            @RequestBody @Valid MoveMemoRequestDto memoRequestDto,
-            HttpSession session
+    @MessageMapping("/move-memo")
+    void moveMemo(
+            @Valid MoveMemoRequestDto memoRequestDto
     ) {
-        var user = (User) session.getAttribute(LOGIN_USER);
-        memoService.moveMemo(
+        var movedMemo = memoService.moveMemo(
                 memoRequestDto.createMemoDto(),
-                roomId,
-                user.getId(),
-                memoId
+                memoRequestDto.getRoomId(),
+                memoRequestDto.getUserId(),
+                memoRequestDto.getMemoId()
         );
-        return new BaseResponse<>(SUCCESS);
+        var response = MoveMemoResponseDto.fromEntity(movedMemo);
+        messagingTemplate.convertAndSend("/topic/room/$roomId/move-memo", response);
     }
 
     @DeleteMapping("/room/{roomId}/memo/{memoId}")

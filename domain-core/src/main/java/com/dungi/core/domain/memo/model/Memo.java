@@ -44,6 +44,9 @@ public class Memo extends BaseEntity {
     @Column(name = "room_id")
     private Long roomId;
 
+    @Version
+    private Long version;
+
     @Builder
     public Memo(
             Long userId,

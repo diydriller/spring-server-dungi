@@ -12,6 +12,7 @@ import com.dungi.core.integration.store.room.RoomStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ import java.util.List;
 public class MemoService {
     private final MemoStore memoStore;
     private final RoomStore roomStore;
+    private final SimpMessagingTemplate messagingTemplate;
 
     // 메모 생성 기능
     // 유저가 방에 입장해있는지 확인 - 메모 생성
@@ -70,10 +72,11 @@ public class MemoService {
     // 메모 이동시 캐시 삭제
     @Transactional
     @CacheEvict(key = "#roomId", value = "getMemo")
-    public void moveMemo(MoveMemoDto dto, Long roomId, Long userId, Long memoId) {
+    public Memo moveMemo(MoveMemoDto dto, Long roomId, Long userId, Long memoId) {
         roomStore.getRoomEnteredByUser(userId, roomId);
         var memo = memoStore.getMemo(memoId);
         memo.move(dto.getX(), dto.getY());
+        return memo;
     }
 
     // 메모 삭제 기능
