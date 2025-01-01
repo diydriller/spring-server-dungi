@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
         "com.dungi.message",
         "com.dungi.core",
         "com.dungi.common",
-        "com.dungi.rdb"
+        "com.dungi.storage"
 })
 @SpringBootApplication
 public class NotificationServerApplication {

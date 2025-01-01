@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = {
         "com.dungi.batchserver",
         "com.dungi.core.domain.summary",
-        "com.dungi.rdb",
+        "com.dungi.storage",
         "com.dungi.common"
 })
 @EnableBatchProcessing

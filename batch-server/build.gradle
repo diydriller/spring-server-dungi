@@ -8,7 +8,7 @@ bootJar {
 dependencies {
     implementation project(':domain-core')
     implementation project(':common')
-    implementation project(':infrastructure:infrastructure-rdb')
+    implementation project(':infrastructure:infrastructure-storage')
     implementation 'org.springframework.boot:spring-boot-starter-batch'
     testImplementation 'org.springframework.batch:spring-batch-test'
     implementation 'org.springframework.boot:spring-boot-starter-quartz'

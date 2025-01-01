@@ -8,7 +8,7 @@ import com.dungi.apiserver.presentation.user.dto.TokenResponseDto;
 import com.dungi.apiserver.web.TokenProvider;
 import com.dungi.common.value.Provider;
 import com.dungi.core.domain.user.model.User;
-import com.dungi.core.integration.store.user.UserCacheStore;
+import com.dungi.core.integration.store.user.UserStore;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,7 +44,7 @@ public class UserControllerTest {
     private TokenProvider tokenProvider;
 
     @Mock
-    private UserCacheStore userCacheStore;
+    private UserStore userStore;
 
     private MockMvc mockMvc;
 
@@ -109,7 +109,7 @@ public class UserControllerTest {
                 .willReturn("refreshToken");
         given(tokenProvider.getExpirationDuration("refreshToken"))
                 .willReturn(10000L);
-        willDoNothing().given(userCacheStore).saveToken("refreshToken", user.getEmail(), 10000L);
+        willDoNothing().given(userStore).saveToken("refreshToken", user.getEmail(), 10000L);
 
         // when
         var tokenDto = (TokenResponseDto) userController.login(requestDto, new MockHttpSession()).getData();

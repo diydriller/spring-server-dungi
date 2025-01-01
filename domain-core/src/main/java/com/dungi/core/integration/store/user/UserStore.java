@@ -12,4 +12,12 @@ public interface UserStore {
     User getUserByEmail(String email);
 
     User getUserById(Long id);
+
+    void saveCode(String number, String code, long time);
+
+    String getCode(String number);
+
+    void saveToken(String token, String email, long time);
+
+    String getInfo(String token);
 }

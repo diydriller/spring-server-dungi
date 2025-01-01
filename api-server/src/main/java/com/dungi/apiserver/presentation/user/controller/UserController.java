@@ -5,7 +5,7 @@ import com.dungi.apiserver.presentation.user.dto.*;
 import com.dungi.apiserver.web.TokenProvider;
 import com.dungi.common.response.BaseResponse;
 import com.dungi.common.value.Provider;
-import com.dungi.core.integration.store.user.UserCacheStore;
+import com.dungi.core.integration.store.user.UserStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +22,7 @@ public class UserController {
 
     private final UserService userService;
     private final TokenProvider tokenProvider;
-    private final UserCacheStore userCacheStore;
+    private final UserStore userStore;
 
     @PostMapping(
             value = "/user",
@@ -89,7 +89,7 @@ public class UserController {
         session.setAttribute(LOGIN_USER, user);
         String accessToken = tokenProvider.createAccessToken(user.getEmail());
         String refreshToken = tokenProvider.createRefreshToken();
-        userCacheStore.saveToken(refreshToken, user.getEmail(), tokenProvider.getExpirationDuration(refreshToken));
+        userStore.saveToken(refreshToken, user.getEmail(), tokenProvider.getExpirationDuration(refreshToken));
         return new BaseResponse<>(
                 TokenResponseDto.builder()
                         .accessToken(accessToken)
@@ -106,7 +106,7 @@ public class UserController {
         session.setAttribute(LOGIN_USER, user);
         String accessToken = tokenProvider.createAccessToken(user.getEmail());
         String refreshToken = tokenProvider.createRefreshToken();
-        userCacheStore.saveToken(refreshToken, user.getEmail(), tokenProvider.getExpirationDuration(refreshToken));
+        userStore.saveToken(refreshToken, user.getEmail(), tokenProvider.getExpirationDuration(refreshToken));
         return new BaseResponse<>(
                 TokenResponseDto.builder()
                         .accessToken(accessToken)
@@ -119,7 +119,7 @@ public class UserController {
             @RequestBody @Valid RefreshTokenRequestDto requestDto
     ) {
         String refreshToken = requestDto.getRefresh_token();
-        var email = userCacheStore.getInfo(refreshToken);
+        var email = userStore.getInfo(refreshToken);
         String accessToken = tokenProvider.createAccessToken(email);
         return new BaseResponse<>(
                 TokenResponseDto.builder()
