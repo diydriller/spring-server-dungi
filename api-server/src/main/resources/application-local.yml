@@ -26,7 +26,7 @@ spring:
   jpa:
     database: mysql
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     generate-ddl: true
     show-sql: true
     properties:
@@ -84,3 +84,19 @@ cloud:
       static: ap-northeast-2
     stack:
       auto: false
+
+# kakao oath 설정
+kakao:
+  accountId: ${KAKAO_ACCOUNT_ID:1323}
+  secret: ${KAKAO_SECRET:12324}
+  callbackUri: ${KAKAO_CALLBACK_URI:http://localhost}
+
+# twilio 설정
+twilio:
+  accountId: ${TWILIO_ACCOUNT_ID:1214}
+  authToken: ${TWILIO_AUTH_TOKEN:12345}
+  adminPhoneNumber: ${TWILIO_ADMIN_PHONE_NUMBER:http://localhost}
+
+# jwt 설정
+jwt:
+  secret: ${JWT_SECRET:erser}

@@ -1,0 +1,83 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+  datasource:
+    source:
+      url: jdbc:mysql://localhost:3306/testdb
+      username: root
+      password: rootpass
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+# redis 연결 설정
+redis:
+  port: 6300
+  host: host.docker.internal
+  password: ENC(vtjQc5k6ostA1TjT2QzQBE4yHnwl6EsI)
+  lettuce:
+    pool:
+      max-idle: 8
+      min-idle: 2
+      max-active: 8
+
+# kafka 연결 설정
+message:
+  kind: kafka
+kafka:
+  broker: host.docker.internal:29092
+
+# local file 설정
+file:
+  kind: local
+  upload:
+    path: images/
+  down:
+    path: host.docker.internal:9002/static/
+
+# tomcat 설정
+server:
+  tomcat:
+    threads:
+      max: 200
+
+# prometheus 연결 설정
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+
+# 데이터베이스 replication 유무 설정
+database:
+  replication: false
+
+# cloud 비활성 설정
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
+# kakao oath 설정
+kakao:
+  accountId: 1323
+  secret: 12324
+  callbackUri: http://localhost
+
+# twilio 설정
+twilio:
+  accountId: 1214
+  authToken: 12345
+  adminPhoneNumber: http://localhost
+
+# jwt 설정
+jwt:
+  secret: erser
+
+# jasypt 설정
+jasypt:
+  encryptor:
+    password: dungi

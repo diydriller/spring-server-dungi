@@ -8,11 +8,7 @@ spring:
 
   # 프로필 설정
   profiles:
-    active: prod
-
-# jwt 설정
-jwt:
-  secret: ${JWT_SECRET}
+    active: local
 
 # jasypt 설정
 jasypt:
