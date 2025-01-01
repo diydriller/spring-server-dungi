@@ -13,9 +13,9 @@ spring:
 
 # redis 연결 설정
 redis:
-  port: 6300
-  host: host.docker.internal
-  password: ENC(vtjQc5k6ostA1TjT2QzQBE4yHnwl6EsI)
+  port: 6379
+  host: localhost
+  password: test
   lettuce:
     pool:
       max-idle: 8
