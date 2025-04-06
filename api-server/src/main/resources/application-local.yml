@@ -1,0 +1,102 @@
+spring:
+  # 요청 설정
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+  # mysql 연결 설정
+  datasource:
+    source:
+      url: jdbc:mysql://host.docker.internal:3300/spring_dungi?rewriteBatchedStatements=true
+      username: ENC(H02XFv8kQYcw+JabYK2PWA==)
+      password: ENC(MKcemwLpfYeOL+VwyFG48HMhSOUdhSn9)
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari:
+        maximum-pool-size: 10
+    replica:
+      url: jdbc:mysql://host.docker.internal:3301/spring_dungi?rewriteBatchedStatements=true
+      username: ENC(H02XFv8kQYcw+JabYK2PWA==)
+      password: ENC(uYPzCJbPjhvNmUQE5WODAm9YULJkkKPs)
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari:
+        maximum-pool-size: 10
+
+  # jpa 설정
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+# redis 연결 설정
+redis:
+  port: 6300
+  host: host.docker.internal
+  password: ENC(vtjQc5k6ostA1TjT2QzQBE4yHnwl6EsI)
+  lettuce:
+    pool:
+      max-idle: 8
+      min-idle: 2
+      max-active: 8
+
+# kafka 연결 설정
+message:
+  kind: kafka
+kafka:
+  broker: host.docker.internal:29092
+
+# local file 설정
+file:
+  kind: local
+  upload:
+    path: images/
+  down:
+    path: host.docker.internal:9002/static/
+
+# tomcat 설정
+server:
+  tomcat:
+    threads:
+      max: 200
+
+# prometheus 연결 설정
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+
+# 데이터베이스 replication 유무 설정
+database:
+  replication: false
+
+# cloud 비활성 설정
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
+# kakao oath 설정
+kakao:
+  accountId: ${KAKAO_ACCOUNT_ID:1323}
+  secret: ${KAKAO_SECRET:12324}
+  callbackUri: ${KAKAO_CALLBACK_URI:http://localhost}
+
+# twilio 설정
+twilio:
+  accountId: ${TWILIO_ACCOUNT_ID:1214}
+  authToken: ${TWILIO_AUTH_TOKEN:12345}
+  adminPhoneNumber: ${TWILIO_ADMIN_PHONE_NUMBER:http://localhost}
+
+# jwt 설정
+jwt:
+  secret: ${JWT_SECRET:erser}

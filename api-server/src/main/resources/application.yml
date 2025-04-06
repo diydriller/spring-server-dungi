@@ -1,0 +1,16 @@
+# 서버 설정
+server:
+  port: 9002
+
+spring:
+  application:
+    name: API
+
+  # 프로필 설정
+  profiles:
+    active: local
+
+# jasypt 설정
+jasypt:
+  encryptor:
+    password: ${JASYPT_PASSWORD}
