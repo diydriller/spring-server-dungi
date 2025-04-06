@@ -1,4 +1,5 @@
 rootProject.name = 'dungi'
+include 'batch-server'
 include 'api-server'
 include 'domain-core'
 include 'common'
