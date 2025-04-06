@@ -1,0 +1,10 @@
+rootProject.name = 'dungi'
+include 'api-server'
+include 'domain-core'
+include 'common'
+include 'infrastructure:infrastructure-sms'
+include 'infrastructure:infrastructure-file'
+include 'infrastructure:infrastructure-sns'
+include 'infrastructure:infrastructure-storage'
+include 'infrastructure:infrastructure-message'
+
