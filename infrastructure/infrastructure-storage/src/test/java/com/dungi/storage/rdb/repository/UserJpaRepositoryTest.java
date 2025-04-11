@@ -3,24 +3,26 @@ package com.dungi.storage.rdb.repository;
 import com.dungi.common.exception.BaseException;
 import com.dungi.common.value.SnsProvider;
 import com.dungi.core.domain.user.model.User;
+import com.dungi.storage.config.BaseTest;
 import com.dungi.storage.rdb.repository.user.UserJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static com.dungi.common.response.BaseResponseStatus.NOT_EXIST_USER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest
-public class UserJpaRepositoryTest {
+public class UserJpaRepositoryTest extends BaseTest {
     @Autowired
     private UserJpaRepository userJpaRepository;
 
     @Test
     @DisplayName("유저 저장 성공 테스트")
     void saveUserSuccessTest() {
-
         // given
         var user = createUser();
 
