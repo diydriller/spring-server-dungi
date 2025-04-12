@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserVoteItemJpaRepository extends CrudRepository<UserVoteItem, Long> {
-    @Query("SELECT new com.dungi.storage.dto.VoteUserDto(" +
+    @Query("SELECT new com.dungi.storage.dto.vote.VoteUserDto(" +
             " u.profileImg," +
             " u.nickname," +
             " u.id," +

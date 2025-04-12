@@ -1,11 +1,10 @@
 name: dungi server CI/CD
 
 on:
+  push:
+    branches: [ main ]
   pull_request:
-    branches: [main]
-
-env:
-  S3_BUCKET_NAME: diydriller-s3
+    branches: [ main ]
 
 jobs:
   build:
@@ -29,14 +28,14 @@ jobs:
       - name: Make Directory
         run: mkdir -p dungi
 
-      - name: Copy Jar
-        run: cp ./api-server/build/libs/*.jar ./dungi
-
-      - name: Copy appspec.yml
-        run: cp appspec.yml ./dungi
-
-      - name: Copy script
-        run: cp ./scripts/*.sh ./dungi
+      - name: Prepare Deployment Directory
+        run: |
+          mkdir -p dungi
+          cp ./api-server/build/libs/*.jar ./dungi
+          cp ./batch-server/build/libs/*.jar ./dungi
+          cp ./notification-server/build/libs/*.jar ./dungi
+          cp appspec.yml ./dungi
+          cp ./scripts/*.sh ./dungi
 
       - name: Make zip file
         run: zip -r ./dungi.zip ./dungi
@@ -50,10 +49,4 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: Upload to S3
-        run: aws s3 cp --region ap-northeast-2 ./dungi.zip s3://$S3_BUCKET_NAME
-
-      - name: Code Deploy
-        run: aws deploy create-deployment --application-name dungi
-          --deployment-config-name CodeDeployDefault.AllAtOnce
-          --deployment-group-name dungi-group
-          --s3-location bucket=diydriller-s3,bundleType=zip,key=dungi.zip
+        run: aws s3 cp --region ap-northeast-2 ./dungi.zip s3://${{ secrets.AWS_S3_BUCKET_NAME }}
